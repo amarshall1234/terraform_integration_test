@@ -1,0 +1,9 @@
+{
+	"name": "wahpa-dev-aze-adf",
+	"location": "australiaeast",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "6e2ef4f0-4a3e-4317-83ef-325bf5138c91",
+		"tenantId": "0fee3d31-b963-4a1c-8f4a-ca367205aa65"
+	}
+}
