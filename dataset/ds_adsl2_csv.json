@@ -18,10 +18,25 @@
 			"adls2_file_name": {
 				"type": "string"
 			},
-			"compression_type": {
+			"column_delimiter": {
 				"type": "string"
 			},
-			"compression_level": {
+			"row_delimiter": {
+				"type": "string"
+			},
+			"encoding": {
+				"type": "string"
+			},
+			"escape_character": {
+				"type": "string"
+			},
+			"quote_character": {
+				"type": "string"
+			},
+			"first_row_as_header": {
+				"type": "string"
+			},
+			"null_vale": {
 				"type": "string"
 			}
 		},
