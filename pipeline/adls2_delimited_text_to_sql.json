@@ -17,6 +17,29 @@
 				"typeProperties": {
 					"source": {
 						"type": "DelimitedTextSource",
+						"additionalColumns": [
+							{
+								"name": "pipeline_name",
+								"value": {
+									"value": "@pipeline().Pipeline",
+									"type": "Expression"
+								}
+							},
+							{
+								"name": "pipieline_run_id",
+								"value": {
+									"value": "@pipeline().RunId",
+									"type": "Expression"
+								}
+							},
+							{
+								"name": "ingest_timestamp",
+								"value": {
+									"value": "@utcnow()",
+									"type": "Expression"
+								}
+							}
+						],
 						"storeSettings": {
 							"type": "AzureBlobFSReadSettings",
 							"recursive": true,
@@ -28,6 +51,10 @@
 					},
 					"sink": {
 						"type": "AzureSqlSink",
+						"writeBatchTimeout": {
+							"value": "@{pipeline().parameters.az_sql_write_batch_timeout}",
+							"type": "Expression"
+						},
 						"writeBehavior": "insert",
 						"sqlWriterUseTableLock": false,
 						"tableOption": "autoCreate",
@@ -48,13 +75,50 @@
 						"referenceName": "ds_adsl2_delimited_text",
 						"type": "DatasetReference",
 						"parameters": {
-							"compression_type": "None",
-							"compression_level": "Optimal",
-							"column_delimiter": ",",
-							"encoding": "UTF-8",
-							"escape_character": "\\",
-							"quote_character": "\"",
-							"first_row_as_header": true
+							"adls2_endpoint": {
+								"value": "@pipeline().parameters.adls2_endpoint",
+								"type": "Expression"
+							},
+							"adls2_container_name": {
+								"value": "@pipeline().parameters.adls2_container_name",
+								"type": "Expression"
+							},
+							"adls2_directory_name": {
+								"value": "@pipeline().parameters.adls2_directory_name",
+								"type": "Expression"
+							},
+							"adls2_file_name": {
+								"value": "@pipeline().parameters.adls2_file_name",
+								"type": "Expression"
+							},
+							"compression_type": {
+								"value": "@pipeline().parameters.file_compression_type",
+								"type": "Expression"
+							},
+							"compression_level": {
+								"value": "@pipeline().parameters.file_compression_level",
+								"type": "Expression"
+							},
+							"column_delimiter": {
+								"value": "@pipeline().parameters.file_column_delimiter",
+								"type": "Expression"
+							},
+							"encoding": {
+								"value": "@pipeline().parameters.file_encoding",
+								"type": "Expression"
+							},
+							"escape_character": {
+								"value": "@pipeline().parameters.file_escape_character",
+								"type": "Expression"
+							},
+							"quote_character": {
+								"value": "@pipeline().parameters.file_quote_character",
+								"type": "Expression"
+							},
+							"first_row_as_header": {
+								"value": "@pipeline().parameters.file_first_row_as_header",
+								"type": "Expression"
+							}
 						}
 					}
 				],
@@ -117,6 +181,50 @@
 			},
 			"az_sql_table_name": {
 				"type": "string"
+			},
+			"az_sql_write_batch_timeout": {
+				"type": "string",
+				"defaultValue": "00:30:00"
+			},
+			"adls2_endpoint": {
+				"type": "string"
+			},
+			"adls2_container_name": {
+				"type": "string"
+			},
+			"adls2_directory_name": {
+				"type": "string"
+			},
+			"adls2_file_name": {
+				"type": "string"
+			},
+			"file_compression_type": {
+				"type": "string",
+				"defaultValue": "None"
+			},
+			"file_compression_level": {
+				"type": "string",
+				"defaultValue": "Optimal"
+			},
+			"file_column_delimiter": {
+				"type": "string",
+				"defaultValue": ","
+			},
+			"file_encoding": {
+				"type": "string",
+				"defaultValue": "UTF-8"
+			},
+			"file_escape_character": {
+				"type": "string",
+				"defaultValue": "\\"
+			},
+			"file_quote_character": {
+				"type": "string",
+				"defaultValue": "\""
+			},
+			"file_first_row_as_header": {
+				"type": "bool",
+				"defaultValue": true
 			}
 		},
 		"annotations": []
