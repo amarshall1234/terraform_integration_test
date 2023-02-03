@@ -36,7 +36,7 @@
 				"typeProperties": {
 					"variableName": "var_table_name",
 					"value": {
-						"value": "@split(pipeline().parameters.fileName,'/')[0]\n\n",
+						"value": "@split(pipeline().parameters.fileName,'.')[0]\n\n",
 						"type": "Expression"
 					}
 				}
