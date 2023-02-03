@@ -50,7 +50,7 @@
 		},
 		"test-trigger_properties_adls2_delimited_text_to_sql_parameters_az_sql_schema_name": {
 			"type": "string",
-			"defaultValue": "dbo"
+			"defaultValue": "staging"
 		},
 		"test-trigger_properties_adls2_delimited_text_to_sql_parameters_az_sql_table_name": {
 			"type": "string",
@@ -554,6 +554,81 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/pipeline3')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Set var_container_name",
+						"type": "SetVariable",
+						"dependsOn": [],
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "var_container_name",
+							"value": {
+								"value": "@split(pipeline().parameters.folderPath,'/')[0]\n\n",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "Set var_directory_name",
+						"type": "SetVariable",
+						"dependsOn": [],
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "var_directory_name",
+							"value": {
+								"value": "@split(pipeline().parameters.folderPath,'/')[1]\n\n",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "Set var_table_name",
+						"type": "SetVariable",
+						"dependsOn": [],
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "var_table_name",
+							"value": {
+								"value": "@split(pipeline().parameters.fileName,'.')[0]\n\n",
+								"type": "Expression"
+							}
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"parameters": {
+					"folderPath": {
+						"type": "string",
+						"defaultValue": "test-trigger/test-files"
+					},
+					"fileName": {
+						"type": "string",
+						"defaultValue": "airtravel.csv"
+					}
+				},
+				"variables": {
+					"var_container_name": {
+						"type": "String"
+					},
+					"var_directory_name": {
+						"type": "String"
+					},
+					"var_table_name": {
+						"type": "String"
+					}
+				},
+				"annotations": []
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/ds_adsl2_delimited_text')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -888,81 +963,6 @@
 				"[concat(variables('factoryId'), '/pipelines/pipeline2')]",
 				"[concat(variables('factoryId'), '/pipelines/adls2_delimited_text_to_sql')]"
 			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/pipeline3')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "Set var_container_name",
-						"type": "SetVariable",
-						"dependsOn": [],
-						"userProperties": [],
-						"typeProperties": {
-							"variableName": "var_container_name",
-							"value": {
-								"value": "@split(pipeline().parameters.folderPath,'/')[0]\n\n",
-								"type": "Expression"
-							}
-						}
-					},
-					{
-						"name": "Set var_directory_name",
-						"type": "SetVariable",
-						"dependsOn": [],
-						"userProperties": [],
-						"typeProperties": {
-							"variableName": "var_directory_name",
-							"value": {
-								"value": "@split(pipeline().parameters.folderPath,'/')[1]\n\n",
-								"type": "Expression"
-							}
-						}
-					},
-					{
-						"name": "Set var_table_name",
-						"type": "SetVariable",
-						"dependsOn": [],
-						"userProperties": [],
-						"typeProperties": {
-							"variableName": "var_table_name",
-							"value": {
-								"value": "@split(pipeline().parameters.fileName,'.')[0]\n\n",
-								"type": "Expression"
-							}
-						}
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {},
-					"cancelAfter": {}
-				},
-				"parameters": {
-					"folderPath": {
-						"type": "string",
-						"defaultValue": "test-trigger/test-files"
-					},
-					"fileName": {
-						"type": "string",
-						"defaultValue": "airtravel.csv"
-					}
-				},
-				"variables": {
-					"var_container_name": {
-						"type": "String"
-					},
-					"var_directory_name": {
-						"type": "String"
-					},
-					"var_table_name": {
-						"type": "String"
-					}
-				},
-				"annotations": []
-			},
-			"dependsOn": []
 		}
 	]
 }

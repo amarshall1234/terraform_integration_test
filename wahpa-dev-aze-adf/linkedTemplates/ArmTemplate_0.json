@@ -50,7 +50,7 @@
 		},
 		"test-trigger_properties_adls2_delimited_text_to_sql_parameters_az_sql_schema_name": {
 			"type": "string",
-			"defaultValue": "dbo"
+			"defaultValue": "staging"
 		},
 		"test-trigger_properties_adls2_delimited_text_to_sql_parameters_az_sql_table_name": {
 			"type": "string",
@@ -139,48 +139,6 @@
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/ls_adls2')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"description": "Parameterised Data Lake linked service",
-				"parameters": {
-					"adls2_endpoint": {
-						"type": "string"
-					}
-				},
-				"annotations": [
-					"ls_adls2"
-				],
-				"type": "AzureBlobFS",
-				"typeProperties": {
-					"url": "[parameters('ls_adls2_properties_typeProperties_url')]"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/ls_kv')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"description": "Parameterised key vault linked service",
-				"parameters": {
-					"key_vault_URI": {
-						"type": "string"
-					}
-				},
-				"annotations": [
-					"ls_kv"
-				],
-				"type": "AzureKeyVault",
-				"typeProperties": {
-					"baseUrl": "[parameters('ls_kv_properties_typeProperties_baseUrl')]"
-				}
-			},
-			"dependsOn": []
-		},
-		{
 			"name": "[concat(parameters('factoryName'), '/pipeline3')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
@@ -252,6 +210,48 @@
 					}
 				},
 				"annotations": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ls_adls2')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "Parameterised Data Lake linked service",
+				"parameters": {
+					"adls2_endpoint": {
+						"type": "string"
+					}
+				},
+				"annotations": [
+					"ls_adls2"
+				],
+				"type": "AzureBlobFS",
+				"typeProperties": {
+					"url": "[parameters('ls_adls2_properties_typeProperties_url')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ls_kv')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "Parameterised key vault linked service",
+				"parameters": {
+					"key_vault_URI": {
+						"type": "string"
+					}
+				},
+				"annotations": [
+					"ls_kv"
+				],
+				"type": "AzureKeyVault",
+				"typeProperties": {
+					"baseUrl": "[parameters('ls_kv_properties_typeProperties_baseUrl')]"
+				}
 			},
 			"dependsOn": []
 		},

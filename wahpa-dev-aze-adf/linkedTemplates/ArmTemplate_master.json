@@ -50,7 +50,7 @@
 		},
 		"test-trigger_properties_adls2_delimited_text_to_sql_parameters_az_sql_schema_name": {
 			"type": "string",
-			"defaultValue": "dbo"
+			"defaultValue": "staging"
 		},
 		"test-trigger_properties_adls2_delimited_text_to_sql_parameters_az_sql_table_name": {
 			"type": "string",

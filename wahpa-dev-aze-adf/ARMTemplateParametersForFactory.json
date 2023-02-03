@@ -36,7 +36,7 @@
 			"value": "wahpa-dev-aze-sql-admin-password"
 		},
 		"test-trigger_properties_adls2_delimited_text_to_sql_parameters_az_sql_schema_name": {
-			"value": "dbo"
+			"value": "staging"
 		},
 		"test-trigger_properties_adls2_delimited_text_to_sql_parameters_az_sql_table_name": {
 			"value": "@split(triggerbody().fileName, '.')[0]"
