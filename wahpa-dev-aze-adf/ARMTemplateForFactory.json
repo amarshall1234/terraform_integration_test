@@ -33,7 +33,12 @@
 				"linkedServiceName": {
 					"referenceName": "ls_adls2",
 					"type": "LinkedServiceReference",
-					"parameters": {}
+					"parameters": {
+						"adls2_endpoint": {
+							"value": "@dataset().adls2_endpoint",
+							"type": "Expression"
+						}
+					}
 				},
 				"parameters": {
 					"adls2_endpoint": {
@@ -79,9 +84,6 @@
 					"first_row_as_header": {
 						"type": "bool",
 						"defaultValue": true
-					},
-					"null_value": {
-						"type": "string"
 					}
 				},
 				"annotations": [],
@@ -128,10 +130,6 @@
 					},
 					"firstRowAsHeader": {
 						"value": "@dataset().first_row_as_header",
-						"type": "Expression"
-					},
-					"nullValue": {
-						"value": "@dataset().null_value",
 						"type": "Expression"
 					},
 					"quoteChar": {
