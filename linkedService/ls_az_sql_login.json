@@ -1,7 +1,7 @@
 {
 	"name": "ls_az_sql_login",
 	"properties": {
-		"description": "Azure SQL server linked service - login option",
+		"description": "Azure SQL server linked service using SQL login option",
 		"parameters": {
 			"az_sql_server_name": {
 				"type": "string"
