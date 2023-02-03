@@ -1,0 +1,18 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"value": "wahpa-dev-aze-adf"
+		},
+		"ls_az_sql_login_connectionString": {
+			"value": "Integrated Security=False;Encrypt=True;Connection Timeout=30;Data Source=@{linkedService().az_sql_server_name};Initial Catalog=@{linkedService().az_sql_database_name};User ID=@{linkedService().az_sql_login_user_name}"
+		},
+		"ls_adls2_properties_typeProperties_url": {
+			"value": "@{linkedService().adls2_endpoint}"
+		},
+		"ls_kv_properties_typeProperties_baseUrl": {
+			"value": "@{linkedService().key_vault_URI}"
+		}
+	}
+}
