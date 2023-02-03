@@ -3,13 +3,7 @@
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "ls_adls2",
-			"type": "LinkedServiceReference",
-			"parameters": {
-				"adls2_endpoint": {
-					"value": "@dataset().adls2_endpoint",
-					"type": "Expression"
-				}
-			}
+			"type": "LinkedServiceReference"
 		},
 		"parameters": {
 			"adls2_endpoint": {
@@ -22,6 +16,12 @@
 				"type": "string"
 			},
 			"adls2_file_name": {
+				"type": "string"
+			},
+			"compression_type": {
+				"type": "string"
+			},
+			"compressionlevel": {
 				"type": "string"
 			}
 		},
@@ -44,7 +44,6 @@
 				}
 			},
 			"columnDelimiter": ",",
-			"compressionCodec": "bzip2",
 			"escapeChar": "\\",
 			"firstRowAsHeader": false,
 			"quoteChar": "\""
