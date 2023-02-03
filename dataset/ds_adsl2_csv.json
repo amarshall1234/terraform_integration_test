@@ -36,10 +36,6 @@
 				"type": "string",
 				"defaultValue": ","
 			},
-			"row_delimiter": {
-				"type": "string",
-				"defaultValue": "Default"
-			},
 			"encoding": {
 				"type": "string",
 				"defaultValue": "UTF-8"
@@ -77,10 +73,6 @@
 			},
 			"columnDelimiter": {
 				"value": "@dataset().column_delimiter",
-				"type": "Expression"
-			},
-			"rowDelimiter": {
-				"value": "@dataset().row_delimiter",
 				"type": "Expression"
 			},
 			"compressionCodec": {
