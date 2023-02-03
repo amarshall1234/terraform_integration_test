@@ -1,6 +1,7 @@
 {
 	"name": "ds_adsl2_csv",
 	"properties": {
+		"description": "Dynamic dataset for adls2 csv files",
 		"linkedServiceName": {
 			"referenceName": "ls_adls2",
 			"type": "LinkedServiceReference",

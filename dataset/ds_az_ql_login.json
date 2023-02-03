@@ -1,6 +1,7 @@
 {
-	"name": "ds_sql_login",
+	"name": "ds_az_ql_login",
 	"properties": {
+		"description": "Dynamic dataset for azure SQL using SQL login option",
 		"linkedServiceName": {
 			"referenceName": "ls_az_sql_login",
 			"type": "LinkedServiceReference",
@@ -50,7 +51,9 @@
 				"type": "string"
 			}
 		},
-		"annotations": [],
+		"annotations": [
+			"ds_az_sql_login"
+		],
 		"type": "AzureSqlTable",
 		"schema": [],
 		"typeProperties": {
