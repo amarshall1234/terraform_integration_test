@@ -113,7 +113,7 @@
 					},
 					"encoding": {
 						"type": "string",
-						"defaultValue": "\"UTF-8"
+						"defaultValue": "UTF-8"
 					},
 					"escape_character": {
 						"type": "string",
