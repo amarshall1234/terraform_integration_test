@@ -109,7 +109,7 @@
 					},
 					"row_delimiter": {
 						"type": "string",
-						"defaultValue": "/r,/n, or /r/n"
+						"defaultValue": "\\r\\n"
 					},
 					"encoding": {
 						"type": "string",
@@ -146,12 +146,8 @@
 							"type": "Expression"
 						}
 					},
-					"columnDelimiter": {
-						"value": "@dataset().column_delimiter",
-						"type": "Expression"
-					},
 					"rowDelimiter": {
-						"value": "@dataset().row_delimiter",
+						"value": "@dataset().compression_type",
 						"type": "Expression"
 					},
 					"compressionCodec": {
