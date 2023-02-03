@@ -14,7 +14,7 @@
 		},
 		"ls_adls2_properties_typeProperties_url": {
 			"type": "string",
-			"defaultValue": "@{concat('https://', linkedService().adls2_name,'.dfs.core.windows.net/')\n\n}"
+			"defaultValue": "@{linkedService().adls2_endpoint}"
 		},
 		"ls_kv_properties_typeProperties_baseUrl": {
 			"type": "string",
@@ -26,23 +26,23 @@
 	},
 	"resources": [
 		{
-			"name": "[concat(parameters('factoryName'), '/ds_adsl2_csv')]",
+			"name": "[concat(parameters('factoryName'), '/ds_adsl2_delimited_text')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
-				"description": "Dynamic dataset for adls2 csv files",
+				"description": "Dynamic dataset for adls2 delimited text files",
 				"linkedServiceName": {
 					"referenceName": "ls_adls2",
 					"type": "LinkedServiceReference",
 					"parameters": {
-						"adls2_name": {
-							"value": "@dataset().adls2_name",
+						"adls2_endpoint": {
+							"value": "@dataset().adls2_endpoint",
 							"type": "Expression"
 						}
 					}
 				},
 				"parameters": {
-					"adls2_name": {
+					"adls2_endpoint": {
 						"type": "string"
 					},
 					"adls2_container_name": {
@@ -84,7 +84,7 @@
 					}
 				},
 				"annotations": [
-					"ds_adsl2_csv"
+					"ds_adsl2_delimited_text"
 				],
 				"type": "DelimitedText",
 				"typeProperties": {
@@ -139,7 +139,7 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/ds_az_ql_login')]",
+			"name": "[concat(parameters('factoryName'), '/ds_az_sql_login')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -186,10 +186,10 @@
 					"az_sql_login_password_kv_secret_name": {
 						"type": "string"
 					},
-					"sql_schema_name": {
+					"az_sql_schema_name": {
 						"type": "string"
 					},
-					"sql_table_name": {
+					"az_sql_table_name": {
 						"type": "string"
 					}
 				},
@@ -200,11 +200,11 @@
 				"schema": [],
 				"typeProperties": {
 					"schema": {
-						"value": "@dataset().sql_schema_name",
+						"value": "@dataset().az_sql_schema_name",
 						"type": "Expression"
 					},
 					"table": {
-						"value": "@dataset().sql_table_name",
+						"value": "@dataset().az_sql_table_name",
 						"type": "Expression"
 					}
 				}
@@ -220,7 +220,7 @@
 			"properties": {
 				"description": "Parameterised Data Lake linked service",
 				"parameters": {
-					"adls2_name": {
+					"adls2_endpoint": {
 						"type": "string"
 					}
 				},
@@ -306,6 +306,248 @@
 				}
 			},
 			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/adls2_delimited_text_to_sql')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Copy delimited text from adls2 to sql",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.00:30:00",
+							"retry": 2,
+							"retryIntervalInSeconds": 60,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "DelimitedTextSource",
+								"additionalColumns": [
+									{
+										"name": "pipeline_name",
+										"value": {
+											"value": "@pipeline().Pipeline",
+											"type": "Expression"
+										}
+									},
+									{
+										"name": "pipieline_run_id",
+										"value": {
+											"value": "@pipeline().RunId",
+											"type": "Expression"
+										}
+									},
+									{
+										"name": "ingest_timestamp",
+										"value": {
+											"value": "@utcnow()",
+											"type": "Expression"
+										}
+									}
+								],
+								"storeSettings": {
+									"type": "AzureBlobFSReadSettings",
+									"recursive": true,
+									"enablePartitionDiscovery": false
+								},
+								"formatSettings": {
+									"type": "DelimitedTextReadSettings"
+								}
+							},
+							"sink": {
+								"type": "AzureSqlSink",
+								"writeBatchTimeout": {
+									"value": "@{pipeline().parameters.az_sql_write_batch_timeout}",
+									"type": "Expression"
+								},
+								"writeBehavior": "insert",
+								"sqlWriterUseTableLock": false,
+								"tableOption": "autoCreate",
+								"disableMetricsCollection": false
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "ds_adsl2_delimited_text",
+								"type": "DatasetReference",
+								"parameters": {
+									"adls2_endpoint": {
+										"value": "@pipeline().parameters.adls2_endpoint",
+										"type": "Expression"
+									},
+									"adls2_container_name": {
+										"value": "@pipeline().parameters.adls2_container_name",
+										"type": "Expression"
+									},
+									"adls2_directory_name": {
+										"value": "@pipeline().parameters.adls2_directory_name",
+										"type": "Expression"
+									},
+									"adls2_file_name": {
+										"value": "@pipeline().parameters.adls2_file_name",
+										"type": "Expression"
+									},
+									"compression_type": {
+										"value": "@pipeline().parameters.file_compression_type",
+										"type": "Expression"
+									},
+									"compression_level": {
+										"value": "@pipeline().parameters.file_compression_level",
+										"type": "Expression"
+									},
+									"column_delimiter": {
+										"value": "@pipeline().parameters.file_column_delimiter",
+										"type": "Expression"
+									},
+									"encoding": {
+										"value": "@pipeline().parameters.file_encoding",
+										"type": "Expression"
+									},
+									"escape_character": {
+										"value": "@pipeline().parameters.file_escape_character",
+										"type": "Expression"
+									},
+									"quote_character": {
+										"value": "@pipeline().parameters.file_quote_character",
+										"type": "Expression"
+									},
+									"first_row_as_header": {
+										"value": "@pipeline().parameters.file_first_row_as_header",
+										"type": "Expression"
+									}
+								}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "ds_az_sql_login",
+								"type": "DatasetReference",
+								"parameters": {
+									"az_sql_server_name": {
+										"value": "@pipeline().parameters.az_sql_server_name",
+										"type": "Expression"
+									},
+									"az_sql_database_name": {
+										"value": "@pipeline().parameters.az_sql_database_name",
+										"type": "Expression"
+									},
+									"az_sql_login_user_name": {
+										"value": "@pipeline().parameters.az_sql_login_user_name",
+										"type": "Expression"
+									},
+									"az_sql_login_password_key_vault_URI": {
+										"value": "@pipeline().parameters.az_sql_login_password_key_vault_URI",
+										"type": "Expression"
+									},
+									"az_sql_login_password_kv_secret_name": {
+										"value": "@pipeline().parameters.az_sql_login_password_kv_secret_name",
+										"type": "Expression"
+									},
+									"az_sql_schema_name": {
+										"value": "@pipeline().parameters.az_sql_schema_name",
+										"type": "Expression"
+									},
+									"az_sql_table_name": {
+										"value": "@pipeline().parameters.az_sql_table_name",
+										"type": "Expression"
+									}
+								}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"parameters": {
+					"az_sql_server_name": {
+						"type": "string"
+					},
+					"az_sql_database_name": {
+						"type": "string"
+					},
+					"az_sql_login_user_name": {
+						"type": "string"
+					},
+					"az_sql_login_password_key_vault_URI": {
+						"type": "string"
+					},
+					"az_sql_login_password_kv_secret_name": {
+						"type": "string"
+					},
+					"az_sql_schema_name": {
+						"type": "string"
+					},
+					"az_sql_table_name": {
+						"type": "string"
+					},
+					"az_sql_write_batch_timeout": {
+						"type": "string",
+						"defaultValue": "00:30:00"
+					},
+					"adls2_endpoint": {
+						"type": "string"
+					},
+					"adls2_container_name": {
+						"type": "string"
+					},
+					"adls2_directory_name": {
+						"type": "string"
+					},
+					"adls2_file_name": {
+						"type": "string"
+					},
+					"file_compression_type": {
+						"type": "string",
+						"defaultValue": "None"
+					},
+					"file_compression_level": {
+						"type": "string",
+						"defaultValue": "Optimal"
+					},
+					"file_column_delimiter": {
+						"type": "string",
+						"defaultValue": ","
+					},
+					"file_encoding": {
+						"type": "string",
+						"defaultValue": "UTF-8"
+					},
+					"file_escape_character": {
+						"type": "string",
+						"defaultValue": "\\"
+					},
+					"file_quote_character": {
+						"type": "string",
+						"defaultValue": "\""
+					},
+					"file_first_row_as_header": {
+						"type": "bool",
+						"defaultValue": true
+					}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/ds_adsl2_delimited_text')]",
+				"[concat(variables('factoryId'), '/datasets/ds_az_sql_login')]"
+			]
 		}
 	]
 }
