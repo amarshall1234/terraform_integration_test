@@ -20,6 +20,39 @@
 		"test-trigger_properties_pipeline2_parameters_fileName": {
 			"value": "@triggerBody().fileName"
 		},
+		"test-trigger_properties_adls2_delimited_text_to_sql_parameters_az_sql_server_name": {
+			"value": "wahpa-dev-aze-sql.database.windows.net"
+		},
+		"test-trigger_properties_adls2_delimited_text_to_sql_parameters_az_sql_database_name": {
+			"value": "SampleDB"
+		},
+		"test-trigger_properties_adls2_delimited_text_to_sql_parameters_az_sql_login_user_name": {
+			"value": "User51126629"
+		},
+		"test-trigger_properties_adls2_delimited_text_to_sql_parameters_az_sql_login_password_key_vault_URI": {
+			"value": "https://wahpa-dev-aze-kv.vault.azure.net/"
+		},
+		"test-trigger_properties_adls2_delimited_text_to_sql_parameters_az_sql_login_password_kv_secret_name": {
+			"value": "wahpa-dev-aze-sql-admin-password"
+		},
+		"test-trigger_properties_adls2_delimited_text_to_sql_parameters_az_sql_schema_name": {
+			"value": "dbo"
+		},
+		"test-trigger_properties_adls2_delimited_text_to_sql_parameters_az_sql_table_name": {
+			"value": "@split(triggerbody().fileName, '.')[0]"
+		},
+		"test-trigger_properties_adls2_delimited_text_to_sql_parameters_adls2_endpoint": {
+			"value": "https://wahpadevazestraw.dfs.core.windows.net/"
+		},
+		"test-trigger_properties_adls2_delimited_text_to_sql_parameters_adls2_container_name": {
+			"value": "@split(triggerbody().folderPath, '/')[0]"
+		},
+		"test-trigger_properties_adls2_delimited_text_to_sql_parameters_adls2_directory_name": {
+			"value": "@split(triggerbody().folderPath, '/')[1]"
+		},
+		"test-trigger_properties_adls2_delimited_text_to_sql_parameters_adls2_file_name": {
+			"value": "@triggerbody().fileName"
+		},
 		"test-trigger_properties_typeProperties_scope": {
 			"value": "/subscriptions/687fe1ae-a520-4f86-b921-a80664c40f9b/resourceGroups/wahpa-dev-aze-rg-services/providers/Microsoft.Storage/storageAccounts/wahpadevazestraw"
 		}

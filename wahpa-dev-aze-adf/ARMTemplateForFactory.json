@@ -28,6 +28,50 @@
 			"type": "string",
 			"defaultValue": "@triggerBody().fileName"
 		},
+		"test-trigger_properties_adls2_delimited_text_to_sql_parameters_az_sql_server_name": {
+			"type": "string",
+			"defaultValue": "wahpa-dev-aze-sql.database.windows.net"
+		},
+		"test-trigger_properties_adls2_delimited_text_to_sql_parameters_az_sql_database_name": {
+			"type": "string",
+			"defaultValue": "SampleDB"
+		},
+		"test-trigger_properties_adls2_delimited_text_to_sql_parameters_az_sql_login_user_name": {
+			"type": "string",
+			"defaultValue": "User51126629"
+		},
+		"test-trigger_properties_adls2_delimited_text_to_sql_parameters_az_sql_login_password_key_vault_URI": {
+			"type": "string",
+			"defaultValue": "https://wahpa-dev-aze-kv.vault.azure.net/"
+		},
+		"test-trigger_properties_adls2_delimited_text_to_sql_parameters_az_sql_login_password_kv_secret_name": {
+			"type": "string",
+			"defaultValue": "wahpa-dev-aze-sql-admin-password"
+		},
+		"test-trigger_properties_adls2_delimited_text_to_sql_parameters_az_sql_schema_name": {
+			"type": "string",
+			"defaultValue": "dbo"
+		},
+		"test-trigger_properties_adls2_delimited_text_to_sql_parameters_az_sql_table_name": {
+			"type": "string",
+			"defaultValue": "@split(triggerbody().fileName, '.')[0]"
+		},
+		"test-trigger_properties_adls2_delimited_text_to_sql_parameters_adls2_endpoint": {
+			"type": "string",
+			"defaultValue": "https://wahpadevazestraw.dfs.core.windows.net/"
+		},
+		"test-trigger_properties_adls2_delimited_text_to_sql_parameters_adls2_container_name": {
+			"type": "string",
+			"defaultValue": "@split(triggerbody().folderPath, '/')[0]"
+		},
+		"test-trigger_properties_adls2_delimited_text_to_sql_parameters_adls2_directory_name": {
+			"type": "string",
+			"defaultValue": "@split(triggerbody().folderPath, '/')[1]"
+		},
+		"test-trigger_properties_adls2_delimited_text_to_sql_parameters_adls2_file_name": {
+			"type": "string",
+			"defaultValue": "@triggerbody().fileName"
+		},
 		"test-trigger_properties_typeProperties_scope": {
 			"type": "string",
 			"defaultValue": "/subscriptions/687fe1ae-a520-4f86-b921-a80664c40f9b/resourceGroups/wahpa-dev-aze-rg-services/providers/Microsoft.Storage/storageAccounts/wahpadevazestraw"
@@ -808,6 +852,25 @@
 							"folderPath": "[parameters('test-trigger_properties_pipeline2_parameters_folderPath')]",
 							"fileName": "[parameters('test-trigger_properties_pipeline2_parameters_fileName')]"
 						}
+					},
+					{
+						"pipelineReference": {
+							"referenceName": "adls2_delimited_text_to_sql",
+							"type": "PipelineReference"
+						},
+						"parameters": {
+							"az_sql_server_name": "[parameters('test-trigger_properties_adls2_delimited_text_to_sql_parameters_az_sql_server_name')]",
+							"az_sql_database_name": "[parameters('test-trigger_properties_adls2_delimited_text_to_sql_parameters_az_sql_database_name')]",
+							"az_sql_login_user_name": "[parameters('test-trigger_properties_adls2_delimited_text_to_sql_parameters_az_sql_login_user_name')]",
+							"az_sql_login_password_key_vault_URI": "[parameters('test-trigger_properties_adls2_delimited_text_to_sql_parameters_az_sql_login_password_key_vault_URI')]",
+							"az_sql_login_password_kv_secret_name": "[parameters('test-trigger_properties_adls2_delimited_text_to_sql_parameters_az_sql_login_password_kv_secret_name')]",
+							"az_sql_schema_name": "[parameters('test-trigger_properties_adls2_delimited_text_to_sql_parameters_az_sql_schema_name')]",
+							"az_sql_table_name": "[parameters('test-trigger_properties_adls2_delimited_text_to_sql_parameters_az_sql_table_name')]",
+							"adls2_endpoint": "[parameters('test-trigger_properties_adls2_delimited_text_to_sql_parameters_adls2_endpoint')]",
+							"adls2_container_name": "[parameters('test-trigger_properties_adls2_delimited_text_to_sql_parameters_adls2_container_name')]",
+							"adls2_directory_name": "[parameters('test-trigger_properties_adls2_delimited_text_to_sql_parameters_adls2_directory_name')]",
+							"adls2_file_name": "[parameters('test-trigger_properties_adls2_delimited_text_to_sql_parameters_adls2_file_name')]"
+						}
 					}
 				],
 				"type": "BlobEventsTrigger",
@@ -822,8 +885,84 @@
 				}
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/pipelines/pipeline2')]"
+				"[concat(variables('factoryId'), '/pipelines/pipeline2')]",
+				"[concat(variables('factoryId'), '/pipelines/adls2_delimited_text_to_sql')]"
 			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/pipeline3')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Set var_container_name",
+						"type": "SetVariable",
+						"dependsOn": [],
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "var_container_name",
+							"value": {
+								"value": "@split(pipeline().parameters.folderPath,'/')[0]\n\n",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "Set var_directory_name",
+						"type": "SetVariable",
+						"dependsOn": [],
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "var_directory_name",
+							"value": {
+								"value": "@split(pipeline().parameters.folderPath,'/')[1]\n\n",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "Set var_table_name",
+						"type": "SetVariable",
+						"dependsOn": [],
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "var_table_name",
+							"value": {
+								"value": "@split(pipeline().parameters.fileName,'.')[0]\n\n",
+								"type": "Expression"
+							}
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"parameters": {
+					"folderPath": {
+						"type": "string",
+						"defaultValue": "test-trigger/test-files"
+					},
+					"fileName": {
+						"type": "string",
+						"defaultValue": "airtravel.csv"
+					}
+				},
+				"variables": {
+					"var_container_name": {
+						"type": "String"
+					},
+					"var_directory_name": {
+						"type": "String"
+					},
+					"var_table_name": {
+						"type": "String"
+					}
+				},
+				"annotations": []
+			},
+			"dependsOn": []
 		}
 	]
 }

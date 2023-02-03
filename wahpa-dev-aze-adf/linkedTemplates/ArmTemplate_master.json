@@ -28,6 +28,50 @@
 			"type": "string",
 			"defaultValue": "@triggerBody().fileName"
 		},
+		"test-trigger_properties_adls2_delimited_text_to_sql_parameters_az_sql_server_name": {
+			"type": "string",
+			"defaultValue": "wahpa-dev-aze-sql.database.windows.net"
+		},
+		"test-trigger_properties_adls2_delimited_text_to_sql_parameters_az_sql_database_name": {
+			"type": "string",
+			"defaultValue": "SampleDB"
+		},
+		"test-trigger_properties_adls2_delimited_text_to_sql_parameters_az_sql_login_user_name": {
+			"type": "string",
+			"defaultValue": "User51126629"
+		},
+		"test-trigger_properties_adls2_delimited_text_to_sql_parameters_az_sql_login_password_key_vault_URI": {
+			"type": "string",
+			"defaultValue": "https://wahpa-dev-aze-kv.vault.azure.net/"
+		},
+		"test-trigger_properties_adls2_delimited_text_to_sql_parameters_az_sql_login_password_kv_secret_name": {
+			"type": "string",
+			"defaultValue": "wahpa-dev-aze-sql-admin-password"
+		},
+		"test-trigger_properties_adls2_delimited_text_to_sql_parameters_az_sql_schema_name": {
+			"type": "string",
+			"defaultValue": "dbo"
+		},
+		"test-trigger_properties_adls2_delimited_text_to_sql_parameters_az_sql_table_name": {
+			"type": "string",
+			"defaultValue": "@split(triggerbody().fileName, '.')[0]"
+		},
+		"test-trigger_properties_adls2_delimited_text_to_sql_parameters_adls2_endpoint": {
+			"type": "string",
+			"defaultValue": "https://wahpadevazestraw.dfs.core.windows.net/"
+		},
+		"test-trigger_properties_adls2_delimited_text_to_sql_parameters_adls2_container_name": {
+			"type": "string",
+			"defaultValue": "@split(triggerbody().folderPath, '/')[0]"
+		},
+		"test-trigger_properties_adls2_delimited_text_to_sql_parameters_adls2_directory_name": {
+			"type": "string",
+			"defaultValue": "@split(triggerbody().folderPath, '/')[1]"
+		},
+		"test-trigger_properties_adls2_delimited_text_to_sql_parameters_adls2_file_name": {
+			"type": "string",
+			"defaultValue": "@triggerbody().fileName"
+		},
 		"test-trigger_properties_typeProperties_scope": {
 			"type": "string",
 			"defaultValue": "/subscriptions/687fe1ae-a520-4f86-b921-a80664c40f9b/resourceGroups/wahpa-dev-aze-rg-services/providers/Microsoft.Storage/storageAccounts/wahpadevazestraw"
@@ -73,6 +117,39 @@
 					},
 					"test-trigger_properties_pipeline2_parameters_fileName": {
 						"value": "[parameters('test-trigger_properties_pipeline2_parameters_fileName')]"
+					},
+					"test-trigger_properties_adls2_delimited_text_to_sql_parameters_az_sql_server_name": {
+						"value": "[parameters('test-trigger_properties_adls2_delimited_text_to_sql_parameters_az_sql_server_name')]"
+					},
+					"test-trigger_properties_adls2_delimited_text_to_sql_parameters_az_sql_database_name": {
+						"value": "[parameters('test-trigger_properties_adls2_delimited_text_to_sql_parameters_az_sql_database_name')]"
+					},
+					"test-trigger_properties_adls2_delimited_text_to_sql_parameters_az_sql_login_user_name": {
+						"value": "[parameters('test-trigger_properties_adls2_delimited_text_to_sql_parameters_az_sql_login_user_name')]"
+					},
+					"test-trigger_properties_adls2_delimited_text_to_sql_parameters_az_sql_login_password_key_vault_URI": {
+						"value": "[parameters('test-trigger_properties_adls2_delimited_text_to_sql_parameters_az_sql_login_password_key_vault_URI')]"
+					},
+					"test-trigger_properties_adls2_delimited_text_to_sql_parameters_az_sql_login_password_kv_secret_name": {
+						"value": "[parameters('test-trigger_properties_adls2_delimited_text_to_sql_parameters_az_sql_login_password_kv_secret_name')]"
+					},
+					"test-trigger_properties_adls2_delimited_text_to_sql_parameters_az_sql_schema_name": {
+						"value": "[parameters('test-trigger_properties_adls2_delimited_text_to_sql_parameters_az_sql_schema_name')]"
+					},
+					"test-trigger_properties_adls2_delimited_text_to_sql_parameters_az_sql_table_name": {
+						"value": "[parameters('test-trigger_properties_adls2_delimited_text_to_sql_parameters_az_sql_table_name')]"
+					},
+					"test-trigger_properties_adls2_delimited_text_to_sql_parameters_adls2_endpoint": {
+						"value": "[parameters('test-trigger_properties_adls2_delimited_text_to_sql_parameters_adls2_endpoint')]"
+					},
+					"test-trigger_properties_adls2_delimited_text_to_sql_parameters_adls2_container_name": {
+						"value": "[parameters('test-trigger_properties_adls2_delimited_text_to_sql_parameters_adls2_container_name')]"
+					},
+					"test-trigger_properties_adls2_delimited_text_to_sql_parameters_adls2_directory_name": {
+						"value": "[parameters('test-trigger_properties_adls2_delimited_text_to_sql_parameters_adls2_directory_name')]"
+					},
+					"test-trigger_properties_adls2_delimited_text_to_sql_parameters_adls2_file_name": {
+						"value": "[parameters('test-trigger_properties_adls2_delimited_text_to_sql_parameters_adls2_file_name')]"
 					},
 					"test-trigger_properties_typeProperties_scope": {
 						"value": "[parameters('test-trigger_properties_typeProperties_scope')]"
