@@ -1,0 +1,52 @@
+{
+	"name": "pipeline3",
+	"properties": {
+		"activities": [
+			{
+				"name": "Set var_container_name",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "var_container_name",
+					"value": {
+						"value": "@split(pipeline().parameters.folderPath,'/')[0]\r\n\r\n",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "Set var_directory_name",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "var_directory_name",
+					"value": {
+						"value": "@split(pipeline().parameters.folderPath,'/')[1]\n\n",
+						"type": "Expression"
+					}
+				}
+			}
+		],
+		"parameters": {
+			"folderPath": {
+				"type": "string",
+				"defaultValue": "test-trigger/test-files"
+			},
+			"filName": {
+				"type": "string",
+				"defaultValue": "airtravel.csv"
+			}
+		},
+		"variables": {
+			"var_container_name": {
+				"type": "String"
+			},
+			"var_directory_name": {
+				"type": "String"
+			}
+		},
+		"annotations": []
+	}
+}
