@@ -30,6 +30,7 @@
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
+				"description": "Dynamic dataset for adls2 csv files",
 				"linkedServiceName": {
 					"referenceName": "ls_adls2",
 					"type": "LinkedServiceReference",
@@ -138,10 +139,11 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/ds_sql_login')]",
+			"name": "[concat(parameters('factoryName'), '/ds_az_ql_login')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
+				"description": "Dynamic dataset for azure SQL using SQL login option",
 				"linkedServiceName": {
 					"referenceName": "ls_az_sql_login",
 					"type": "LinkedServiceReference",
@@ -191,7 +193,9 @@
 						"type": "string"
 					}
 				},
-				"annotations": [],
+				"annotations": [
+					"ds_az_sql_login"
+				],
 				"type": "AzureSqlTable",
 				"schema": [],
 				"typeProperties": {
@@ -214,7 +218,7 @@
 			"type": "Microsoft.DataFactory/factories/linkedServices",
 			"apiVersion": "2018-06-01",
 			"properties": {
-				"description": "Data Lake linked service",
+				"description": "Parameterised Data Lake linked service",
 				"parameters": {
 					"adls2_name": {
 						"type": "string"
@@ -235,7 +239,7 @@
 			"type": "Microsoft.DataFactory/factories/linkedServices",
 			"apiVersion": "2018-06-01",
 			"properties": {
-				"description": "Azure SQL server linked service - login option",
+				"description": "Parameterised Azure SQL server linked service using SQL login option",
 				"parameters": {
 					"az_sql_server_name": {
 						"type": "string"
