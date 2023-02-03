@@ -12,7 +12,7 @@
 		],
 		"type": "AzureBlobFS",
 		"typeProperties": {
-			"url": "@{concat('https://', linkedService().adls2_name,'.dfs.core.windows.net/')\n\n}"
+			"url": "@{linkedService().adls2_endpoint}"
 		}
 	}
 }
