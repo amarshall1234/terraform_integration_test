@@ -14,7 +14,7 @@
 		},
 		"ls_adls2_properties_typeProperties_url": {
 			"type": "string",
-			"defaultValue": "@{linkedService().adls2_endpoint}"
+			"defaultValue": "@{concat('https://', linkedService().adls2_name,'.dfs.core.windows.net/')\n\n}"
 		},
 		"ls_kv_properties_typeProperties_baseUrl": {
 			"type": "string",
@@ -34,14 +34,14 @@
 					"referenceName": "ls_adls2",
 					"type": "LinkedServiceReference",
 					"parameters": {
-						"adls2_endpoint": {
-							"value": "@dataset().adls2_endpoint",
+						"adls2_name": {
+							"value": "@dataset().adls2_name",
 							"type": "Expression"
 						}
 					}
 				},
 				"parameters": {
-					"adls2_endpoint": {
+					"adls2_name": {
 						"type": "string"
 					},
 					"adls2_container_name": {
@@ -65,10 +65,6 @@
 						"type": "string",
 						"defaultValue": ","
 					},
-					"row_delimiter": {
-						"type": "string",
-						"defaultValue": "\\r\\n"
-					},
 					"encoding": {
 						"type": "string",
 						"defaultValue": "UTF-8"
@@ -86,7 +82,9 @@
 						"defaultValue": true
 					}
 				},
-				"annotations": [],
+				"annotations": [
+					"ds_adsl2_csv"
+				],
 				"type": "DelimitedText",
 				"typeProperties": {
 					"location": {
@@ -104,8 +102,8 @@
 							"type": "Expression"
 						}
 					},
-					"rowDelimiter": {
-						"value": "@dataset().compression_type",
+					"columnDelimiter": {
+						"value": "@dataset().column_delimiter",
 						"type": "Expression"
 					},
 					"compressionCodec": {
@@ -218,7 +216,7 @@
 			"properties": {
 				"description": "Data Lake linked service",
 				"parameters": {
-					"adls2_endpoint": {
+					"adls2_name": {
 						"type": "string"
 					}
 				},

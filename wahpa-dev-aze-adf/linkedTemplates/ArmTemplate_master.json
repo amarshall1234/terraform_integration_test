@@ -14,7 +14,7 @@
 		},
 		"ls_adls2_properties_typeProperties_url": {
 			"type": "string",
-			"defaultValue": "@{linkedService().adls2_endpoint}"
+			"defaultValue": "@{concat('https://', linkedService().adls2_name,'.dfs.core.windows.net/')\n\n}"
 		},
 		"ls_kv_properties_typeProperties_baseUrl": {
 			"type": "string",
