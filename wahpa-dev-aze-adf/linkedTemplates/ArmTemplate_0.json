@@ -44,14 +44,27 @@
 			"properties": {
 				"activities": [
 					{
-						"name": "Set variable1",
+						"name": "Set var_folderPath",
 						"type": "SetVariable",
 						"dependsOn": [],
 						"userProperties": [],
 						"typeProperties": {
-							"variableName": "file_name",
+							"variableName": "var_folderPath",
 							"value": {
-								"value": "dddd",
+								"value": "@pipeline().parameters.folderPath",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "Set var_fileName",
+						"type": "SetVariable",
+						"dependsOn": [],
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "var_fileName",
+							"value": {
+								"value": "@pipeline().parameters.fileName",
 								"type": "Expression"
 							}
 						}
@@ -70,7 +83,10 @@
 					}
 				},
 				"variables": {
-					"file_name": {
+					"var_folderPath": {
+						"type": "String"
+					},
+					"var_fileName": {
 						"type": "String"
 					}
 				},
