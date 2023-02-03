@@ -6,14 +6,14 @@
 			"referenceName": "ls_adls2",
 			"type": "LinkedServiceReference",
 			"parameters": {
-				"adls2_name": {
-					"value": "@dataset().adls2_name",
+				"adls2_endpoint": {
+					"value": "@dataset().adls2_endpoint",
 					"type": "Expression"
 				}
 			}
 		},
 		"parameters": {
-			"adls2_name": {
+			"adls2_endpoint": {
 				"type": "string"
 			},
 			"adls2_container_name": {
