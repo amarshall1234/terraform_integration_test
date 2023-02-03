@@ -1,6 +1,7 @@
 {
 	"name": "test-trigger",
 	"properties": {
+		"description": "fgfg",
 		"annotations": [],
 		"runtimeState": "Started",
 		"pipelines": [
