@@ -162,41 +162,52 @@
 		],
 		"parameters": {
 			"az_sql_server_name": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "wahpa-dev-aze-sql.database.windows.net"
 			},
 			"az_sql_database_name": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "SampleDB"
 			},
 			"az_sql_login_user_name": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "User51126629"
 			},
 			"az_sql_login_password_key_vault_URI": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "https://wahpa-dev-aze-kv.vault.azure.net/"
 			},
 			"az_sql_login_password_kv_secret_name": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "wahpa-dev-aze-sql-admin-password"
 			},
 			"az_sql_schema_name": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "dbo"
 			},
 			"az_sql_table_name": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "airtravel"
 			},
 			"az_sql_write_batch_timeout": {
 				"type": "string",
 				"defaultValue": "00:30:00"
 			},
 			"adls2_endpoint": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "https://wahpadevazestraw.dfs.core.windows.net/"
 			},
 			"adls2_container_name": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "test-container"
 			},
 			"adls2_directory_name": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "test_folder"
 			},
 			"adls2_file_name": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "airtravel.csv"
 			},
 			"file_compression_type": {
 				"type": "string",
