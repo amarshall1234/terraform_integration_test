@@ -92,7 +92,7 @@
 					"location": {
 						"type": "AzureBlobFSLocation",
 						"fileName": {
-							"value": "@dataset().adls2_container_name",
+							"value": "@dataset().adls2_file_name",
 							"type": "Expression"
 						},
 						"folderPath": {
