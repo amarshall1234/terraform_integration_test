@@ -5,7 +5,14 @@
 			{
 				"name": "Copy delimited text from adls2 to sql",
 				"type": "Copy",
-				"dependsOn": [],
+				"dependsOn": [
+					{
+						"activity": "Set az_sql_pre_copy_script",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
 				"policy": {
 					"timeout": "0.00:30:00",
 					"retry": 2,
@@ -53,6 +60,10 @@
 						"type": "AzureSqlSink",
 						"writeBatchTimeout": {
 							"value": "@{pipeline().parameters.az_sql_write_batch_timeout}",
+							"type": "Expression"
+						},
+						"preCopyScript": {
+							"value": "@{variables('az_sql_pre_copy_script')}",
 							"type": "Expression"
 						},
 						"writeBehavior": "insert",
@@ -158,6 +169,19 @@
 						}
 					}
 				]
+			},
+			{
+				"name": "Set az_sql_pre_copy_script",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "az_sql_pre_copy_script",
+					"value": {
+						"value": "@if(\nequals(pipeline().parameters.az_sql_table_drop_pre_copy, true),\nconcat('DROP TABLE IF EXISTS [', pipeline().parameters.az_sql_schema_name,'].[', pipeline().parameters.az_sql_table_name, ']'),\n'' \n)",
+						"type": "Expression"
+					}
+				}
 			}
 		],
 		"parameters": {
@@ -236,6 +260,15 @@
 			"file_first_row_as_header": {
 				"type": "bool",
 				"defaultValue": true
+			},
+			"az_sql_table_drop_pre_copy": {
+				"type": "bool",
+				"defaultValue": true
+			}
+		},
+		"variables": {
+			"az_sql_pre_copy_script": {
+				"type": "String"
 			}
 		},
 		"annotations": []
