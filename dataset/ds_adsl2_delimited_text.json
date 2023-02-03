@@ -1,7 +1,7 @@
 {
-	"name": "ds_adsl2_csv",
+	"name": "ds_adsl2_delimited_text",
 	"properties": {
-		"description": "Dynamic dataset for adls2 csv files",
+		"description": "Dynamic dataset for adls2 delimited text files",
 		"linkedServiceName": {
 			"referenceName": "ls_adls2",
 			"type": "LinkedServiceReference",
@@ -55,7 +55,7 @@
 			}
 		},
 		"annotations": [
-			"ds_adsl2_csv"
+			"ds_adsl2_delimited_text"
 		],
 		"type": "DelimitedText",
 		"typeProperties": {
