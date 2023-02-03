@@ -1,0 +1,47 @@
+{
+	"name": "ls_az_sql_login",
+	"properties": {
+		"description": "Azure SQL server linked service - login option",
+		"parameters": {
+			"az_sql_server_name": {
+				"type": "string"
+			},
+			"az_sql_database_name": {
+				"type": "string"
+			},
+			"az_sql_login_user_name": {
+				"type": "string"
+			},
+			"az_sql_login_password_key_vault_URI": {
+				"type": "string"
+			},
+			"az_sql_login_password_kv_secret_name": {
+				"type": "string"
+			}
+		},
+		"annotations": [
+			"ls_az_sql_login"
+		],
+		"type": "AzureSqlDatabase",
+		"typeProperties": {
+			"connectionString": "Integrated Security=False;Encrypt=True;Connection Timeout=30;Data Source=@{linkedService().az_sql_server_name};Initial Catalog=@{linkedService().az_sql_database_name};User ID=@{linkedService().az_sql_login_user_name}",
+			"password": {
+				"type": "AzureKeyVaultSecret",
+				"store": {
+					"referenceName": "ls_kv",
+					"type": "LinkedServiceReference",
+					"parameters": {
+						"key_vault_URI": {
+							"value": "@linkedService().az_sql_login_password_key_vault_URI",
+							"type": "Expression"
+						}
+					}
+				},
+				"secretName": {
+					"value": "@linkedService().az_sql_login_password_kv_secret_name",
+					"type": "Expression"
+				}
+			}
+		}
+	}
+}
