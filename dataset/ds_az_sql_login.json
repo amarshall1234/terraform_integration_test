@@ -1,5 +1,5 @@
 {
-	"name": "ds_az_ql_login",
+	"name": "ds_az_sql_login",
 	"properties": {
 		"description": "Dynamic dataset for azure SQL using SQL login option",
 		"linkedServiceName": {
