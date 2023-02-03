@@ -21,7 +21,7 @@
 			"compression_type": {
 				"type": "string"
 			},
-			"compressionlevel": {
+			"compression_level": {
 				"type": "string"
 			}
 		},
