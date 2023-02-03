@@ -1,0 +1,30 @@
+{
+	"name": "ds_sql_login",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_az_sql_login",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"sql_schema_name": {
+				"type": "string"
+			},
+			"sql_table_name": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": {
+				"value": "@dataset().sql_schema_name",
+				"type": "Expression"
+			},
+			"table": {
+				"value": "@dataset().sql_table_name",
+				"type": "Expression"
+			}
+		}
+	}
+}
