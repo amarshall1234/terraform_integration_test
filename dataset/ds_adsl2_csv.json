@@ -18,25 +18,39 @@
 			"adls2_file_name": {
 				"type": "string"
 			},
+			"compression_type": {
+				"type": "string",
+				"defaultValue": "None"
+			},
+			"compression_level": {
+				"type": "string",
+				"defaultValue": "Optimal"
+			},
 			"column_delimiter": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": ","
 			},
 			"row_delimiter": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "/r,/n, or /r/n"
 			},
 			"encoding": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "\"UTF-8"
 			},
 			"escape_character": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "\\\\"
 			},
 			"quote_character": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "\\"
 			},
 			"first_row_as_header": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "true"
 			},
-			"null_vale": {
+			"null_value": {
 				"type": "string"
 			}
 		},
@@ -59,6 +73,9 @@
 				}
 			},
 			"columnDelimiter": ",",
+			"compressionCodec": "snappy",
+			"compressionLevel": "Optimal",
+			"encodingName": "UTF-7",
 			"escapeChar": "\\",
 			"firstRowAsHeader": false,
 			"quoteChar": "\""
