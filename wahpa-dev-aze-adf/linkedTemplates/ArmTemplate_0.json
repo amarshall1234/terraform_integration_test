@@ -19,12 +19,49 @@
 		"ls_kv_properties_typeProperties_baseUrl": {
 			"type": "string",
 			"defaultValue": "@{linkedService().key_vault_URI}"
+		},
+		"test-trigger_properties_typeProperties_scope": {
+			"type": "string",
+			"defaultValue": "/subscriptions/687fe1ae-a520-4f86-b921-a80664c40f9b/resourceGroups/wahpa-dev-aze-rg-services/providers/Microsoft.Storage/storageAccounts/wahpadevazestraw"
 		}
 	},
 	"variables": {
 		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
 	},
 	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/pipeline2')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Set variable1",
+						"type": "SetVariable",
+						"dependsOn": [],
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "file_name",
+							"value": {
+								"value": "dddd",
+								"type": "Expression"
+							}
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"variables": {
+					"file_name": {
+						"type": "String"
+					}
+				},
+				"annotations": []
+			},
+			"dependsOn": []
+		},
 		{
 			"name": "[concat(parameters('factoryName'), '/ls_adls2')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
@@ -233,6 +270,166 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/test-trigger')]",
+			"type": "Microsoft.DataFactory/factories/triggers",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"runtimeState": "Stopped",
+				"pipelines": [
+					{
+						"pipelineReference": {
+							"referenceName": "pipeline2",
+							"type": "PipelineReference"
+						},
+						"parameters": {}
+					}
+				],
+				"type": "BlobEventsTrigger",
+				"typeProperties": {
+					"blobPathBeginsWith": "/test-trigger/blobs/test-files/",
+					"blobPathEndsWith": ".csv",
+					"ignoreEmptyBlobs": true,
+					"scope": "[parameters('test-trigger_properties_typeProperties_scope')]",
+					"events": [
+						"Microsoft.Storage.BlobCreated"
+					]
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/pipeline2')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/pipeline1')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Get Metadata1",
+						"type": "GetMetadata",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataset": {
+								"referenceName": "ds_adsl2_delimited_text",
+								"type": "DatasetReference",
+								"parameters": {
+									"adls2_endpoint": {
+										"value": "@pipeline().parameters.adls2_endpoint",
+										"type": "Expression"
+									},
+									"adls2_container_name": {
+										"value": "@pipeline().parameters.adls2_container_name",
+										"type": "Expression"
+									},
+									"adls2_directory_name": {
+										"value": "@pipeline().parameters.adls2_directory_name",
+										"type": "Expression"
+									},
+									"adls2_file_name": {
+										"value": "@pipeline().parameters.adls2_file_name",
+										"type": "Expression"
+									},
+									"compression_type": "None",
+									"compression_level": "Optimal",
+									"column_delimiter": ",",
+									"encoding": "UTF-8",
+									"escape_character": "\\",
+									"quote_character": "\"",
+									"first_row_as_header": true
+								}
+							},
+							"fieldList": [
+								"childItems"
+							],
+							"storeSettings": {
+								"type": "AzureBlobFSReadSettings",
+								"recursive": true,
+								"enablePartitionDiscovery": false
+							},
+							"formatSettings": {
+								"type": "DelimitedTextReadSettings"
+							}
+						}
+					},
+					{
+						"name": "ForEach1",
+						"type": "ForEach",
+						"dependsOn": [
+							{
+								"activity": "Get Metadata1",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@activity('Get Metadata1').output.childItems",
+								"type": "Expression"
+							},
+							"activities": [
+								{
+									"name": "Set variable1",
+									"type": "SetVariable",
+									"dependsOn": [],
+									"userProperties": [],
+									"typeProperties": {
+										"variableName": "aaa",
+										"value": {
+											"value": "@item().name",
+											"type": "Expression"
+										}
+									}
+								}
+							]
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"parameters": {
+					"adls2_endpoint": {
+						"type": "string",
+						"defaultValue": "https://wahpadevazestraw.dfs.core.windows.net/"
+					},
+					"adls2_container_name": {
+						"type": "string",
+						"defaultValue": "test-container"
+					},
+					"adls2_directory_name": {
+						"type": "string",
+						"defaultValue": "test_folder"
+					},
+					"adls2_file_name": {
+						"type": "string",
+						"defaultValue": "*"
+					}
+				},
+				"variables": {
+					"aaa": {
+						"type": "String"
+					}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/ds_adsl2_delimited_text')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/ds_az_sql_login')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -316,7 +513,14 @@
 					{
 						"name": "Copy delimited text from adls2 to sql",
 						"type": "Copy",
-						"dependsOn": [],
+						"dependsOn": [
+							{
+								"activity": "Set az_sql_pre_copy_script",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
 						"policy": {
 							"timeout": "0.00:30:00",
 							"retry": 2,
@@ -364,6 +568,10 @@
 								"type": "AzureSqlSink",
 								"writeBatchTimeout": {
 									"value": "@{pipeline().parameters.az_sql_write_batch_timeout}",
+									"type": "Expression"
+								},
+								"preCopyScript": {
+									"value": "@{variables('az_sql_pre_copy_script')}",
 									"type": "Expression"
 								},
 								"writeBehavior": "insert",
@@ -469,6 +677,19 @@
 								}
 							}
 						]
+					},
+					{
+						"name": "Set az_sql_pre_copy_script",
+						"type": "SetVariable",
+						"dependsOn": [],
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "az_sql_pre_copy_script",
+							"value": {
+								"value": "@if(\nequals(pipeline().parameters.az_sql_table_drop_pre_copy, true),\nconcat('DROP TABLE IF EXISTS [', pipeline().parameters.az_sql_schema_name,'].[', pipeline().parameters.az_sql_table_name, ']'),\n'' \n)",
+								"type": "Expression"
+							}
+						}
 					}
 				],
 				"policy": {
@@ -477,41 +698,52 @@
 				},
 				"parameters": {
 					"az_sql_server_name": {
-						"type": "string"
+						"type": "string",
+						"defaultValue": "wahpa-dev-aze-sql.database.windows.net"
 					},
 					"az_sql_database_name": {
-						"type": "string"
+						"type": "string",
+						"defaultValue": "SampleDB"
 					},
 					"az_sql_login_user_name": {
-						"type": "string"
+						"type": "string",
+						"defaultValue": "User51126629"
 					},
 					"az_sql_login_password_key_vault_URI": {
-						"type": "string"
+						"type": "string",
+						"defaultValue": "https://wahpa-dev-aze-kv.vault.azure.net/"
 					},
 					"az_sql_login_password_kv_secret_name": {
-						"type": "string"
+						"type": "string",
+						"defaultValue": "wahpa-dev-aze-sql-admin-password"
 					},
 					"az_sql_schema_name": {
-						"type": "string"
+						"type": "string",
+						"defaultValue": "dbo"
 					},
 					"az_sql_table_name": {
-						"type": "string"
+						"type": "string",
+						"defaultValue": "airtravel"
 					},
 					"az_sql_write_batch_timeout": {
 						"type": "string",
 						"defaultValue": "00:30:00"
 					},
 					"adls2_endpoint": {
-						"type": "string"
+						"type": "string",
+						"defaultValue": "https://wahpadevazestraw.dfs.core.windows.net/"
 					},
 					"adls2_container_name": {
-						"type": "string"
+						"type": "string",
+						"defaultValue": "test-container"
 					},
 					"adls2_directory_name": {
-						"type": "string"
+						"type": "string",
+						"defaultValue": "test_folder"
 					},
 					"adls2_file_name": {
-						"type": "string"
+						"type": "string",
+						"defaultValue": "airtravel.csv"
 					},
 					"file_compression_type": {
 						"type": "string",
@@ -540,6 +772,15 @@
 					"file_first_row_as_header": {
 						"type": "bool",
 						"defaultValue": true
+					},
+					"az_sql_table_drop_pre_copy": {
+						"type": "bool",
+						"defaultValue": true
+					}
+				},
+				"variables": {
+					"az_sql_pre_copy_script": {
+						"type": "String"
 					}
 				},
 				"annotations": []

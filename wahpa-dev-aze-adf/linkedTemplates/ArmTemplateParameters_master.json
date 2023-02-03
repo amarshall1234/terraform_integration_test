@@ -14,6 +14,9 @@
 		"ls_kv_properties_typeProperties_baseUrl": {
 			"value": "@{linkedService().key_vault_URI}"
 		},
+		"test-trigger_properties_typeProperties_scope": {
+			"value": "/subscriptions/687fe1ae-a520-4f86-b921-a80664c40f9b/resourceGroups/wahpa-dev-aze-rg-services/providers/Microsoft.Storage/storageAccounts/wahpadevazestraw"
+		},
 		"containerUri": {
 			"value": ""
 		},

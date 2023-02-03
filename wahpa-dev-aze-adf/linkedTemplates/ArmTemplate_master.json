@@ -20,6 +20,10 @@
 			"type": "string",
 			"defaultValue": "@{linkedService().key_vault_URI}"
 		},
+		"test-trigger_properties_typeProperties_scope": {
+			"type": "string",
+			"defaultValue": "/subscriptions/687fe1ae-a520-4f86-b921-a80664c40f9b/resourceGroups/wahpa-dev-aze-rg-services/providers/Microsoft.Storage/storageAccounts/wahpadevazestraw"
+		},
 		"containerUri": {
 			"type": "string",
 			"metadata": "URI to storage account containing linked ARM templates"
@@ -55,6 +59,9 @@
 					},
 					"ls_kv_properties_typeProperties_baseUrl": {
 						"value": "[parameters('ls_kv_properties_typeProperties_baseUrl')]"
+					},
+					"test-trigger_properties_typeProperties_scope": {
+						"value": "[parameters('test-trigger_properties_typeProperties_scope')]"
 					}
 				}
 			},
