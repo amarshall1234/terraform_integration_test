@@ -16,6 +16,14 @@
 				}
 			}
 		],
+		"parameters": {
+			"folderPath": {
+				"type": "string"
+			},
+			"fileName": {
+				"type": "string"
+			}
+		},
 		"variables": {
 			"file_name": {
 				"type": "String"
