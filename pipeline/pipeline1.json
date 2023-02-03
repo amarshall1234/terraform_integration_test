@@ -1,0 +1,76 @@
+{
+	"name": "pipeline1",
+	"properties": {
+		"activities": [
+			{
+				"name": "Get Metadata1",
+				"type": "GetMetadata",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataset": {
+						"referenceName": "ds_adsl2_delimited_text",
+						"type": "DatasetReference",
+						"parameters": {
+							"adls2_endpoint": {
+								"value": "@pipeline().parameters.adls2_endpoint",
+								"type": "Expression"
+							},
+							"adls2_container_name": {
+								"value": "@pipeline().parameters.adls2_container_name",
+								"type": "Expression"
+							},
+							"adls2_directory_name": {
+								"value": "@pipeline().parameters.adls2_directory_name",
+								"type": "Expression"
+							},
+							"adls2_file_name": {
+								"value": "@pipeline().parameters.adls2_file_name",
+								"type": "Expression"
+							},
+							"compression_type": "None",
+							"compression_level": "Optimal",
+							"column_delimiter": ",",
+							"encoding": "UTF-8",
+							"escape_character": "\\",
+							"quote_character": "\"",
+							"first_row_as_header": true
+						}
+					},
+					"fieldList": [
+						"childItems"
+					],
+					"storeSettings": {
+						"type": "AzureBlobFSReadSettings",
+						"enablePartitionDiscovery": false
+					},
+					"formatSettings": {
+						"type": "DelimitedTextReadSettings"
+					}
+				}
+			}
+		],
+		"parameters": {
+			"adls2_endpoint": {
+				"type": "string"
+			},
+			"adls2_container_name": {
+				"type": "string"
+			},
+			"adls2_directory_name": {
+				"type": "string"
+			},
+			"adls2_file_name": {
+				"type": "string"
+			}
+		},
+		"annotations": []
+	}
+}
