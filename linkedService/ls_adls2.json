@@ -3,7 +3,7 @@
 	"properties": {
 		"description": "Data Lake linked service",
 		"parameters": {
-			"adls2_endpoint": {
+			"adls2_name": {
 				"type": "string"
 			}
 		},
@@ -12,7 +12,7 @@
 		],
 		"type": "AzureBlobFS",
 		"typeProperties": {
-			"url": "@{linkedService().adls2_endpoint}"
+			"url": "@{concat('https://', linkedService().adls2_name,'.dfs.core.windows.net/')\n\n}"
 		}
 	}
 }
