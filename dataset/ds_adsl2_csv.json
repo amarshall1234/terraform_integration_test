@@ -55,10 +55,6 @@
 			"first_row_as_header": {
 				"type": "bool",
 				"defaultValue": true
-			},
-			"null_value": {
-				"type": "string",
-				"defaultValue": "''"
 			}
 		},
 		"annotations": [],
@@ -105,10 +101,6 @@
 			},
 			"firstRowAsHeader": {
 				"value": "@dataset().first_row_as_header",
-				"type": "Expression"
-			},
-			"nullValue": {
-				"value": "@dataset().null_value",
 				"type": "Expression"
 			},
 			"quoteChar": {
