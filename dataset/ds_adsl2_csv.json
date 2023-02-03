@@ -57,7 +57,8 @@
 				"defaultValue": true
 			},
 			"null_value": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "''"
 			}
 		},
 		"annotations": [],
