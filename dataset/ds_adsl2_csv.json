@@ -47,8 +47,8 @@
 				"defaultValue": "\\"
 			},
 			"first_row_as_header": {
-				"type": "string",
-				"defaultValue": "true"
+				"type": "bool",
+				"defaultValue": true
 			},
 			"null_value": {
 				"type": "string"
@@ -72,13 +72,42 @@
 					"type": "Expression"
 				}
 			},
-			"columnDelimiter": ",",
-			"compressionCodec": "snappy",
-			"compressionLevel": "Optimal",
-			"encodingName": "UTF-7",
-			"escapeChar": "\\",
-			"firstRowAsHeader": false,
-			"quoteChar": "\""
+			"columnDelimiter": {
+				"value": "@dataset().column_delimiter",
+				"type": "Expression"
+			},
+			"rowDelimiter": {
+				"value": "@dataset().row_delimiter",
+				"type": "Expression"
+			},
+			"compressionCodec": {
+				"value": "@dataset().compression_type",
+				"type": "Expression"
+			},
+			"compressionLevel": {
+				"value": "@dataset().compression_level",
+				"type": "Expression"
+			},
+			"encodingName": {
+				"value": "@dataset().encoding",
+				"type": "Expression"
+			},
+			"escapeChar": {
+				"value": "@dataset().escape_character",
+				"type": "Expression"
+			},
+			"firstRowAsHeader": {
+				"value": "@dataset().first_row_as_header",
+				"type": "Expression"
+			},
+			"nullValue": {
+				"value": "@dataset().null_value",
+				"type": "Expression"
+			},
+			"quoteChar": {
+				"value": "@dataset().quote_character",
+				"type": "Expression"
+			}
 		},
 		"schema": []
 	}
