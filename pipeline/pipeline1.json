@@ -59,16 +59,20 @@
 		],
 		"parameters": {
 			"adls2_endpoint": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "https://wahpadevazestraw.dfs.core.windows.net/"
 			},
 			"adls2_container_name": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "test-container"
 			},
 			"adls2_directory_name": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "test_folder"
 			},
 			"adls2_file_name": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "*"
 			}
 		},
 		"annotations": []
