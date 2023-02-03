@@ -3,7 +3,7 @@
 	"properties": {
 		"description": "Parameterised Data Lake linked service",
 		"parameters": {
-			"adls2_name": {
+			"adls2_endpoint": {
 				"type": "string"
 			}
 		},
