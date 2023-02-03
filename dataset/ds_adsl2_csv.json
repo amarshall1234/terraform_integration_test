@@ -14,16 +14,38 @@
 		"parameters": {
 			"adls2_endpoint": {
 				"type": "string"
+			},
+			"adls2_container_name": {
+				"type": "string"
+			},
+			"adls2_directory_name": {
+				"type": "string"
+			},
+			"adls2_file_name": {
+				"type": "string"
 			}
 		},
 		"annotations": [],
 		"type": "DelimitedText",
 		"typeProperties": {
 			"location": {
-				"type": "AzureBlobFSLocation"
+				"type": "AzureBlobFSLocation",
+				"fileName": {
+					"value": "@dataset().adls2_container_name",
+					"type": "Expression"
+				},
+				"folderPath": {
+					"value": "@dataset().adls2_directory_name",
+					"type": "Expression"
+				},
+				"fileSystem": {
+					"value": "@dataset().adls2_container_name",
+					"type": "Expression"
+				}
 			},
 			"columnDelimiter": ",",
 			"escapeChar": "\\",
+			"firstRowAsHeader": false,
 			"quoteChar": "\""
 		},
 		"schema": []
