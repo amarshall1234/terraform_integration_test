@@ -44,10 +44,10 @@
 			"az_sql_login_password_kv_secret_name": {
 				"type": "string"
 			},
-			"sql_schema_name": {
+			"az_sql_schema_name": {
 				"type": "string"
 			},
-			"sql_table_name": {
+			"az_sql_table_name": {
 				"type": "string"
 			}
 		},
@@ -58,11 +58,11 @@
 		"schema": [],
 		"typeProperties": {
 			"schema": {
-				"value": "@dataset().sql_schema_name",
+				"value": "@dataset().az_sql_schema_name",
 				"type": "Expression"
 			},
 			"table": {
-				"value": "@dataset().sql_table_name",
+				"value": "@dataset().az_sql_table_name",
 				"type": "Expression"
 			}
 		}

@@ -1,6 +1,124 @@
 {
-	"name": "adls2_delimited_to_sql",
+	"name": "adls2_delimited_text_to_sql",
 	"properties": {
+		"activities": [
+			{
+				"name": "Copy delimited text from adls2 to sql",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.00:30:00",
+					"retry": 2,
+					"retryIntervalInSeconds": 60,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "DelimitedTextSource",
+						"storeSettings": {
+							"type": "AzureBlobFSReadSettings",
+							"recursive": true,
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "DelimitedTextReadSettings"
+						}
+					},
+					"sink": {
+						"type": "AzureSqlSink",
+						"writeBehavior": "insert",
+						"sqlWriterUseTableLock": false,
+						"tableOption": "autoCreate",
+						"disableMetricsCollection": false
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "ds_adsl2_delimited_text",
+						"type": "DatasetReference",
+						"parameters": {
+							"compression_type": "None",
+							"compression_level": "Optimal",
+							"column_delimiter": ",",
+							"encoding": "UTF-8",
+							"escape_character": "\\",
+							"quote_character": "\"",
+							"first_row_as_header": true
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "ds_az_sql_login",
+						"type": "DatasetReference",
+						"parameters": {
+							"az_sql_server_name": {
+								"value": "@pipeline().parameters.az_sql_server_name",
+								"type": "Expression"
+							},
+							"az_sql_database_name": {
+								"value": "@pipeline().parameters.az_sql_database_name",
+								"type": "Expression"
+							},
+							"az_sql_login_user_name": {
+								"value": "@pipeline().parameters.az_sql_login_user_name",
+								"type": "Expression"
+							},
+							"az_sql_login_password_key_vault_URI": {
+								"value": "@pipeline().parameters.az_sql_login_password_key_vault_URI",
+								"type": "Expression"
+							},
+							"az_sql_login_password_kv_secret_name": {
+								"value": "@pipeline().parameters.az_sql_login_password_kv_secret_name",
+								"type": "Expression"
+							},
+							"az_sql_schema_name": {
+								"value": "@pipeline().parameters.az_sql_schema_name",
+								"type": "Expression"
+							},
+							"az_sql_table_name": {
+								"value": "@pipeline().parameters.az_sql_table_name",
+								"type": "Expression"
+							}
+						}
+					}
+				]
+			}
+		],
+		"parameters": {
+			"az_sql_server_name": {
+				"type": "string"
+			},
+			"az_sql_database_name": {
+				"type": "string"
+			},
+			"az_sql_login_user_name": {
+				"type": "string"
+			},
+			"az_sql_login_password_key_vault_URI": {
+				"type": "string"
+			},
+			"az_sql_login_password_kv_secret_name": {
+				"type": "string"
+			},
+			"az_sql_schema_name": {
+				"type": "string"
+			},
+			"az_sql_table_name": {
+				"type": "string"
+			}
+		},
 		"annotations": []
 	}
 }
