@@ -20,14 +20,6 @@
 			"type": "string",
 			"defaultValue": "@{linkedService().key_vault_URI}"
 		},
-		"test-trigger_properties_pipeline2_parameters_folderPath": {
-			"type": "string",
-			"defaultValue": "@triggerBody().folderPath"
-		},
-		"test-trigger_properties_pipeline2_parameters_fileName": {
-			"type": "string",
-			"defaultValue": "@triggerBody().fileName"
-		},
 		"test-trigger_properties_adls2_delimited_text_to_sql_parameters_az_sql_server_name": {
 			"type": "string",
 			"defaultValue": "wahpa-dev-aze-sql.database.windows.net"
@@ -111,12 +103,6 @@
 					},
 					"ls_kv_properties_typeProperties_baseUrl": {
 						"value": "[parameters('ls_kv_properties_typeProperties_baseUrl')]"
-					},
-					"test-trigger_properties_pipeline2_parameters_folderPath": {
-						"value": "[parameters('test-trigger_properties_pipeline2_parameters_folderPath')]"
-					},
-					"test-trigger_properties_pipeline2_parameters_fileName": {
-						"value": "[parameters('test-trigger_properties_pipeline2_parameters_fileName')]"
 					},
 					"test-trigger_properties_adls2_delimited_text_to_sql_parameters_az_sql_server_name": {
 						"value": "[parameters('test-trigger_properties_adls2_delimited_text_to_sql_parameters_az_sql_server_name')]"
