@@ -3,7 +3,13 @@
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "ls_adls2",
-			"type": "LinkedServiceReference"
+			"type": "LinkedServiceReference",
+			"parameters": {
+				"adls2_endpoint": {
+					"value": "@dataset().adls2_endpoint",
+					"type": "Expression"
+				}
+			}
 		},
 		"parameters": {
 			"adls2_endpoint": {
