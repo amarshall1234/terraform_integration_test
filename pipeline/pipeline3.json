@@ -10,7 +10,7 @@
 				"typeProperties": {
 					"variableName": "var_container_name",
 					"value": {
-						"value": "@split(pipeline().parameters.folderPath,'/')[0]\r\n\r\n",
+						"value": "@split(pipeline().parameters.folderPath,'/')[0]\n\n",
 						"type": "Expression"
 					}
 				}
@@ -27,6 +27,19 @@
 						"type": "Expression"
 					}
 				}
+			},
+			{
+				"name": "Set var_table_name",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "var_table_name",
+					"value": {
+						"value": "@split(pipeline().parameters.fileName,'/')[0]\n\n",
+						"type": "Expression"
+					}
+				}
 			}
 		],
 		"parameters": {
@@ -34,7 +47,7 @@
 				"type": "string",
 				"defaultValue": "test-trigger/test-files"
 			},
-			"filName": {
+			"fileName": {
 				"type": "string",
 				"defaultValue": "airtravel.csv"
 			}
@@ -44,6 +57,9 @@
 				"type": "String"
 			},
 			"var_directory_name": {
+				"type": "String"
+			},
+			"var_table_name": {
 				"type": "String"
 			}
 		},
