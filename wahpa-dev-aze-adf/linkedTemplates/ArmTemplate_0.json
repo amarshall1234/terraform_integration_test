@@ -274,7 +274,6 @@
 			"type": "Microsoft.DataFactory/factories/triggers",
 			"apiVersion": "2018-06-01",
 			"properties": {
-				"description": "fgfg",
 				"annotations": [],
 				"runtimeState": "Stopped",
 				"pipelines": [
