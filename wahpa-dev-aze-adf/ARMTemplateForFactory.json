@@ -46,7 +46,7 @@
 		},
 		"test-trigger_properties_adls2_delimited_text_to_sql_parameters_az_sql_table_name": {
 			"type": "string",
-			"defaultValue": "@split(triggerbody().fileName, '.')[0]"
+			"defaultValue": "@concat(\nlast(split(toLower(triggerbody().folderPath), '/'))\n,'_'\n,split(toLower(triggerbody().fileName), '.')[0]\n)"
 		},
 		"test-trigger_properties_adls2_delimited_text_to_sql_parameters_adls2_endpoint": {
 			"type": "string",
