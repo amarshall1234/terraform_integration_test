@@ -1,0 +1,39 @@
+{
+	"name": "tr_event_based_extract_cwa",
+	"properties": {
+		"annotations": [
+			"tr_event_based_extract_cwa"
+		],
+		"runtimeState": "Started",
+		"pipelines": [
+			{
+				"pipelineReference": {
+					"referenceName": "adls_excel_to_sql_multisheet_master",
+					"type": "PipelineReference"
+				},
+				"parameters": {
+					"az_sql_server_name": "wahpa-dev-aze-sql.database.windows.net",
+					"az_sql_database_name": "SampleDB",
+					"az_sql_login_user_name": "User51126629",
+					"az_sql_login_password_kv_URI": "https://wahpa-dev-aze-kv.vault.azure.net/",
+					"az_sql_login_password_kv_secret_name": "wahpa-dev-aze-sql-admin-password",
+					"az_sql_schema_name": "staging",
+					"adls2_endpoint": "https://wahpadevazestraw.dfs.core.windows.net/",
+					"adls2_container_name": "@split(triggerbody().folderPath, '/')[0]",
+					"adls2_directory_name": "@split(triggerbody().folderPath, '/')[1]",
+					"adls2_file_name": "@triggerbody().fileName"
+				}
+			}
+		],
+		"type": "BlobEventsTrigger",
+		"typeProperties": {
+			"blobPathBeginsWith": "/landing/blobs/Data & Analytics/Commissioned Services Analytics/7. Datasets & PowerBI/1. Datasets/Raw data/1. PMHC-MDS/",
+			"blobPathEndsWith": "extractCWA.xlsx",
+			"ignoreEmptyBlobs": true,
+			"scope": "/subscriptions/687fe1ae-a520-4f86-b921-a80664c40f9b/resourceGroups/wahpa-dev-aze-rg-services/providers/Microsoft.Storage/storageAccounts/wahpadevazestraw",
+			"events": [
+				"Microsoft.Storage.BlobCreated"
+			]
+		}
+	}
+}
