@@ -4,7 +4,7 @@
 		"description": "Pipeline - parameterised data lake (adls2) excel source to parameterised azure sql server table - sql login option sink",
 		"activities": [
 			{
-				"name": "Copy delimited text from adls2 to sql",
+				"name": "Copy excel from adls2 to sql",
 				"type": "Copy",
 				"dependsOn": [
 					{
