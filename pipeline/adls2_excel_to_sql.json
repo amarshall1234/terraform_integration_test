@@ -1,5 +1,5 @@
 {
-	"name": "adls2_excel_to_sql_copy",
+	"name": "adls2_excel_to_sql",
 	"properties": {
 		"description": "Pipeline - parameterised data lake (adls2) excel source to parameterised azure sql server table - sql login option sink",
 		"activities": [
