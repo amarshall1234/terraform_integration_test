@@ -1197,7 +1197,12 @@
 						"store": {
 							"referenceName": "ls_kv",
 							"type": "LinkedServiceReference",
-							"parameters": {}
+							"parameters": {
+								"kv_URI": {
+									"value": "@linkedService().az_sql_login_password_kv_URI",
+									"type": "Expression"
+								}
+							}
 						},
 						"secretName": {
 							"value": "@linkedService().az_sql_login_password_kv_secret_name",
