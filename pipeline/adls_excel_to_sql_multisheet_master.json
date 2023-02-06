@@ -126,10 +126,6 @@
 				"type": "string",
 				"defaultValue": "dbo"
 			},
-			"az_sql_table_name": {
-				"type": "string",
-				"defaultValue": "airtravel"
-			},
 			"az_sql_write_batch_timeout": {
 				"type": "string",
 				"defaultValue": "00:30:00"
@@ -148,7 +144,7 @@
 			},
 			"adls2_file_name": {
 				"type": "string",
-				"defaultValue": "airtravel.csv"
+				"defaultValue": "extractCWA.xlsx"
 			},
 			"file_compression_type": {
 				"type": "string",

@@ -20,7 +20,7 @@
 					"az_sql_schema_name": "staging",
 					"adls2_endpoint": "https://wahpadevazestraw.dfs.core.windows.net/",
 					"adls2_container_name": "@split(triggerbody().folderPath, '/')[0]",
-					"adls2_directory_name": "@split(triggerbody().folderPath, '/')[1]",
+					"adls2_directory_name": "Data & Analytics/Commissioned Services Analytics/7. Datasets & PowerBI/1. Datasets/Raw data/1. PMHC-MDS/",
 					"adls2_file_name": "@triggerbody().fileName",
 					"file_sheet_name_list": [
 						"Clients",
