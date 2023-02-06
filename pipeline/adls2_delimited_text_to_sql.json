@@ -1,6 +1,7 @@
 {
 	"name": "adls2_delimited_text_to_sql",
 	"properties": {
+		"description": "Pipeline - parameterised data lake (adls2) delimited text source to parameterised azure sql server table - sql login option sink",
 		"activities": [
 			{
 				"name": "Copy delimited text from adls2 to sql",
