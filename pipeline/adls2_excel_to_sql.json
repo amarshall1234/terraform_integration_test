@@ -217,7 +217,7 @@
 			},
 			"adls2_file_name": {
 				"type": "string",
-				"defaultValue": "airtravel.csv"
+				"defaultValue": "extractCWA.xlsx"
 			},
 			"file_compression_type": {
 				"type": "string",
