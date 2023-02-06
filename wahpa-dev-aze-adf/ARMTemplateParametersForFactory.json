@@ -75,7 +75,7 @@
 			"value": "@split(triggerbody().folderPath, '/')[0]"
 		},
 		"tr_event_based_extract_cwa_properties_adls_excel_to_sql_multisheet_master_parameters_adls2_directory_name": {
-			"value": "@split(triggerbody().folderPath, '/')[1]"
+			"value": "Data & Analytics/Commissioned Services Analytics/7. Datasets & PowerBI/1. Datasets/Raw data/1. PMHC-MDS/"
 		},
 		"tr_event_based_extract_cwa_properties_adls_excel_to_sql_multisheet_master_parameters_adls2_file_name": {
 			"value": "@triggerbody().fileName"

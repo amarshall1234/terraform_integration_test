@@ -102,7 +102,7 @@
 		},
 		"tr_event_based_extract_cwa_properties_adls_excel_to_sql_multisheet_master_parameters_adls2_directory_name": {
 			"type": "string",
-			"defaultValue": "@split(triggerbody().folderPath, '/')[1]"
+			"defaultValue": "Data & Analytics/Commissioned Services Analytics/7. Datasets & PowerBI/1. Datasets/Raw data/1. PMHC-MDS/"
 		},
 		"tr_event_based_extract_cwa_properties_adls_excel_to_sql_multisheet_master_parameters_adls2_file_name": {
 			"type": "string",
@@ -982,7 +982,7 @@
 					},
 					"az_sql_table_name": {
 						"type": "string",
-						"defaultValue": "airtravel"
+						"defaultValue": "extractcwa_client"
 					},
 					"az_sql_write_batch_timeout": {
 						"type": "string",
@@ -1014,7 +1014,7 @@
 					},
 					"file_sheet_name": {
 						"type": "string",
-						"defaultValue": "Sheet1"
+						"defaultValue": "Client"
 					},
 					"file_first_row_as_header": {
 						"type": "bool",
@@ -1171,10 +1171,6 @@
 						"type": "string",
 						"defaultValue": "dbo"
 					},
-					"az_sql_table_name": {
-						"type": "string",
-						"defaultValue": "airtravel"
-					},
 					"az_sql_write_batch_timeout": {
 						"type": "string",
 						"defaultValue": "00:30:00"
@@ -1193,7 +1189,7 @@
 					},
 					"adls2_file_name": {
 						"type": "string",
-						"defaultValue": "airtravel.csv"
+						"defaultValue": "extractCWA.xlsx"
 					},
 					"file_compression_type": {
 						"type": "string",
