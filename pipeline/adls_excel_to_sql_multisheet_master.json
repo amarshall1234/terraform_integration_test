@@ -12,7 +12,92 @@
 					"items": {
 						"value": "@pipeline().parameters.file_sheet_name_list",
 						"type": "Expression"
-					}
+					},
+					"activities": [
+						{
+							"name": "Execute adls2_excel_to_sql",
+							"type": "ExecutePipeline",
+							"dependsOn": [],
+							"userProperties": [],
+							"typeProperties": {
+								"pipeline": {
+									"referenceName": "adls2_excel_to_sql",
+									"type": "PipelineReference"
+								},
+								"waitOnCompletion": true,
+								"parameters": {
+									"az_sql_server_name": {
+										"value": "@pipeline().parameters.az_sql_server_name",
+										"type": "Expression"
+									},
+									"az_sql_database_name": {
+										"value": "@pipeline().parameters.az_sql_database_name",
+										"type": "Expression"
+									},
+									"az_sql_login_user_name": {
+										"value": "@pipeline().parameters.az_sql_login_user_name",
+										"type": "Expression"
+									},
+									"az_sql_login_password_kv_URI": {
+										"value": "@pipeline().parameters.az_sql_login_password_kv_URI",
+										"type": "Expression"
+									},
+									"az_sql_login_password_kv_secret_name": {
+										"value": "@pipeline().parameters.az_sql_login_password_kv_secret_name",
+										"type": "Expression"
+									},
+									"az_sql_schema_name": {
+										"value": "@pipeline().parameters.az_sql_schema_name",
+										"type": "Expression"
+									},
+									"az_sql_table_name": {
+										"value": "@pipeline().parameters.az_sql_table_name",
+										"type": "Expression"
+									},
+									"az_sql_write_batch_timeout": {
+										"value": "@pipeline().parameters.az_sql_write_batch_timeout",
+										"type": "Expression"
+									},
+									"adls2_endpoint": {
+										"value": "@pipeline().parameters.adls2_endpoint",
+										"type": "Expression"
+									},
+									"adls2_container_name": {
+										"value": "@pipeline().parameters.adls2_container_name",
+										"type": "Expression"
+									},
+									"adls2_directory_name": {
+										"value": "@pipeline().parameters.adls2_directory_name",
+										"type": "Expression"
+									},
+									"adls2_file_name": {
+										"value": "@pipeline().parameters.adls2_file_name",
+										"type": "Expression"
+									},
+									"file_compression_type": {
+										"value": "@pipeline().parameters.file_compression_type",
+										"type": "Expression"
+									},
+									"file_compression_level": {
+										"value": "@pipeline().parameters.file_compression_level",
+										"type": "Expression"
+									},
+									"file_sheet_name": {
+										"value": "@item()",
+										"type": "Expression"
+									},
+									"file_first_row_as_header": {
+										"value": "@pipeline().parameters.file_first_row_as_header",
+										"type": "Expression"
+									},
+									"az_sql_table_drop_pre_copy": {
+										"value": "@pipeline().parameters.az_sql_table_drop_pre_copy",
+										"type": "Expression"
+									}
+								}
+							}
+						}
+					]
 				}
 			}
 		],
