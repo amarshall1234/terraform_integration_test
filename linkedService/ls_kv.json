@@ -1,9 +1,9 @@
 {
 	"name": "ls_kv",
 	"properties": {
-		"description": "Parameterised key vault linked service",
+		"description": "Linked service - parameterised key vault",
 		"parameters": {
-			"key_vault_URI": {
+			"kv_URI": {
 				"type": "string"
 			}
 		},
@@ -12,7 +12,7 @@
 		],
 		"type": "AzureKeyVault",
 		"typeProperties": {
-			"baseUrl": "@{linkedService().key_vault_URI}"
+			"baseUrl": "@{linkedService().kv_URI}"
 		}
 	}
 }
