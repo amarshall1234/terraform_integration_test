@@ -1,7 +1,7 @@
 {
 	"name": "ds_az_sql_login",
 	"properties": {
-		"description": "Linked service - parameterised azure sql table - sql login option",
+		"description": "Linked service - parameterised azure sql server table - sql login option",
 		"linkedServiceName": {
 			"referenceName": "ls_az_sql_login",
 			"type": "LinkedServiceReference",
