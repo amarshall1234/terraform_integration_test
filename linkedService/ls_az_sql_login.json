@@ -1,7 +1,7 @@
 {
 	"name": "ls_az_sql_login",
 	"properties": {
-		"description": "Parameterised Azure SQL server linked service using SQL login option",
+		"description": "Linked service - parameterised azure sql server - sql login option",
 		"parameters": {
 			"az_sql_server_name": {
 				"type": "string"
@@ -12,7 +12,7 @@
 			"az_sql_login_user_name": {
 				"type": "string"
 			},
-			"az_sql_login_password_key_vault_URI": {
+			"az_sql_login_password_kv_URI": {
 				"type": "string"
 			},
 			"az_sql_login_password_kv_secret_name": {
@@ -32,7 +32,7 @@
 					"type": "LinkedServiceReference",
 					"parameters": {
 						"key_vault_URI": {
-							"value": "@linkedService().az_sql_login_password_key_vault_URI",
+							"value": "@linkedService().az_sql_login_password_kv_URI",
 							"type": "Expression"
 						}
 					}
