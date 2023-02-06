@@ -1,0 +1,7 @@
+{
+	"name": "adls_excel_to_sql_multisheet_master",
+	"properties": {
+		"description": "Pipeline - Loops through each sheet in a excel spreadsheet and runs adls2_excel_to_sql for each sheet",
+		"annotations": []
+	}
+}
