@@ -237,16 +237,6 @@
 					"firstRowAsHeader": {
 						"value": "@dataset().file_first_row_as_header",
 						"type": "Expression"
-					},
-					"compression": {
-						"type": {
-							"value": "@dataset().file_compression_type",
-							"type": "Expression"
-						},
-						"level": {
-							"value": "@dataset().file_compression_level",
-							"type": "Expression"
-						}
 					}
 				},
 				"schema": []
