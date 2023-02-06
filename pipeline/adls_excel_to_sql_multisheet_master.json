@@ -1,0 +1,104 @@
+{
+	"name": "adls_excel_to_sql_multisheet_master",
+	"properties": {
+		"description": "Pipeline - Loops through each sheet in a excel spreadsheet and runs adls2_excel_to_sql for each sheet",
+		"activities": [
+			{
+				"name": "For each sheet in excel spreadsheet",
+				"type": "ForEach",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@pipeline().parameters.file_sheet_name_list",
+						"type": "Expression"
+					}
+				}
+			}
+		],
+		"parameters": {
+			"az_sql_server_name": {
+				"type": "string",
+				"defaultValue": "wahpa-dev-aze-sql.database.windows.net"
+			},
+			"az_sql_database_name": {
+				"type": "string",
+				"defaultValue": "SampleDB"
+			},
+			"az_sql_login_user_name": {
+				"type": "string",
+				"defaultValue": "User51126629"
+			},
+			"az_sql_login_password_kv_URI": {
+				"type": "string",
+				"defaultValue": "https://wahpa-dev-aze-kv.vault.azure.net/"
+			},
+			"az_sql_login_password_kv_secret_name": {
+				"type": "string",
+				"defaultValue": "wahpa-dev-aze-sql-admin-password"
+			},
+			"az_sql_schema_name": {
+				"type": "string",
+				"defaultValue": "dbo"
+			},
+			"az_sql_table_name": {
+				"type": "string",
+				"defaultValue": "airtravel"
+			},
+			"az_sql_write_batch_timeout": {
+				"type": "string",
+				"defaultValue": "00:30:00"
+			},
+			"adls2_endpoint": {
+				"type": "string",
+				"defaultValue": "https://wahpadevazestraw.dfs.core.windows.net/"
+			},
+			"adls2_container_name": {
+				"type": "string",
+				"defaultValue": "test-container"
+			},
+			"adls2_directory_name": {
+				"type": "string",
+				"defaultValue": "test_folder"
+			},
+			"adls2_file_name": {
+				"type": "string",
+				"defaultValue": "airtravel.csv"
+			},
+			"file_compression_type": {
+				"type": "string",
+				"defaultValue": "None"
+			},
+			"file_compression_level": {
+				"type": "string",
+				"defaultValue": "Optimal"
+			},
+			"file_sheet_name": {
+				"type": "string",
+				"defaultValue": "Sheet1"
+			},
+			"file_first_row_as_header": {
+				"type": "bool",
+				"defaultValue": true
+			},
+			"az_sql_table_drop_pre_copy": {
+				"type": "bool",
+				"defaultValue": true
+			},
+			"file_sheet_name_list": {
+				"type": "array",
+				"defaultValue": [
+					"Sheet1",
+					"Sheet2",
+					"Sheet3"
+				]
+			}
+		},
+		"variables": {
+			"az_sql_pre_copy_script": {
+				"type": "String"
+			}
+		},
+		"annotations": []
+	}
+}
