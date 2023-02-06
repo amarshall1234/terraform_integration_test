@@ -1,0 +1,84 @@
+{
+	"name": "ds_adls2_excel",
+	"properties": {
+		"description": "Dataset - parameterised data lake (adls2) excel",
+		"linkedServiceName": {
+			"referenceName": "ls_adls2",
+			"type": "LinkedServiceReference",
+			"parameters": {
+				"adls2_endpoint": {
+					"value": "@dataset().adls2_endpoint",
+					"type": "Expression"
+				}
+			}
+		},
+		"parameters": {
+			"adls2_endpoint": {
+				"type": "string"
+			},
+			"adls2_container_name": {
+				"type": "string"
+			},
+			"adls2_directory_name": {
+				"type": "string"
+			},
+			"adls2_file_name": {
+				"type": "string"
+			},
+			"compression_type": {
+				"type": "string",
+				"defaultValue": "None"
+			},
+			"compression_level": {
+				"type": "string",
+				"defaultValue": "Optimal"
+			},
+			"sheet_name": {
+				"type": "string",
+				"defaultValue": "Sheet1"
+			},
+			"first_row_as_header": {
+				"type": "bool",
+				"defaultValue": true
+			}
+		},
+		"annotations": [],
+		"type": "Excel",
+		"typeProperties": {
+			"sheetName": {
+				"value": "@dataset().sheet_name",
+				"type": "Expression"
+			},
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": {
+					"value": "@dataset().adls2_file_name",
+					"type": "Expression"
+				},
+				"folderPath": {
+					"value": "@dataset().adls2_directory_name",
+					"type": "Expression"
+				},
+				"fileSystem": {
+					"value": "@dataset().adls2_container_name",
+					"type": "Expression"
+				}
+			},
+			"firstRowAsHeader": {
+				"value": "@dataset().first_row_as_header",
+				"type": "Expression"
+			},
+			"compression": {
+				"type": {
+					"value": "@dataset().compression_type",
+					"type": "Expression"
+				},
+				"level": {
+					"value": "@dataset().compression_level",
+					"type": "Expression"
+				}
+			}
+		},
+		"schema": []
+	}
+}
