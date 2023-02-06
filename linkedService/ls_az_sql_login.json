@@ -31,7 +31,7 @@
 					"referenceName": "ls_kv",
 					"type": "LinkedServiceReference",
 					"parameters": {
-						"key_vault_URI": {
+						"kv_URI": {
 							"value": "@linkedService().az_sql_login_password_kv_URI",
 							"type": "Expression"
 						}
