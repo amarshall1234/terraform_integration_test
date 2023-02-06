@@ -80,6 +80,12 @@
 		"tr_event_based_extract_cwa_properties_adls_excel_to_sql_multisheet_master_parameters_adls2_file_name": {
 			"value": "@triggerbody().fileName"
 		},
+		"tr_event_based_extract_cwa_properties_adls_excel_to_sql_multisheet_master_parameters_file_sheet_name_list": {
+			"value": [
+				"Clients",
+				"Organisations"
+			]
+		},
 		"tr_event_based_extract_cwa_properties_typeProperties_scope": {
 			"value": "/subscriptions/687fe1ae-a520-4f86-b921-a80664c40f9b/resourceGroups/wahpa-dev-aze-rg-services/providers/Microsoft.Storage/storageAccounts/wahpadevazestraw"
 		},

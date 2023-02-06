@@ -108,6 +108,13 @@
 			"type": "string",
 			"defaultValue": "@triggerbody().fileName"
 		},
+		"tr_event_based_extract_cwa_properties_adls_excel_to_sql_multisheet_master_parameters_file_sheet_name_list": {
+			"type": "array",
+			"defaultValue": [
+				"Clients",
+				"Organisations"
+			]
+		},
 		"tr_event_based_extract_cwa_properties_typeProperties_scope": {
 			"type": "string",
 			"defaultValue": "/subscriptions/687fe1ae-a520-4f86-b921-a80664c40f9b/resourceGroups/wahpa-dev-aze-rg-services/providers/Microsoft.Storage/storageAccounts/wahpadevazestraw"
@@ -1296,7 +1303,8 @@
 							"adls2_endpoint": "[parameters('tr_event_based_extract_cwa_properties_adls_excel_to_sql_multisheet_master_parameters_adls2_endpoint')]",
 							"adls2_container_name": "[parameters('tr_event_based_extract_cwa_properties_adls_excel_to_sql_multisheet_master_parameters_adls2_container_name')]",
 							"adls2_directory_name": "[parameters('tr_event_based_extract_cwa_properties_adls_excel_to_sql_multisheet_master_parameters_adls2_directory_name')]",
-							"adls2_file_name": "[parameters('tr_event_based_extract_cwa_properties_adls_excel_to_sql_multisheet_master_parameters_adls2_file_name')]"
+							"adls2_file_name": "[parameters('tr_event_based_extract_cwa_properties_adls_excel_to_sql_multisheet_master_parameters_adls2_file_name')]",
+							"file_sheet_name_list": "[parameters('tr_event_based_extract_cwa_properties_adls_excel_to_sql_multisheet_master_parameters_file_sheet_name_list')]"
 						}
 					}
 				],
