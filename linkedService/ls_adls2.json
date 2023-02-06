@@ -1,7 +1,7 @@
 {
 	"name": "ls_adls2",
 	"properties": {
-		"description": "Parameterised Data Lake linked service",
+		"description": "Linked service - parameterised data lake (adls2)",
 		"parameters": {
 			"adls2_endpoint": {
 				"type": "string"
