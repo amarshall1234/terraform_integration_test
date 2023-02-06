@@ -1,0 +1,277 @@
+{
+	"name": "adls2_excel_to_sql_copy1",
+	"properties": {
+		"description": "Pipeline - parameterised data lake (adls2) excel source to parameterised azure sql server table - sql login option sink",
+		"activities": [
+			{
+				"name": "Copy delimited text from adls2 to sql",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "Set az_sql_pre_copy_script",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.00:30:00",
+					"retry": 2,
+					"retryIntervalInSeconds": 60,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "DelimitedTextSource",
+						"additionalColumns": [
+							{
+								"name": "pipeline_name",
+								"value": {
+									"value": "@pipeline().Pipeline",
+									"type": "Expression"
+								}
+							},
+							{
+								"name": "pipieline_run_id",
+								"value": {
+									"value": "@pipeline().RunId",
+									"type": "Expression"
+								}
+							},
+							{
+								"name": "ingest_timestamp",
+								"value": {
+									"value": "@utcnow()",
+									"type": "Expression"
+								}
+							}
+						],
+						"storeSettings": {
+							"type": "AzureBlobFSReadSettings",
+							"recursive": true,
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "DelimitedTextReadSettings"
+						}
+					},
+					"sink": {
+						"type": "AzureSqlSink",
+						"writeBatchTimeout": {
+							"value": "@{pipeline().parameters.az_sql_write_batch_timeout}",
+							"type": "Expression"
+						},
+						"preCopyScript": {
+							"value": "@{variables('az_sql_pre_copy_script')}",
+							"type": "Expression"
+						},
+						"writeBehavior": "insert",
+						"sqlWriterUseTableLock": false,
+						"tableOption": "autoCreate",
+						"disableMetricsCollection": false
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "ds_adsl2_delimited_text",
+						"type": "DatasetReference",
+						"parameters": {
+							"adls2_endpoint": {
+								"value": "@pipeline().parameters.adls2_endpoint",
+								"type": "Expression"
+							},
+							"adls2_container_name": {
+								"value": "@pipeline().parameters.adls2_container_name",
+								"type": "Expression"
+							},
+							"adls2_directory_name": {
+								"value": "@pipeline().parameters.adls2_directory_name",
+								"type": "Expression"
+							},
+							"adls2_file_name": {
+								"value": "@pipeline().parameters.adls2_file_name",
+								"type": "Expression"
+							},
+							"compression_type": {
+								"value": "@pipeline().parameters.file_compression_type",
+								"type": "Expression"
+							},
+							"compression_level": {
+								"value": "@pipeline().parameters.file_compression_level",
+								"type": "Expression"
+							},
+							"column_delimiter": {
+								"value": "@pipeline().parameters.file_column_delimiter",
+								"type": "Expression"
+							},
+							"encoding": {
+								"value": "@pipeline().parameters.file_encoding",
+								"type": "Expression"
+							},
+							"escape_character": {
+								"value": "@pipeline().parameters.file_escape_character",
+								"type": "Expression"
+							},
+							"quote_character": {
+								"value": "@pipeline().parameters.file_quote_character",
+								"type": "Expression"
+							},
+							"first_row_as_header": {
+								"value": "@pipeline().parameters.file_first_row_as_header",
+								"type": "Expression"
+							}
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "ds_az_sql_login",
+						"type": "DatasetReference",
+						"parameters": {
+							"az_sql_server_name": {
+								"value": "@pipeline().parameters.az_sql_server_name",
+								"type": "Expression"
+							},
+							"az_sql_database_name": {
+								"value": "@pipeline().parameters.az_sql_database_name",
+								"type": "Expression"
+							},
+							"az_sql_login_user_name": {
+								"value": "@pipeline().parameters.az_sql_login_user_name",
+								"type": "Expression"
+							},
+							"az_sql_login_password_kv_URI": {
+								"value": "@pipeline().parameters.az_sql_login_password_kv_URI",
+								"type": "Expression"
+							},
+							"az_sql_login_password_kv_secret_name": {
+								"value": "@pipeline().parameters.az_sql_login_password_kv_secret_name",
+								"type": "Expression"
+							},
+							"az_sql_schema_name": {
+								"value": "@pipeline().parameters.az_sql_schema_name",
+								"type": "Expression"
+							},
+							"az_sql_table_name": {
+								"value": "@pipeline().parameters.az_sql_table_name",
+								"type": "Expression"
+							}
+						}
+					}
+				]
+			},
+			{
+				"name": "Set az_sql_pre_copy_script",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "az_sql_pre_copy_script",
+					"value": {
+						"value": "@if(\nequals(pipeline().parameters.az_sql_table_drop_pre_copy, true),\nconcat('DROP TABLE IF EXISTS [', pipeline().parameters.az_sql_schema_name,'].[', pipeline().parameters.az_sql_table_name, ']'),\n'' \n)",
+						"type": "Expression"
+					}
+				}
+			}
+		],
+		"parameters": {
+			"az_sql_server_name": {
+				"type": "string",
+				"defaultValue": "wahpa-dev-aze-sql.database.windows.net"
+			},
+			"az_sql_database_name": {
+				"type": "string",
+				"defaultValue": "SampleDB"
+			},
+			"az_sql_login_user_name": {
+				"type": "string",
+				"defaultValue": "User51126629"
+			},
+			"az_sql_login_password_kv_URI": {
+				"type": "string",
+				"defaultValue": "https://wahpa-dev-aze-kv.vault.azure.net/"
+			},
+			"az_sql_login_password_kv_secret_name": {
+				"type": "string",
+				"defaultValue": "wahpa-dev-aze-sql-admin-password"
+			},
+			"az_sql_schema_name": {
+				"type": "string",
+				"defaultValue": "dbo"
+			},
+			"az_sql_table_name": {
+				"type": "string",
+				"defaultValue": "airtravel"
+			},
+			"az_sql_write_batch_timeout": {
+				"type": "string",
+				"defaultValue": "00:30:00"
+			},
+			"adls2_endpoint": {
+				"type": "string",
+				"defaultValue": "https://wahpadevazestraw.dfs.core.windows.net/"
+			},
+			"adls2_container_name": {
+				"type": "string",
+				"defaultValue": "test-container"
+			},
+			"adls2_directory_name": {
+				"type": "string",
+				"defaultValue": "test_folder"
+			},
+			"adls2_file_name": {
+				"type": "string",
+				"defaultValue": "airtravel.csv"
+			},
+			"file_compression_type": {
+				"type": "string",
+				"defaultValue": "None"
+			},
+			"file_compression_level": {
+				"type": "string",
+				"defaultValue": "Optimal"
+			},
+			"file_column_delimiter": {
+				"type": "string",
+				"defaultValue": ","
+			},
+			"file_encoding": {
+				"type": "string",
+				"defaultValue": "UTF-8"
+			},
+			"file_escape_character": {
+				"type": "string",
+				"defaultValue": "\\"
+			},
+			"file_quote_character": {
+				"type": "string",
+				"defaultValue": "\""
+			},
+			"file_first_row_as_header": {
+				"type": "bool",
+				"defaultValue": true
+			},
+			"az_sql_table_drop_pre_copy": {
+				"type": "bool",
+				"defaultValue": true
+			}
+		},
+		"variables": {
+			"az_sql_pre_copy_script": {
+				"type": "String"
+			}
+		},
+		"annotations": []
+	}
+}
