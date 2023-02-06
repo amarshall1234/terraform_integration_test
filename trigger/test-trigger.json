@@ -13,7 +13,7 @@
 					"az_sql_server_name": "wahpa-dev-aze-sql.database.windows.net",
 					"az_sql_database_name": "SampleDB",
 					"az_sql_login_user_name": "User51126629",
-					"az_sql_login_password_key_vault_URI": "https://wahpa-dev-aze-kv.vault.azure.net/",
+					"az_sql_login_password_kv_URI": "https://wahpa-dev-aze-kv.vault.azure.net/",
 					"az_sql_login_password_kv_secret_name": "wahpa-dev-aze-sql-admin-password",
 					"az_sql_schema_name": "staging",
 					"az_sql_table_name": "@concat(\nlast(split(toLower(triggerbody().folderPath), '/'))\n,'_'\n,split(toLower(triggerbody().fileName), '.')[0]\n)",

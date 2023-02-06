@@ -151,7 +151,7 @@
 								"type": "Expression"
 							},
 							"az_sql_login_password_kv_URI": {
-								"value": "@pipeline().parameters.az_sql_login_password_key_vault_URI",
+								"value": "@pipeline().parameters.az_sql_login_password_kv_URI",
 								"type": "Expression"
 							},
 							"az_sql_login_password_kv_secret_name": {
@@ -197,7 +197,7 @@
 				"type": "string",
 				"defaultValue": "User51126629"
 			},
-			"az_sql_login_password_key_vault_URI": {
+			"az_sql_login_password_kv_URI": {
 				"type": "string",
 				"defaultValue": "https://wahpa-dev-aze-kv.vault.azure.net/"
 			},
