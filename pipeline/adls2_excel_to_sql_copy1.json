@@ -24,7 +24,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"source": {
-						"type": "DelimitedTextSource",
+						"type": "ExcelSource",
 						"additionalColumns": [
 							{
 								"name": "pipeline_name",
@@ -52,9 +52,6 @@
 							"type": "AzureBlobFSReadSettings",
 							"recursive": true,
 							"enablePartitionDiscovery": false
-						},
-						"formatSettings": {
-							"type": "DelimitedTextReadSettings"
 						}
 					},
 					"sink": {
@@ -84,7 +81,7 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "ds_adsl2_delimited_text",
+						"referenceName": "ds_adls2_excel",
 						"type": "DatasetReference",
 						"parameters": {
 							"adls2_endpoint": {
@@ -103,31 +100,19 @@
 								"value": "@pipeline().parameters.adls2_file_name",
 								"type": "Expression"
 							},
-							"compression_type": {
+							"file_compression_type": {
 								"value": "@pipeline().parameters.file_compression_type",
 								"type": "Expression"
 							},
-							"compression_level": {
+							"file_compression_level": {
 								"value": "@pipeline().parameters.file_compression_level",
 								"type": "Expression"
 							},
-							"column_delimiter": {
-								"value": "@pipeline().parameters.file_column_delimiter",
+							"file_sheet_name": {
+								"value": "@pipeline().parameters.file_sheet_name",
 								"type": "Expression"
 							},
-							"encoding": {
-								"value": "@pipeline().parameters.file_encoding",
-								"type": "Expression"
-							},
-							"escape_character": {
-								"value": "@pipeline().parameters.file_escape_character",
-								"type": "Expression"
-							},
-							"quote_character": {
-								"value": "@pipeline().parameters.file_quote_character",
-								"type": "Expression"
-							},
-							"first_row_as_header": {
+							"file_first_row_as_header": {
 								"value": "@pipeline().parameters.file_first_row_as_header",
 								"type": "Expression"
 							}
@@ -242,21 +227,9 @@
 				"type": "string",
 				"defaultValue": "Optimal"
 			},
-			"file_column_delimiter": {
+			"file_sheet_name": {
 				"type": "string",
-				"defaultValue": ","
-			},
-			"file_encoding": {
-				"type": "string",
-				"defaultValue": "UTF-8"
-			},
-			"file_escape_character": {
-				"type": "string",
-				"defaultValue": "\\"
-			},
-			"file_quote_character": {
-				"type": "string",
-				"defaultValue": "\""
+				"defaultValue": "Sheet1"
 			},
 			"file_first_row_as_header": {
 				"type": "bool",

@@ -25,19 +25,19 @@
 			"adls2_file_name": {
 				"type": "string"
 			},
-			"compression_type": {
+			"file_compression_type": {
 				"type": "string",
 				"defaultValue": "None"
 			},
-			"compression_level": {
+			"file_compression_level": {
 				"type": "string",
 				"defaultValue": "Optimal"
 			},
-			"sheet_name": {
+			"file_sheet_name": {
 				"type": "string",
 				"defaultValue": "Sheet1"
 			},
-			"first_row_as_header": {
+			"file_first_row_as_header": {
 				"type": "bool",
 				"defaultValue": true
 			}
@@ -46,7 +46,7 @@
 		"type": "Excel",
 		"typeProperties": {
 			"sheetName": {
-				"value": "@dataset().sheet_name",
+				"value": "@dataset().file_sheet_name",
 				"type": "Expression"
 			},
 			"location": {
@@ -65,16 +65,16 @@
 				}
 			},
 			"firstRowAsHeader": {
-				"value": "@dataset().first_row_as_header",
+				"value": "@dataset().file_first_row_as_header",
 				"type": "Expression"
 			},
 			"compression": {
 				"type": {
-					"value": "@dataset().compression_type",
+					"value": "@dataset().file_compression_type",
 					"type": "Expression"
 				},
 				"level": {
-					"value": "@dataset().compression_level",
+					"value": "@dataset().file_compression_level",
 					"type": "Expression"
 				}
 			}
