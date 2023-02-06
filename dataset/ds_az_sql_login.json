@@ -1,7 +1,7 @@
 {
 	"name": "ds_az_sql_login",
 	"properties": {
-		"description": "Dynamic dataset for azure SQL using SQL login option",
+		"description": "Linked service - parameterised azure sql table - sql login option",
 		"linkedServiceName": {
 			"referenceName": "ls_az_sql_login",
 			"type": "LinkedServiceReference",
@@ -18,8 +18,8 @@
 					"value": "@dataset().az_sql_login_user_name",
 					"type": "Expression"
 				},
-				"az_sql_login_password_key_vault_URI": {
-					"value": "@dataset().az_sql_login_password_key_vault_URI",
+				"az_sql_login_password_kv_URI": {
+					"value": "@dataset().az_sql_login_password_kv_URI",
 					"type": "Expression"
 				},
 				"az_sql_login_password_kv_secret_name": {
@@ -38,7 +38,7 @@
 			"az_sql_login_user_name": {
 				"type": "string"
 			},
-			"az_sql_login_password_key_vault_URI": {
+			"az_sql_login_password_kv_URI": {
 				"type": "string"
 			},
 			"az_sql_login_password_kv_secret_name": {

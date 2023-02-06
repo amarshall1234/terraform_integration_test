@@ -150,7 +150,7 @@
 								"value": "@pipeline().parameters.az_sql_login_user_name",
 								"type": "Expression"
 							},
-							"az_sql_login_password_key_vault_URI": {
+							"az_sql_login_password_kv_URI": {
 								"value": "@pipeline().parameters.az_sql_login_password_key_vault_URI",
 								"type": "Expression"
 							},
