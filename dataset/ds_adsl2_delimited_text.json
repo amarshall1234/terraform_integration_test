@@ -1,7 +1,7 @@
 {
 	"name": "ds_adsl2_delimited_text",
 	"properties": {
-		"description": "Dynamic dataset for adls2 delimited text files",
+		"description": "Dataset - parameterised data lake (adls2) delimited text",
 		"linkedServiceName": {
 			"referenceName": "ls_adls2",
 			"type": "LinkedServiceReference",
