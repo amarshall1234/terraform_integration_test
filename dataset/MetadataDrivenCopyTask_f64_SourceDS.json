@@ -1,0 +1,27 @@
+{
+	"name": "MetadataDrivenCopyTask_f64_SourceDS",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "Dynamics1",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"cw_entityName": {
+				"type": "String"
+			}
+		},
+		"folder": {
+			"name": "MetadataDrivenCopyTask_f64_20230106"
+		},
+		"annotations": [],
+		"type": "DynamicsEntity",
+		"schema": [],
+		"typeProperties": {
+			"entityName": {
+				"value": "@dataset().cw_entityName",
+				"type": "Expression"
+			}
+		}
+	},
+	"type": "Microsoft.Synapse/workspaces/datasets"
+}

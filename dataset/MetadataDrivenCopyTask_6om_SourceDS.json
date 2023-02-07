@@ -1,0 +1,27 @@
+{
+	"name": "MetadataDrivenCopyTask_6om_SourceDS",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "Dataverse1",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"cw_entityName": {
+				"type": "String"
+			}
+		},
+		"folder": {
+			"name": "MetadataDrivenCopyTask_6om_20230110"
+		},
+		"annotations": [],
+		"type": "CommonDataServiceForAppsEntity",
+		"schema": [],
+		"typeProperties": {
+			"entityName": {
+				"value": "@dataset().cw_entityName",
+				"type": "Expression"
+			}
+		}
+	},
+	"type": "Microsoft.Synapse/workspaces/datasets"
+}

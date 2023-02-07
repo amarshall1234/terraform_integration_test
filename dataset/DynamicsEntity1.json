@@ -1,0 +1,16 @@
+{
+	"name": "DynamicsEntity1",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "Dynamics1",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DynamicsEntity",
+		"schema": [],
+		"typeProperties": {
+			"entityName": "cra11_clientsurveyform"
+		}
+	},
+	"type": "Microsoft.Synapse/workspaces/datasets"
+}

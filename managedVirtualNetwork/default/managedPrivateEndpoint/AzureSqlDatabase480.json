@@ -1,0 +1,10 @@
+{
+	"name": "AzureSqlDatabase480",
+	"properties": {
+		"privateLinkResourceId": "/subscriptions/687fe1ae-a520-4f86-b921-a80664c40f9b/resourceGroups/ark-nonprod-dataversetest-rg-vt/providers/Microsoft.Sql/servers/ark-nonprod-dataversetest-sql-vt",
+		"groupId": "sqlServer",
+		"fqdns": [
+			"ark-nonprod-dataversetest-sql-vt.database.windows.net"
+		]
+	}
+}

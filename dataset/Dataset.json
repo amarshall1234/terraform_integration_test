@@ -1,0 +1,87 @@
+{
+	"name": "Dataset",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureDataLakeStorage1",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "test.json",
+				"fileSystem": "dynamicsdump"
+			}
+		},
+		"schema": {
+			"type": "object",
+			"properties": {
+				"componentstate": {
+					"type": "integer"
+				},
+				"createdby": {
+					"type": "string"
+				},
+				"createdon": {
+					"type": "string"
+				},
+				"createdonbehalfby": {
+					"type": "null"
+				},
+				"createdonbehalfbyname": {
+					"type": "null"
+				},
+				"createdonbehalfbyyominame": {
+					"type": "null"
+				},
+				"entitymapid": {
+					"type": "string"
+				},
+				"entitymapidunique": {
+					"type": "string"
+				},
+				"ismanaged": {
+					"type": "boolean"
+				},
+				"modifiedby": {
+					"type": "string"
+				},
+				"modifiedon": {
+					"type": "string"
+				},
+				"modifiedonbehalfby": {
+					"type": "null"
+				},
+				"modifiedonbehalfbyname": {
+					"type": "null"
+				},
+				"modifiedonbehalfbyyominame": {
+					"type": "null"
+				},
+				"organizationid": {
+					"type": "string"
+				},
+				"overwritetime": {
+					"type": "null"
+				},
+				"solutionid": {
+					"type": "string"
+				},
+				"sourceentityname": {
+					"type": "string"
+				},
+				"supportingsolutionid": {
+					"type": "null"
+				},
+				"targetentityname": {
+					"type": "string"
+				},
+				"versionnumber": {
+					"type": "null"
+				}
+			}
+		}
+	},
+	"type": "Microsoft.Synapse/workspaces/datasets"
+}

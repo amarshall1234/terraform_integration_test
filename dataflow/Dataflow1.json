@@ -1,0 +1,79 @@
+{
+	"name": "Dataflow1",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"linkedService": {
+						"referenceName": "Dataverse1",
+						"type": "LinkedServiceReference"
+					},
+					"name": "source1"
+				}
+			],
+			"sinks": [
+				{
+					"linkedService": {
+						"referenceName": "AzureDataLakeStorage1",
+						"type": "LinkedServiceReference"
+					},
+					"name": "sink1"
+				}
+			],
+			"transformations": [],
+			"scriptLines": [
+				"source(output(",
+				"          componentstate as integer,",
+				"          reportviewname as string,",
+				"          objecttypecode as integer,",
+				"          externalname as string,",
+				"          entitysetname as string,",
+				"          logicalcollectionname as string,",
+				"          originallocalizedname as string,",
+				"          addresstablename as string,",
+				"          versionnumber as long,",
+				"          logicalname as string,",
+				"          name as string,",
+				"          entityid as string,",
+				"          extensiontablename as string,",
+				"          physicalname as string,",
+				"          parentcontrollingattributename as string,",
+				"          originallocalizedcollectionname as string,",
+				"          isactivityname as string,",
+				"          solutionid as string,",
+				"          overwritetime as timestamp,",
+				"          basetablename as string,",
+				"          externalcollectionname as string,",
+				"          collectionname as string,",
+				"          isactivity as boolean",
+				"     ),",
+				"     allowSchemaDrift: false,",
+				"     validateSchema: false,",
+				"     store: 'dynamics',",
+				"     format: 'dynamicsformat',",
+				"     entity: 'entity',",
+				"     timeout: 30) ~> source1",
+				"source1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     format: 'delta',",
+				"     fileSystem: 'dynamicsdump',",
+				"     folderPath: 'New folder',",
+				"     mergeSchema: false,",
+				"     autoCompact: false,",
+				"     optimizedWrite: false,",
+				"     vacuum: 0,",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     umask: 0022,",
+				"     preCommands: [],",
+				"     postCommands: [],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     saveOrder: 1) ~> sink1"
+			]
+		}
+	}
+}

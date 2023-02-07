@@ -1,0 +1,10 @@
+{
+	"name": "synapse-ws-sql--ark-nonprod-dataversetest-synw-vt",
+	"properties": {
+		"privateLinkResourceId": "/subscriptions/687fe1ae-a520-4f86-b921-a80664c40f9b/resourceGroups/ark-nonprod-dataversetest-rg-vt/providers/Microsoft.Synapse/workspaces/ark-nonprod-dataversetest-synw-vt",
+		"groupId": "sql",
+		"fqdns": [
+			"ark-nonprod-dataversetest-synw-vt.7a66462b-1af1-441a-a8d1-af758616eb45.sql.azuresynapse.net"
+		]
+	}
+}

@@ -1,0 +1,10 @@
+{
+	"name": "AzureDataLakeStorage888",
+	"properties": {
+		"privateLinkResourceId": "/subscriptions/687fe1ae-a520-4f86-b921-a80664c40f9b/resourceGroups/ark-nonprod-dataversetest-rg-vt/providers/Microsoft.Storage/storageAccounts/arkdvtestsynwci",
+		"groupId": "dfs",
+		"fqdns": [
+			"arkdvtestsynwci.dfs.core.windows.net"
+		]
+	}
+}
