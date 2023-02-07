@@ -42,6 +42,9 @@
 				"defaultValue": true
 			}
 		},
+		"folder": {
+			"name": "adls2"
+		},
 		"annotations": [],
 		"type": "Excel",
 		"typeProperties": {

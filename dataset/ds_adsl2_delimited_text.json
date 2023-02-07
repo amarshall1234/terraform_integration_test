@@ -54,6 +54,9 @@
 				"defaultValue": true
 			}
 		},
+		"folder": {
+			"name": "adls2"
+		},
 		"annotations": [
 			"ds_adsl2_delimited_text"
 		],
