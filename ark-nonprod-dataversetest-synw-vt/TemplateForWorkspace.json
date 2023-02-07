@@ -1,0 +1,4142 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"workspaceName": {
+			"type": "string",
+			"metadata": "Workspace name",
+			"defaultValue": "ark-nonprod-dataversetest-synw-vt"
+		},
+		"AzureDataLakeStorage1_accountKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accountKey' of 'AzureDataLakeStorage1'"
+		},
+		"Dataverse1_servicePrincipalCredential": {
+			"type": "secureString",
+			"metadata": "Secure string for 'servicePrincipalCredential' of 'Dataverse1'"
+		},
+		"Dynamics1_servicePrincipalCredential": {
+			"type": "secureString",
+			"metadata": "Secure string for 'servicePrincipalCredential' of 'Dynamics1'"
+		},
+		"ark-nonprod-dataversetest-synw-vt-WorkspaceDefaultSqlServer_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'ark-nonprod-dataversetest-synw-vt-WorkspaceDefaultSqlServer'",
+			"defaultValue": "Integrated Security=False;Encrypt=True;Connection Timeout=30;Data Source=tcp:ark-nonprod-dataversetest-synw-vt.sql.azuresynapse.net,1433;Initial Catalog=@{linkedService().DBName}"
+		},
+		"linkedService1_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'linkedService1'"
+		},
+		"ls_az_sql_login_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'ls_az_sql_login'",
+			"defaultValue": "Integrated Security=False;Encrypt=True;Connection Timeout=30;Data Source=@{linkedService().az_sql_server_name};Initial Catalog=@{linkedService().az_sql_database_name};User ID=@{linkedService().az_sql_login_user_name}"
+		},
+		"AzureDataLakeStorage1_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://arkdvtestsynwci.dfs.core.windows.net/"
+		},
+		"Dataverse1_properties_typeProperties_servicePrincipalId": {
+			"type": "string",
+			"defaultValue": "f331a6ab-3b11-421b-9487-13a22e149bba"
+		},
+		"Dynamics1_properties_typeProperties_servicePrincipalId": {
+			"type": "string",
+			"defaultValue": "f331a6ab-3b11-421b-9487-13a22e149bba"
+		},
+		"ark-nonprod-dataversetest-synw-vt-WorkspaceDefaultStorage_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://arkdvtestsynwci.dfs.core.windows.net"
+		},
+		"ls_adls2_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "@{linkedService().adls2_endpoint}"
+		},
+		"ls_kv_properties_typeProperties_baseUrl": {
+			"type": "string",
+			"defaultValue": "@{linkedService().kv_URI}"
+		},
+		"test-trigger_properties_adls2_delimited_text_to_sql_parameters_az_sql_server_name": {
+			"type": "string",
+			"defaultValue": "wahpa-dev-aze-sql.database.windows.net"
+		},
+		"test-trigger_properties_adls2_delimited_text_to_sql_parameters_az_sql_database_name": {
+			"type": "string",
+			"defaultValue": "SampleDB"
+		},
+		"test-trigger_properties_adls2_delimited_text_to_sql_parameters_az_sql_login_user_name": {
+			"type": "string",
+			"defaultValue": "User51126629"
+		},
+		"test-trigger_properties_adls2_delimited_text_to_sql_parameters_az_sql_login_password_kv_URI": {
+			"type": "string",
+			"defaultValue": "https://wahpa-dev-aze-kv.vault.azure.net/"
+		},
+		"test-trigger_properties_adls2_delimited_text_to_sql_parameters_az_sql_login_password_kv_secret_name": {
+			"type": "string",
+			"defaultValue": "wahpa-dev-aze-sql-admin-password"
+		},
+		"test-trigger_properties_adls2_delimited_text_to_sql_parameters_az_sql_schema_name": {
+			"type": "string",
+			"defaultValue": "staging"
+		},
+		"test-trigger_properties_adls2_delimited_text_to_sql_parameters_az_sql_table_name": {
+			"type": "string",
+			"defaultValue": "@concat(\nlast(split(toLower(triggerbody().folderPath), '/'))\n,'_'\n,split(toLower(triggerbody().fileName), '.')[0]\n)"
+		},
+		"test-trigger_properties_adls2_delimited_text_to_sql_parameters_adls2_endpoint": {
+			"type": "string",
+			"defaultValue": "https://wahpadevazestraw.dfs.core.windows.net/"
+		},
+		"test-trigger_properties_adls2_delimited_text_to_sql_parameters_adls2_container_name": {
+			"type": "string",
+			"defaultValue": "@split(triggerbody().folderPath, '/')[0]"
+		},
+		"test-trigger_properties_adls2_delimited_text_to_sql_parameters_adls2_directory_name": {
+			"type": "string",
+			"defaultValue": "@split(triggerbody().folderPath, '/')[1]"
+		},
+		"test-trigger_properties_adls2_delimited_text_to_sql_parameters_adls2_file_name": {
+			"type": "string",
+			"defaultValue": "@triggerbody().fileName"
+		},
+		"test-trigger_properties_typeProperties_scope": {
+			"type": "string",
+			"defaultValue": "/subscriptions/687fe1ae-a520-4f86-b921-a80664c40f9b/resourceGroups/wahpa-dev-aze-rg-services/providers/Microsoft.Storage/storageAccounts/wahpadevazestraw"
+		},
+		"tr_event_based_extract_cwa_properties_adls_excel_to_sql_multisheet_master_parameters_az_sql_server_name": {
+			"type": "string",
+			"defaultValue": "wahpa-dev-aze-sql.database.windows.net"
+		},
+		"tr_event_based_extract_cwa_properties_adls_excel_to_sql_multisheet_master_parameters_az_sql_database_name": {
+			"type": "string",
+			"defaultValue": "SampleDB"
+		},
+		"tr_event_based_extract_cwa_properties_adls_excel_to_sql_multisheet_master_parameters_az_sql_login_user_name": {
+			"type": "string",
+			"defaultValue": "User51126629"
+		},
+		"tr_event_based_extract_cwa_properties_adls_excel_to_sql_multisheet_master_parameters_az_sql_login_password_kv_URI": {
+			"type": "string",
+			"defaultValue": "https://wahpa-dev-aze-kv.vault.azure.net/"
+		},
+		"tr_event_based_extract_cwa_properties_adls_excel_to_sql_multisheet_master_parameters_az_sql_login_password_kv_secret_name": {
+			"type": "string",
+			"defaultValue": "wahpa-dev-aze-sql-admin-password"
+		},
+		"tr_event_based_extract_cwa_properties_adls_excel_to_sql_multisheet_master_parameters_az_sql_schema_name": {
+			"type": "string",
+			"defaultValue": "staging"
+		},
+		"tr_event_based_extract_cwa_properties_adls_excel_to_sql_multisheet_master_parameters_adls2_endpoint": {
+			"type": "string",
+			"defaultValue": "https://wahpadevazestraw.dfs.core.windows.net/"
+		},
+		"tr_event_based_extract_cwa_properties_adls_excel_to_sql_multisheet_master_parameters_adls2_container_name": {
+			"type": "string",
+			"defaultValue": "@split(triggerbody().folderPath, '/')[0]"
+		},
+		"tr_event_based_extract_cwa_properties_adls_excel_to_sql_multisheet_master_parameters_adls2_directory_name": {
+			"type": "string",
+			"defaultValue": "Data & Analytics/Commissioned Services Analytics/7. Datasets & PowerBI/1. Datasets/Raw data/1. PMHC-MDS/"
+		},
+		"tr_event_based_extract_cwa_properties_adls_excel_to_sql_multisheet_master_parameters_adls2_file_name": {
+			"type": "string",
+			"defaultValue": "@triggerbody().fileName"
+		},
+		"tr_event_based_extract_cwa_properties_adls_excel_to_sql_multisheet_master_parameters_file_sheet_name_list": {
+			"type": "array",
+			"defaultValue": [
+				"Clients",
+				"Organisations"
+			]
+		},
+		"tr_event_based_extract_cwa_properties_typeProperties_scope": {
+			"type": "string",
+			"defaultValue": "/subscriptions/687fe1ae-a520-4f86-b921-a80664c40f9b/resourceGroups/wahpa-dev-aze-rg-services/providers/Microsoft.Storage/storageAccounts/wahpadevazestraw"
+		}
+	},
+	"variables": {
+		"workspaceId": "[concat('Microsoft.Synapse/workspaces/', parameters('workspaceName'))]"
+	},
+	"resources": [
+		{
+			"name": "[concat(parameters('workspaceName'), '/MetadataDrivenCopyTask_6om_BottomLevel')]",
+			"type": "Microsoft.Synapse/workspaces/pipelines",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"description": "This pipeline will copy objects from one group. The objects belonging to this group will be copied parallelly.",
+				"activities": [
+					{
+						"name": "ListObjectsFromOneGroup",
+						"description": "List objects from one group and iterate each of them to downstream activities",
+						"type": "ForEach",
+						"dependsOn": [],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@pipeline().parameters.ObjectsPerGroupToCopy",
+								"type": "Expression"
+							},
+							"activities": [
+								{
+									"name": "RouteJobsBasedOnLoadingBehavior",
+									"description": "Check the loading behavior for each object if it requires full load or incremental load. If it is Default or FullLoad case, do full load. If it is DeltaLoad case, do incremental load.",
+									"type": "Switch",
+									"dependsOn": [],
+									"userProperties": [],
+									"typeProperties": {
+										"on": {
+											"value": "@json(item().DataLoadingBehaviorSettings).dataLoadingBehavior",
+											"type": "Expression"
+										},
+										"cases": [
+											{
+												"value": "FullLoad",
+												"activities": [
+													{
+														"name": "FullLoadOneObject",
+														"description": "Take a full snapshot on this object and copy it to the destination",
+														"type": "Copy",
+														"dependsOn": [],
+														"policy": {
+															"timeout": "0.12:00:00",
+															"retry": 0,
+															"retryIntervalInSeconds": 30,
+															"secureOutput": false,
+															"secureInput": false
+														},
+														"userProperties": [
+															{
+																"name": "Source",
+																"value": "@{json(item().SourceObjectSettings).entityName}"
+															},
+															{
+																"name": "Destination",
+																"value": "@{json(item().SinkObjectSettings).fileSystem}/@{json(item().SinkObjectSettings).folderPath}/@{json(item().SinkObjectSettings).fileName}"
+															}
+														],
+														"typeProperties": {
+															"source": {
+																"type": "CommonDataServiceForAppsSource",
+																"query": {
+																	"value": "@json(item().CopySourceSettings).query",
+																	"type": "Expression"
+																}
+															},
+															"sink": {
+																"type": "ParquetSink",
+																"storeSettings": {
+																	"type": "AzureBlobFSWriteSettings"
+																},
+																"formatSettings": {
+																	"type": "ParquetWriteSettings"
+																}
+															},
+															"enableStaging": false,
+															"validateDataConsistency": false,
+															"translator": {
+																"value": "@json(item().CopyActivitySettings).translator",
+																"type": "Expression"
+															}
+														},
+														"inputs": [
+															{
+																"referenceName": "MetadataDrivenCopyTask_6om_SourceDS",
+																"type": "DatasetReference",
+																"parameters": {
+																	"cw_entityName": {
+																		"value": "@json(item().SourceObjectSettings).entityName",
+																		"type": "Expression"
+																	}
+																}
+															}
+														],
+														"outputs": [
+															{
+																"referenceName": "MetadataDrivenCopyTask_6om_DestinationDS",
+																"type": "DatasetReference",
+																"parameters": {
+																	"cw_fileName": {
+																		"value": "@json(item().SinkObjectSettings).fileName",
+																		"type": "Expression"
+																	},
+																	"cw_folderPath": {
+																		"value": "@json(item().SinkObjectSettings).folderPath",
+																		"type": "Expression"
+																	},
+																	"cw_fileSystem": {
+																		"value": "@json(item().SinkObjectSettings).fileSystem",
+																		"type": "Expression"
+																	}
+																}
+															}
+														]
+													}
+												]
+											},
+											{
+												"value": "DeltaLoad",
+												"activities": [
+													{
+														"name": "GetMaxWatermarkValue",
+														"description": "Query the source object to get the max value from watermark column",
+														"type": "Lookup",
+														"dependsOn": [],
+														"policy": {
+															"timeout": "0.12:00:00",
+															"retry": 0,
+															"retryIntervalInSeconds": 30,
+															"secureOutput": false,
+															"secureInput": false
+														},
+														"userProperties": [],
+														"typeProperties": {
+															"source": {
+																"type": "CommonDataServiceForAppsSource",
+																"query": {
+																	"value": "select max(@{json(item().DataLoadingBehaviorSettings).watermarkColumnName}) as CurrentMaxWaterMarkColumnValue from @{json(item().SourceObjectSettings).entityName}",
+																	"type": "Expression"
+																}
+															},
+															"dataset": {
+																"referenceName": "MetadataDrivenCopyTask_6om_SourceDS",
+																"type": "DatasetReference",
+																"parameters": {
+																	"cw_entityName": {
+																		"value": "@json(item().SourceObjectSettings).entityName",
+																		"type": "Expression"
+																	}
+																}
+															}
+														}
+													},
+													{
+														"name": "DeltaLoadOneObject",
+														"description": "Copy the changed data only from last time via comparing the value in watermark column to identify changes.",
+														"type": "Copy",
+														"dependsOn": [
+															{
+																"activity": "GetMaxWatermarkValue",
+																"dependencyConditions": [
+																	"Succeeded"
+																]
+															}
+														],
+														"policy": {
+															"timeout": "0.12:00:00",
+															"retry": 0,
+															"retryIntervalInSeconds": 30,
+															"secureOutput": false,
+															"secureInput": false
+														},
+														"userProperties": [
+															{
+																"name": "Source",
+																"value": "@{json(item().SourceObjectSettings).entityName}"
+															},
+															{
+																"name": "Destination",
+																"value": "@{json(item().SinkObjectSettings).fileSystem}/@{json(item().SinkObjectSettings).folderPath}/@{json(item().SinkObjectSettings).fileName}"
+															}
+														],
+														"typeProperties": {
+															"source": {
+																"type": "CommonDataServiceForAppsSource",
+																"query": {
+																	"value": "<fetch>\n<entity name=\"@{json(item().SourceObjectSettings).entityName}\">\n<all-attributes />\n<filter type=\"and\">\n<condition attribute =\"@{json(item().DataLoadingBehaviorSettings).watermarkColumnName}\" operator=\"between\">\n<value>undefined</value>\n<value>undefined</value>\n</condition>\n</filter>\n</entity>\n</fetch>\n",
+																	"type": "Expression"
+																}
+															},
+															"sink": {
+																"type": "ParquetSink",
+																"storeSettings": {
+																	"type": "AzureBlobFSWriteSettings"
+																},
+																"formatSettings": {
+																	"type": "ParquetWriteSettings"
+																}
+															},
+															"enableStaging": false,
+															"validateDataConsistency": false,
+															"translator": {
+																"value": "@json(item().CopyActivitySettings).translator",
+																"type": "Expression"
+															}
+														},
+														"inputs": [
+															{
+																"referenceName": "MetadataDrivenCopyTask_6om_SourceDS",
+																"type": "DatasetReference",
+																"parameters": {
+																	"cw_entityName": {
+																		"value": "@json(item().SourceObjectSettings).entityName",
+																		"type": "Expression"
+																	}
+																}
+															}
+														],
+														"outputs": [
+															{
+																"referenceName": "MetadataDrivenCopyTask_6om_DestinationDS",
+																"type": "DatasetReference",
+																"parameters": {
+																	"cw_fileName": {
+																		"value": "@{json(item().SinkObjectSettings).fileName}-@{json(item().DataLoadingBehaviorSettings).watermarkColumnStartValue}-@{activity('GetMaxWatermarkValue').output.firstRow.CurrentMaxWaterMarkColumnValue}",
+																		"type": "Expression"
+																	},
+																	"cw_folderPath": {
+																		"value": "@json(item().SinkObjectSettings).folderPath",
+																		"type": "Expression"
+																	},
+																	"cw_fileSystem": {
+																		"value": "@json(item().SinkObjectSettings).fileSystem",
+																		"type": "Expression"
+																	}
+																}
+															}
+														]
+													},
+													{
+														"name": "UpdateWatermarkColumnValue",
+														"type": "SqlServerStoredProcedure",
+														"dependsOn": [
+															{
+																"activity": "DeltaLoadOneObject",
+																"dependencyConditions": [
+																	"Succeeded"
+																]
+															}
+														],
+														"policy": {
+															"timeout": "0.12:00:00",
+															"retry": 0,
+															"retryIntervalInSeconds": 30,
+															"secureOutput": false,
+															"secureInput": false
+														},
+														"userProperties": [],
+														"typeProperties": {
+															"storedProcedureName": "[dbo].[UpdateWatermarkColumnValue_6om]",
+															"storedProcedureParameters": {
+																"Id": {
+																	"value": {
+																		"value": "@item().Id",
+																		"type": "Expression"
+																	},
+																	"type": "Int32"
+																},
+																"watermarkColumnStartValue": {
+																	"value": {
+																		"value": "@activity('GetMaxWatermarkValue').output.firstRow.CurrentMaxWaterMarkColumnValue",
+																		"type": "Expression"
+																	},
+																	"type": "String"
+																}
+															}
+														},
+														"linkedServiceName": {
+															"referenceName": "linkedService1",
+															"type": "LinkedServiceReference"
+														}
+													}
+												]
+											}
+										],
+										"defaultActivities": [
+											{
+												"name": "DefaultFullLoadOneObject",
+												"description": "Take a full snapshot on this object and copy it to the destination",
+												"type": "Copy",
+												"dependsOn": [],
+												"policy": {
+													"timeout": "0.12:00:00",
+													"retry": 0,
+													"retryIntervalInSeconds": 30,
+													"secureOutput": false,
+													"secureInput": false
+												},
+												"userProperties": [
+													{
+														"name": "Source",
+														"value": "@{json(item().SourceObjectSettings).entityName}"
+													},
+													{
+														"name": "Destination",
+														"value": "@{json(item().SinkObjectSettings).fileSystem}/@{json(item().SinkObjectSettings).folderPath}/@{json(item().SinkObjectSettings).fileName}"
+													}
+												],
+												"typeProperties": {
+													"source": {
+														"type": "CommonDataServiceForAppsSource",
+														"query": {
+															"value": "@json(item().CopySourceSettings).query",
+															"type": "Expression"
+														}
+													},
+													"sink": {
+														"type": "ParquetSink",
+														"storeSettings": {
+															"type": "AzureBlobFSWriteSettings"
+														},
+														"formatSettings": {
+															"type": "ParquetWriteSettings"
+														}
+													},
+													"enableStaging": false,
+													"validateDataConsistency": false,
+													"translator": {
+														"value": "@json(item().CopyActivitySettings).translator",
+														"type": "Expression"
+													}
+												},
+												"inputs": [
+													{
+														"referenceName": "MetadataDrivenCopyTask_6om_SourceDS",
+														"type": "DatasetReference",
+														"parameters": {
+															"cw_entityName": {
+																"value": "@json(item().SourceObjectSettings).entityName",
+																"type": "Expression"
+															}
+														}
+													}
+												],
+												"outputs": [
+													{
+														"referenceName": "MetadataDrivenCopyTask_6om_DestinationDS",
+														"type": "DatasetReference",
+														"parameters": {
+															"cw_fileName": {
+																"value": "@json(item().SinkObjectSettings).fileName",
+																"type": "Expression"
+															},
+															"cw_folderPath": {
+																"value": "@json(item().SinkObjectSettings).folderPath",
+																"type": "Expression"
+															},
+															"cw_fileSystem": {
+																"value": "@json(item().SinkObjectSettings).fileSystem",
+																"type": "Expression"
+															}
+														}
+													}
+												]
+											}
+										]
+									}
+								}
+							]
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"parameters": {
+					"ObjectsPerGroupToCopy": {
+						"type": "Array"
+					}
+				},
+				"folder": {
+					"name": "MetadataDrivenCopyTask_6om_20230110"
+				},
+				"annotations": [],
+				"lastPublishTime": "2023-01-10T00:08:07Z"
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/datasets/MetadataDrivenCopyTask_6om_SourceDS')]",
+				"[concat(variables('workspaceId'), '/datasets/MetadataDrivenCopyTask_6om_DestinationDS')]",
+				"[concat(variables('workspaceId'), '/linkedServices/linkedService1')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/MetadataDrivenCopyTask_6om_MiddleLevel')]",
+			"type": "Microsoft.Synapse/workspaces/pipelines",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"description": "This pipeline will copy one batch of objects. The objects belonging to this batch will be copied parallelly.",
+				"activities": [
+					{
+						"name": "DivideOneBatchIntoMultipleGroups",
+						"description": "Divide objects from single batch into multiple sub parallel groups to avoid reaching the output limit of lookup activity.",
+						"type": "ForEach",
+						"dependsOn": [],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@range(0, add(div(pipeline().parameters.SumOfObjectsToCopyForCurrentBatch, pipeline().parameters.MaxNumberOfObjectsReturnedFromLookupActivity),\n                    if(equals(mod(pipeline().parameters.SumOfObjectsToCopyForCurrentBatch, pipeline().parameters.MaxNumberOfObjectsReturnedFromLookupActivity), 0), 0, 1)))",
+								"type": "Expression"
+							},
+							"isSequential": false,
+							"batchCount": 50,
+							"activities": [
+								{
+									"name": "GetObjectsPerGroupToCopy",
+									"description": "Get objects (tables etc.) from control table required to be copied in this group. The order of objects to be copied following the TaskId in control table (ORDER BY [TaskId] DESC).",
+									"type": "Lookup",
+									"dependsOn": [],
+									"policy": {
+										"timeout": "0.12:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"source": {
+											"type": "AzureSqlSource",
+											"sqlReaderQuery": {
+												"value": "WITH OrderedControlTable AS (\n                             SELECT *, ROW_NUMBER() OVER (ORDER BY [TaskId], [Id] DESC) AS RowNumber\n                             FROM @{pipeline().parameters.MainControlTableName}\n                             where TopLevelPipelineName = '@{pipeline().parameters.TopLevelPipelineName}'\n                             and TriggerName like '%@{pipeline().parameters.TriggerName}%' and CopyEnabled = 1)\n                             SELECT * FROM OrderedControlTable WHERE RowNumber BETWEEN @{add(mul(int(item()),pipeline().parameters.MaxNumberOfObjectsReturnedFromLookupActivity),\n                             add(mul(pipeline().parameters.SumOfObjectsToCopyForCurrentBatch, pipeline().parameters.CurrentSequentialNumberOfBatch), 1))}\n                             AND @{min(add(mul(int(item()), pipeline().parameters.MaxNumberOfObjectsReturnedFromLookupActivity), add(mul(pipeline().parameters.SumOfObjectsToCopyForCurrentBatch, pipeline().parameters.CurrentSequentialNumberOfBatch),\n                             pipeline().parameters.MaxNumberOfObjectsReturnedFromLookupActivity)),\n                            mul(pipeline().parameters.SumOfObjectsToCopyForCurrentBatch, add(pipeline().parameters.CurrentSequentialNumberOfBatch,1)), pipeline().parameters.SumOfObjectsToCopy)}",
+												"type": "Expression"
+											},
+											"partitionOption": "None"
+										},
+										"dataset": {
+											"referenceName": "MetadataDrivenCopyTask_6om_ControlDS",
+											"type": "DatasetReference",
+											"parameters": {}
+										},
+										"firstRowOnly": false
+									}
+								},
+								{
+									"name": "CopyObjectsInOneGroup",
+									"description": "Execute another pipeline to copy objects from one group. The objects belonging to this group will be copied parallelly.",
+									"type": "ExecutePipeline",
+									"dependsOn": [
+										{
+											"activity": "GetObjectsPerGroupToCopy",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"userProperties": [],
+									"typeProperties": {
+										"pipeline": {
+											"referenceName": "MetadataDrivenCopyTask_6om_BottomLevel",
+											"type": "PipelineReference"
+										},
+										"waitOnCompletion": true,
+										"parameters": {
+											"ObjectsPerGroupToCopy": {
+												"value": "@activity('GetObjectsPerGroupToCopy').output.value",
+												"type": "Expression"
+											}
+										}
+									}
+								}
+							]
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"parameters": {
+					"MaxNumberOfObjectsReturnedFromLookupActivity": {
+						"type": "Int"
+					},
+					"TopLevelPipelineName": {
+						"type": "String"
+					},
+					"TriggerName": {
+						"type": "String"
+					},
+					"CurrentSequentialNumberOfBatch": {
+						"type": "Int"
+					},
+					"SumOfObjectsToCopy": {
+						"type": "Int"
+					},
+					"SumOfObjectsToCopyForCurrentBatch": {
+						"type": "Int"
+					},
+					"MainControlTableName": {
+						"type": "String"
+					}
+				},
+				"folder": {
+					"name": "MetadataDrivenCopyTask_6om_20230110"
+				},
+				"annotations": [],
+				"lastPublishTime": "2023-01-10T00:08:10Z"
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/datasets/MetadataDrivenCopyTask_6om_ControlDS')]",
+				"[concat(variables('workspaceId'), '/pipelines/MetadataDrivenCopyTask_6om_BottomLevel')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/MetadataDrivenCopyTask_6om_TopLevel')]",
+			"type": "Microsoft.Synapse/workspaces/pipelines",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"description": "This pipeline will count the total number of objects (tables etc.) required to be copied in this run, come up with the number of sequential batches based on the max allowed concurrent copy task, and then execute another pipeline to copy different batches sequentially.",
+				"activities": [
+					{
+						"name": "GetSumOfObjectsToCopy",
+						"description": "Count the total number of objects (tables etc.) required to be copied in this run.",
+						"type": "Lookup",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"sqlReaderQuery": {
+									"value": "SELECT count(*) as count FROM @{pipeline().parameters.MainControlTableName} where TopLevelPipelineName='@{pipeline().Pipeline}' and TriggerName like '%@{pipeline().TriggerName}%' and CopyEnabled = 1",
+									"type": "Expression"
+								},
+								"partitionOption": "None"
+							},
+							"dataset": {
+								"referenceName": "MetadataDrivenCopyTask_6om_ControlDS",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						}
+					},
+					{
+						"name": "CopyBatchesOfObjectsSequentially",
+						"description": "Come up with the number of sequential batches based on the max allowed concurrent copy tasks, and then execute another pipeline to copy different batches sequentially.",
+						"type": "ForEach",
+						"dependsOn": [
+							{
+								"activity": "GetSumOfObjectsToCopy",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@range(0, add(div(activity('GetSumOfObjectsToCopy').output.firstRow.count,\n                    pipeline().parameters.MaxNumberOfConcurrentTasks),\n                    if(equals(mod(activity('GetSumOfObjectsToCopy').output.firstRow.count,\n                    pipeline().parameters.MaxNumberOfConcurrentTasks), 0), 0, 1)))",
+								"type": "Expression"
+							},
+							"isSequential": true,
+							"activities": [
+								{
+									"name": "CopyObjectsInOneBatch",
+									"description": "Execute another pipeline to copy one batch of objects. The objects belonging to this batch will be copied parallelly.",
+									"type": "ExecutePipeline",
+									"dependsOn": [],
+									"userProperties": [],
+									"typeProperties": {
+										"pipeline": {
+											"referenceName": "MetadataDrivenCopyTask_6om_MiddleLevel",
+											"type": "PipelineReference"
+										},
+										"waitOnCompletion": true,
+										"parameters": {
+											"MaxNumberOfObjectsReturnedFromLookupActivity": {
+												"value": "@pipeline().parameters.MaxNumberOfObjectsReturnedFromLookupActivity",
+												"type": "Expression"
+											},
+											"TopLevelPipelineName": {
+												"value": "@{pipeline().Pipeline}",
+												"type": "Expression"
+											},
+											"TriggerName": {
+												"value": "@{pipeline().TriggerName}",
+												"type": "Expression"
+											},
+											"CurrentSequentialNumberOfBatch": {
+												"value": "@item()",
+												"type": "Expression"
+											},
+											"SumOfObjectsToCopy": {
+												"value": "@activity('GetSumOfObjectsToCopy').output.firstRow.count",
+												"type": "Expression"
+											},
+											"SumOfObjectsToCopyForCurrentBatch": {
+												"value": "@min(pipeline().parameters.MaxNumberOfConcurrentTasks, activity('GetSumOfObjectsToCopy').output.firstRow.count)",
+												"type": "Expression"
+											},
+											"MainControlTableName": {
+												"value": "@pipeline().parameters.MainControlTableName",
+												"type": "Expression"
+											}
+										}
+									}
+								}
+							]
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"parameters": {
+					"MaxNumberOfObjectsReturnedFromLookupActivity": {
+						"type": "Int",
+						"defaultValue": 5000
+					},
+					"MaxNumberOfConcurrentTasks": {
+						"type": "Int",
+						"defaultValue": 20
+					},
+					"MainControlTableName": {
+						"type": "String",
+						"defaultValue": "dbo.MainControlTable_6om"
+					}
+				},
+				"folder": {
+					"name": "MetadataDrivenCopyTask_6om_20230110"
+				},
+				"annotations": [
+					"MetadataDrivenSolution"
+				],
+				"lastPublishTime": "2023-01-10T00:08:15Z"
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/datasets/MetadataDrivenCopyTask_6om_ControlDS')]",
+				"[concat(variables('workspaceId'), '/pipelines/MetadataDrivenCopyTask_6om_MiddleLevel')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/MetadataDrivenCopyTask_f64_BottomLevel')]",
+			"type": "Microsoft.Synapse/workspaces/pipelines",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"description": "This pipeline will copy objects from one group. The objects belonging to this group will be copied parallelly.",
+				"activities": [
+					{
+						"name": "ListObjectsFromOneGroup",
+						"description": "List objects from one group and iterate each of them to downstream activities",
+						"type": "ForEach",
+						"dependsOn": [],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@pipeline().parameters.ObjectsPerGroupToCopy",
+								"type": "Expression"
+							},
+							"activities": [
+								{
+									"name": "RouteJobsBasedOnLoadingBehavior",
+									"description": "Check the loading behavior for each object if it requires full load or incremental load. If it is Default or FullLoad case, do full load. If it is DeltaLoad case, do incremental load.",
+									"type": "Switch",
+									"dependsOn": [],
+									"userProperties": [],
+									"typeProperties": {
+										"on": {
+											"value": "@json(item().DataLoadingBehaviorSettings).dataLoadingBehavior",
+											"type": "Expression"
+										},
+										"cases": [
+											{
+												"value": "FullLoad",
+												"activities": [
+													{
+														"name": "FullLoadOneObject",
+														"description": "Take a full snapshot on this object and copy it to the destination",
+														"type": "Copy",
+														"dependsOn": [],
+														"policy": {
+															"timeout": "0.12:00:00",
+															"retry": 0,
+															"retryIntervalInSeconds": 30,
+															"secureOutput": false,
+															"secureInput": false
+														},
+														"userProperties": [
+															{
+																"name": "Source",
+																"value": "@{json(item().SourceObjectSettings).entityName}"
+															},
+															{
+																"name": "Destination",
+																"value": "@{json(item().SinkObjectSettings).fileSystem}/@{json(item().SinkObjectSettings).folderPath}/@{json(item().SinkObjectSettings).fileName}"
+															}
+														],
+														"typeProperties": {
+															"source": {
+																"type": "DynamicsSource"
+															},
+															"sink": {
+																"type": "ParquetSink",
+																"storeSettings": {
+																	"type": "AzureBlobFSWriteSettings"
+																},
+																"formatSettings": {
+																	"type": "ParquetWriteSettings"
+																}
+															},
+															"enableStaging": false,
+															"validateDataConsistency": false,
+															"translator": {
+																"value": "@json(item().CopyActivitySettings).translator",
+																"type": "Expression"
+															}
+														},
+														"inputs": [
+															{
+																"referenceName": "MetadataDrivenCopyTask_f64_SourceDS",
+																"type": "DatasetReference",
+																"parameters": {
+																	"cw_entityName": {
+																		"value": "@json(item().SourceObjectSettings).entityName",
+																		"type": "Expression"
+																	}
+																}
+															}
+														],
+														"outputs": [
+															{
+																"referenceName": "MetadataDrivenCopyTask_f64_DestinationDS",
+																"type": "DatasetReference",
+																"parameters": {
+																	"cw_compressionCodec": {
+																		"value": "@json(item().SinkObjectSettings).compressionCodec",
+																		"type": "Expression"
+																	},
+																	"cw_fileName": {
+																		"value": "@json(item().SinkObjectSettings).fileName",
+																		"type": "Expression"
+																	},
+																	"cw_folderPath": {
+																		"value": "@json(item().SinkObjectSettings).folderPath",
+																		"type": "Expression"
+																	},
+																	"cw_fileSystem": {
+																		"value": "@json(item().SinkObjectSettings).fileSystem",
+																		"type": "Expression"
+																	}
+																}
+															}
+														]
+													}
+												]
+											},
+											{
+												"value": "DeltaLoad",
+												"activities": [
+													{
+														"name": "GetMaxWatermarkValue",
+														"description": "Query the source object to get the max value from watermark column",
+														"type": "Lookup",
+														"dependsOn": [],
+														"policy": {
+															"timeout": "0.12:00:00",
+															"retry": 0,
+															"retryIntervalInSeconds": 30,
+															"secureOutput": false,
+															"secureInput": false
+														},
+														"userProperties": [],
+														"typeProperties": {
+															"source": {
+																"type": "DynamicsSource",
+																"query": {
+																	"value": "select max(@{json(item().DataLoadingBehaviorSettings).watermarkColumnName}) as CurrentMaxWaterMarkColumnValue from @{json(item().SourceObjectSettings).entityName}",
+																	"type": "Expression"
+																}
+															},
+															"dataset": {
+																"referenceName": "MetadataDrivenCopyTask_f64_SourceDS",
+																"type": "DatasetReference",
+																"parameters": {
+																	"cw_entityName": {
+																		"value": "@json(item().SourceObjectSettings).entityName",
+																		"type": "Expression"
+																	}
+																}
+															}
+														}
+													},
+													{
+														"name": "DeltaLoadOneObject",
+														"description": "Copy the changed data only from last time via comparing the value in watermark column to identify changes.",
+														"type": "Copy",
+														"dependsOn": [
+															{
+																"activity": "GetMaxWatermarkValue",
+																"dependencyConditions": [
+																	"Succeeded"
+																]
+															}
+														],
+														"policy": {
+															"timeout": "0.12:00:00",
+															"retry": 0,
+															"retryIntervalInSeconds": 30,
+															"secureOutput": false,
+															"secureInput": false
+														},
+														"userProperties": [
+															{
+																"name": "Source",
+																"value": "@{json(item().SourceObjectSettings).entityName}"
+															},
+															{
+																"name": "Destination",
+																"value": "@{json(item().SinkObjectSettings).fileSystem}/@{json(item().SinkObjectSettings).folderPath}/@{json(item().SinkObjectSettings).fileName}"
+															}
+														],
+														"typeProperties": {
+															"source": {
+																"type": "DynamicsSource",
+																"query": {
+																	"value": "<fetch>\n<entity name=\"@{json(item().SourceObjectSettings).entityName}\">\n<all-attributes />\n<filter type=\"and\">\n<condition attribute =\"@{json(item().DataLoadingBehaviorSettings).watermarkColumnName}\" operator=\"between\">\n<value>undefined</value>\n<value>undefined</value>\n</condition>\n</filter>\n</entity>\n</fetch>\n",
+																	"type": "Expression"
+																}
+															},
+															"sink": {
+																"type": "ParquetSink",
+																"storeSettings": {
+																	"type": "AzureBlobFSWriteSettings"
+																},
+																"formatSettings": {
+																	"type": "ParquetWriteSettings"
+																}
+															},
+															"enableStaging": false,
+															"validateDataConsistency": false,
+															"translator": {
+																"value": "@json(item().CopyActivitySettings).translator",
+																"type": "Expression"
+															}
+														},
+														"inputs": [
+															{
+																"referenceName": "MetadataDrivenCopyTask_f64_SourceDS",
+																"type": "DatasetReference",
+																"parameters": {
+																	"cw_entityName": {
+																		"value": "@json(item().SourceObjectSettings).entityName",
+																		"type": "Expression"
+																	}
+																}
+															}
+														],
+														"outputs": [
+															{
+																"referenceName": "MetadataDrivenCopyTask_f64_DestinationDS",
+																"type": "DatasetReference",
+																"parameters": {
+																	"cw_compressionCodec": {
+																		"value": "@json(item().SinkObjectSettings).compressionCodec",
+																		"type": "Expression"
+																	},
+																	"cw_fileName": {
+																		"value": "@{json(item().SinkObjectSettings).fileName}-@{json(item().DataLoadingBehaviorSettings).watermarkColumnStartValue}-@{activity('GetMaxWatermarkValue').output.firstRow.CurrentMaxWaterMarkColumnValue}",
+																		"type": "Expression"
+																	},
+																	"cw_folderPath": {
+																		"value": "@json(item().SinkObjectSettings).folderPath",
+																		"type": "Expression"
+																	},
+																	"cw_fileSystem": {
+																		"value": "@json(item().SinkObjectSettings).fileSystem",
+																		"type": "Expression"
+																	}
+																}
+															}
+														]
+													},
+													{
+														"name": "UpdateWatermarkColumnValue",
+														"type": "SqlServerStoredProcedure",
+														"dependsOn": [
+															{
+																"activity": "DeltaLoadOneObject",
+																"dependencyConditions": [
+																	"Succeeded"
+																]
+															}
+														],
+														"policy": {
+															"timeout": "0.12:00:00",
+															"retry": 0,
+															"retryIntervalInSeconds": 30,
+															"secureOutput": false,
+															"secureInput": false
+														},
+														"userProperties": [],
+														"typeProperties": {
+															"storedProcedureName": "[dbo].[UpdateWatermarkColumnValue_f64]",
+															"storedProcedureParameters": {
+																"Id": {
+																	"value": {
+																		"value": "@item().Id",
+																		"type": "Expression"
+																	},
+																	"type": "Int32"
+																},
+																"watermarkColumnStartValue": {
+																	"value": {
+																		"value": "@activity('GetMaxWatermarkValue').output.firstRow.CurrentMaxWaterMarkColumnValue",
+																		"type": "Expression"
+																	},
+																	"type": "String"
+																}
+															}
+														},
+														"linkedServiceName": {
+															"referenceName": "linkedService1",
+															"type": "LinkedServiceReference"
+														}
+													}
+												]
+											}
+										],
+										"defaultActivities": [
+											{
+												"name": "DefaultFullLoadOneObject",
+												"description": "Take a full snapshot on this object and copy it to the destination",
+												"type": "Copy",
+												"dependsOn": [],
+												"policy": {
+													"timeout": "0.12:00:00",
+													"retry": 0,
+													"retryIntervalInSeconds": 30,
+													"secureOutput": false,
+													"secureInput": false
+												},
+												"userProperties": [
+													{
+														"name": "Source",
+														"value": "@{json(item().SourceObjectSettings).entityName}"
+													},
+													{
+														"name": "Destination",
+														"value": "@{json(item().SinkObjectSettings).fileSystem}/@{json(item().SinkObjectSettings).folderPath}/@{json(item().SinkObjectSettings).fileName}"
+													}
+												],
+												"typeProperties": {
+													"source": {
+														"type": "DynamicsSource"
+													},
+													"sink": {
+														"type": "ParquetSink",
+														"storeSettings": {
+															"type": "AzureBlobFSWriteSettings"
+														},
+														"formatSettings": {
+															"type": "ParquetWriteSettings"
+														}
+													},
+													"enableStaging": false,
+													"validateDataConsistency": false,
+													"translator": {
+														"value": "@json(item().CopyActivitySettings).translator",
+														"type": "Expression"
+													}
+												},
+												"inputs": [
+													{
+														"referenceName": "MetadataDrivenCopyTask_f64_SourceDS",
+														"type": "DatasetReference",
+														"parameters": {
+															"cw_entityName": {
+																"value": "@json(item().SourceObjectSettings).entityName",
+																"type": "Expression"
+															}
+														}
+													}
+												],
+												"outputs": [
+													{
+														"referenceName": "MetadataDrivenCopyTask_f64_DestinationDS",
+														"type": "DatasetReference",
+														"parameters": {
+															"cw_compressionCodec": {
+																"value": "@json(item().SinkObjectSettings).compressionCodec",
+																"type": "Expression"
+															},
+															"cw_fileName": {
+																"value": "@json(item().SinkObjectSettings).fileName",
+																"type": "Expression"
+															},
+															"cw_folderPath": {
+																"value": "@json(item().SinkObjectSettings).folderPath",
+																"type": "Expression"
+															},
+															"cw_fileSystem": {
+																"value": "@json(item().SinkObjectSettings).fileSystem",
+																"type": "Expression"
+															}
+														}
+													}
+												]
+											}
+										]
+									}
+								}
+							]
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"parameters": {
+					"ObjectsPerGroupToCopy": {
+						"type": "Array"
+					}
+				},
+				"folder": {
+					"name": "MetadataDrivenCopyTask_f64_20230106"
+				},
+				"annotations": [],
+				"lastPublishTime": "2023-01-06T04:12:27Z"
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/datasets/MetadataDrivenCopyTask_f64_SourceDS')]",
+				"[concat(variables('workspaceId'), '/datasets/MetadataDrivenCopyTask_f64_DestinationDS')]",
+				"[concat(variables('workspaceId'), '/linkedServices/linkedService1')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/MetadataDrivenCopyTask_f64_MiddleLevel')]",
+			"type": "Microsoft.Synapse/workspaces/pipelines",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"description": "This pipeline will copy one batch of objects. The objects belonging to this batch will be copied parallelly.",
+				"activities": [
+					{
+						"name": "DivideOneBatchIntoMultipleGroups",
+						"description": "Divide objects from single batch into multiple sub parallel groups to avoid reaching the output limit of lookup activity.",
+						"type": "ForEach",
+						"dependsOn": [],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@range(0, add(div(pipeline().parameters.SumOfObjectsToCopyForCurrentBatch, pipeline().parameters.MaxNumberOfObjectsReturnedFromLookupActivity),\n                    if(equals(mod(pipeline().parameters.SumOfObjectsToCopyForCurrentBatch, pipeline().parameters.MaxNumberOfObjectsReturnedFromLookupActivity), 0), 0, 1)))",
+								"type": "Expression"
+							},
+							"isSequential": false,
+							"batchCount": 50,
+							"activities": [
+								{
+									"name": "GetObjectsPerGroupToCopy",
+									"description": "Get objects (tables etc.) from control table required to be copied in this group. The order of objects to be copied following the TaskId in control table (ORDER BY [TaskId] DESC).",
+									"type": "Lookup",
+									"dependsOn": [],
+									"policy": {
+										"timeout": "0.12:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"source": {
+											"type": "AzureSqlSource",
+											"sqlReaderQuery": {
+												"value": "WITH OrderedControlTable AS (\n                             SELECT *, ROW_NUMBER() OVER (ORDER BY [TaskId], [Id] DESC) AS RowNumber\n                             FROM @{pipeline().parameters.MainControlTableName}\n                             where TopLevelPipelineName = '@{pipeline().parameters.TopLevelPipelineName}'\n                             and TriggerName like '%@{pipeline().parameters.TriggerName}%' and CopyEnabled = 1)\n                             SELECT * FROM OrderedControlTable WHERE RowNumber BETWEEN @{add(mul(int(item()),pipeline().parameters.MaxNumberOfObjectsReturnedFromLookupActivity),\n                             add(mul(pipeline().parameters.SumOfObjectsToCopyForCurrentBatch, pipeline().parameters.CurrentSequentialNumberOfBatch), 1))}\n                             AND @{min(add(mul(int(item()), pipeline().parameters.MaxNumberOfObjectsReturnedFromLookupActivity), add(mul(pipeline().parameters.SumOfObjectsToCopyForCurrentBatch, pipeline().parameters.CurrentSequentialNumberOfBatch),\n                             pipeline().parameters.MaxNumberOfObjectsReturnedFromLookupActivity)),\n                            mul(pipeline().parameters.SumOfObjectsToCopyForCurrentBatch, add(pipeline().parameters.CurrentSequentialNumberOfBatch,1)), pipeline().parameters.SumOfObjectsToCopy)}",
+												"type": "Expression"
+											},
+											"partitionOption": "None"
+										},
+										"dataset": {
+											"referenceName": "MetadataDrivenCopyTask_f64_ControlDS",
+											"type": "DatasetReference",
+											"parameters": {}
+										},
+										"firstRowOnly": false
+									}
+								},
+								{
+									"name": "CopyObjectsInOneGroup",
+									"description": "Execute another pipeline to copy objects from one group. The objects belonging to this group will be copied parallelly.",
+									"type": "ExecutePipeline",
+									"dependsOn": [
+										{
+											"activity": "GetObjectsPerGroupToCopy",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"userProperties": [],
+									"typeProperties": {
+										"pipeline": {
+											"referenceName": "MetadataDrivenCopyTask_f64_BottomLevel",
+											"type": "PipelineReference"
+										},
+										"waitOnCompletion": true,
+										"parameters": {
+											"ObjectsPerGroupToCopy": {
+												"value": "@activity('GetObjectsPerGroupToCopy').output.value",
+												"type": "Expression"
+											}
+										}
+									}
+								}
+							]
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"parameters": {
+					"MaxNumberOfObjectsReturnedFromLookupActivity": {
+						"type": "Int"
+					},
+					"TopLevelPipelineName": {
+						"type": "String"
+					},
+					"TriggerName": {
+						"type": "String"
+					},
+					"CurrentSequentialNumberOfBatch": {
+						"type": "Int"
+					},
+					"SumOfObjectsToCopy": {
+						"type": "Int"
+					},
+					"SumOfObjectsToCopyForCurrentBatch": {
+						"type": "Int"
+					},
+					"MainControlTableName": {
+						"type": "String"
+					}
+				},
+				"folder": {
+					"name": "MetadataDrivenCopyTask_f64_20230106"
+				},
+				"annotations": [],
+				"lastPublishTime": "2023-01-06T04:12:33Z"
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/datasets/MetadataDrivenCopyTask_f64_ControlDS')]",
+				"[concat(variables('workspaceId'), '/pipelines/MetadataDrivenCopyTask_f64_BottomLevel')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/MetadataDrivenCopyTask_f64_TopLevel')]",
+			"type": "Microsoft.Synapse/workspaces/pipelines",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"description": "This pipeline will count the total number of objects (tables etc.) required to be copied in this run, come up with the number of sequential batches based on the max allowed concurrent copy task, and then execute another pipeline to copy different batches sequentially.",
+				"activities": [
+					{
+						"name": "GetSumOfObjectsToCopy",
+						"description": "Count the total number of objects (tables etc.) required to be copied in this run.",
+						"type": "Lookup",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"sqlReaderQuery": {
+									"value": "SELECT count(*) as count FROM @{pipeline().parameters.MainControlTableName} where TopLevelPipelineName='@{pipeline().Pipeline}' and TriggerName like '%@{pipeline().TriggerName}%' and CopyEnabled = 1",
+									"type": "Expression"
+								},
+								"partitionOption": "None"
+							},
+							"dataset": {
+								"referenceName": "MetadataDrivenCopyTask_f64_ControlDS",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						}
+					},
+					{
+						"name": "CopyBatchesOfObjectsSequentially",
+						"description": "Come up with the number of sequential batches based on the max allowed concurrent copy tasks, and then execute another pipeline to copy different batches sequentially.",
+						"type": "ForEach",
+						"dependsOn": [
+							{
+								"activity": "GetSumOfObjectsToCopy",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@range(0, add(div(activity('GetSumOfObjectsToCopy').output.firstRow.count,\n                    pipeline().parameters.MaxNumberOfConcurrentTasks),\n                    if(equals(mod(activity('GetSumOfObjectsToCopy').output.firstRow.count,\n                    pipeline().parameters.MaxNumberOfConcurrentTasks), 0), 0, 1)))",
+								"type": "Expression"
+							},
+							"isSequential": true,
+							"activities": [
+								{
+									"name": "CopyObjectsInOneBatch",
+									"description": "Execute another pipeline to copy one batch of objects. The objects belonging to this batch will be copied parallelly.",
+									"type": "ExecutePipeline",
+									"dependsOn": [],
+									"userProperties": [],
+									"typeProperties": {
+										"pipeline": {
+											"referenceName": "MetadataDrivenCopyTask_f64_MiddleLevel",
+											"type": "PipelineReference"
+										},
+										"waitOnCompletion": true,
+										"parameters": {
+											"MaxNumberOfObjectsReturnedFromLookupActivity": {
+												"value": "@pipeline().parameters.MaxNumberOfObjectsReturnedFromLookupActivity",
+												"type": "Expression"
+											},
+											"TopLevelPipelineName": {
+												"value": "@{pipeline().Pipeline}",
+												"type": "Expression"
+											},
+											"TriggerName": {
+												"value": "@{pipeline().TriggerName}",
+												"type": "Expression"
+											},
+											"CurrentSequentialNumberOfBatch": {
+												"value": "@item()",
+												"type": "Expression"
+											},
+											"SumOfObjectsToCopy": {
+												"value": "@activity('GetSumOfObjectsToCopy').output.firstRow.count",
+												"type": "Expression"
+											},
+											"SumOfObjectsToCopyForCurrentBatch": {
+												"value": "@min(pipeline().parameters.MaxNumberOfConcurrentTasks, activity('GetSumOfObjectsToCopy').output.firstRow.count)",
+												"type": "Expression"
+											},
+											"MainControlTableName": {
+												"value": "@pipeline().parameters.MainControlTableName",
+												"type": "Expression"
+											}
+										}
+									}
+								}
+							]
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"parameters": {
+					"MaxNumberOfObjectsReturnedFromLookupActivity": {
+						"type": "Int",
+						"defaultValue": 5000
+					},
+					"MaxNumberOfConcurrentTasks": {
+						"type": "Int",
+						"defaultValue": 20
+					},
+					"MainControlTableName": {
+						"type": "String",
+						"defaultValue": "dbo.MainControlTable_f64"
+					}
+				},
+				"folder": {
+					"name": "MetadataDrivenCopyTask_f64_20230106"
+				},
+				"annotations": [
+					"MetadataDrivenSolution"
+				],
+				"lastPublishTime": "2023-01-06T04:12:36Z"
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/datasets/MetadataDrivenCopyTask_f64_ControlDS')]",
+				"[concat(variables('workspaceId'), '/pipelines/MetadataDrivenCopyTask_f64_MiddleLevel')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/Pipeline 1')]",
+			"type": "Microsoft.Synapse/workspaces/pipelines",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"activities": [
+					{
+						"name": "Dataflow1",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "Dataflow1",
+								"type": "DataFlowReference",
+								"parameters": {},
+								"datasetParameters": {
+									"source1": {},
+									"sink1": {}
+								}
+							},
+							"staging": {},
+							"compute": {
+								"coreCount": 8,
+								"computeType": "General"
+							},
+							"traceLevel": "Fine"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"annotations": [],
+				"lastPublishTime": "2023-02-03T05:25:39Z"
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/dataflows/Dataflow1')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/Pipeline 2')]",
+			"type": "Microsoft.Synapse/workspaces/pipelines",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"activities": [
+					{
+						"name": "Copy data1",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "CommonDataServiceForAppsSource"
+							},
+							"sink": {
+								"type": "JsonSink",
+								"storeSettings": {
+									"type": "AzureBlobFSWriteSettings",
+									"copyBehavior": "PreserveHierarchy"
+								},
+								"formatSettings": {
+									"type": "JsonWriteSettings",
+									"filePattern": "arrayOfObjects"
+								}
+							},
+							"enableStaging": false
+						},
+						"inputs": [
+							{
+								"referenceName": "DataverseEntity_EntityMap",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "Json1",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"annotations": [],
+				"lastPublishTime": "2023-02-03T05:24:23Z"
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/datasets/DataverseEntity_EntityMap')]",
+				"[concat(variables('workspaceId'), '/datasets/Json1')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/adls2_delimited_text_to_sql')]",
+			"type": "Microsoft.Synapse/workspaces/pipelines",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"description": "Pipeline - parameterised data lake (adls2) delimited text source to parameterised azure sql server table - sql login option sink",
+				"activities": [
+					{
+						"name": "Copy delimited text from adls2 to sql",
+						"type": "Copy",
+						"dependsOn": [
+							{
+								"activity": "Set az_sql_pre_copy_script",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.00:30:00",
+							"retry": 2,
+							"retryIntervalInSeconds": 60,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "DelimitedTextSource",
+								"additionalColumns": [
+									{
+										"name": "pipeline_name",
+										"value": {
+											"value": "@pipeline().Pipeline",
+											"type": "Expression"
+										}
+									},
+									{
+										"name": "pipieline_run_id",
+										"value": {
+											"value": "@pipeline().RunId",
+											"type": "Expression"
+										}
+									},
+									{
+										"name": "ingest_timestamp",
+										"value": {
+											"value": "@utcnow()",
+											"type": "Expression"
+										}
+									}
+								],
+								"storeSettings": {
+									"type": "AzureBlobFSReadSettings",
+									"recursive": true,
+									"enablePartitionDiscovery": false
+								},
+								"formatSettings": {
+									"type": "DelimitedTextReadSettings"
+								}
+							},
+							"sink": {
+								"type": "AzureSqlSink",
+								"writeBatchTimeout": {
+									"value": "@{pipeline().parameters.az_sql_write_batch_timeout}",
+									"type": "Expression"
+								},
+								"preCopyScript": {
+									"value": "@{variables('az_sql_pre_copy_script')}",
+									"type": "Expression"
+								},
+								"writeBehavior": "insert",
+								"sqlWriterUseTableLock": false,
+								"tableOption": "autoCreate",
+								"disableMetricsCollection": false
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "ds_adsl2_delimited_text",
+								"type": "DatasetReference",
+								"parameters": {
+									"adls2_endpoint": {
+										"value": "@pipeline().parameters.adls2_endpoint",
+										"type": "Expression"
+									},
+									"adls2_container_name": {
+										"value": "@pipeline().parameters.adls2_container_name",
+										"type": "Expression"
+									},
+									"adls2_directory_name": {
+										"value": "@pipeline().parameters.adls2_directory_name",
+										"type": "Expression"
+									},
+									"adls2_file_name": {
+										"value": "@pipeline().parameters.adls2_file_name",
+										"type": "Expression"
+									},
+									"compression_type": {
+										"value": "@pipeline().parameters.file_compression_type",
+										"type": "Expression"
+									},
+									"compression_level": {
+										"value": "@pipeline().parameters.file_compression_level",
+										"type": "Expression"
+									},
+									"column_delimiter": {
+										"value": "@pipeline().parameters.file_column_delimiter",
+										"type": "Expression"
+									},
+									"encoding": {
+										"value": "@pipeline().parameters.file_encoding",
+										"type": "Expression"
+									},
+									"escape_character": {
+										"value": "@pipeline().parameters.file_escape_character",
+										"type": "Expression"
+									},
+									"quote_character": {
+										"value": "@pipeline().parameters.file_quote_character",
+										"type": "Expression"
+									},
+									"first_row_as_header": {
+										"value": "@pipeline().parameters.file_first_row_as_header",
+										"type": "Expression"
+									}
+								}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "ds_az_sql_login",
+								"type": "DatasetReference",
+								"parameters": {
+									"az_sql_server_name": {
+										"value": "@pipeline().parameters.az_sql_server_name",
+										"type": "Expression"
+									},
+									"az_sql_database_name": {
+										"value": "@pipeline().parameters.az_sql_database_name",
+										"type": "Expression"
+									},
+									"az_sql_login_user_name": {
+										"value": "@pipeline().parameters.az_sql_login_user_name",
+										"type": "Expression"
+									},
+									"az_sql_login_password_kv_URI": {
+										"value": "@pipeline().parameters.az_sql_login_password_kv_URI",
+										"type": "Expression"
+									},
+									"az_sql_login_password_kv_secret_name": {
+										"value": "@pipeline().parameters.az_sql_login_password_kv_secret_name",
+										"type": "Expression"
+									},
+									"az_sql_schema_name": {
+										"value": "@pipeline().parameters.az_sql_schema_name",
+										"type": "Expression"
+									},
+									"az_sql_table_name": {
+										"value": "@pipeline().parameters.az_sql_table_name",
+										"type": "Expression"
+									}
+								}
+							}
+						]
+					},
+					{
+						"name": "Set az_sql_pre_copy_script",
+						"type": "SetVariable",
+						"dependsOn": [],
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "az_sql_pre_copy_script",
+							"value": {
+								"value": "@if(\nequals(pipeline().parameters.az_sql_table_drop_pre_copy, true),\nconcat('DROP TABLE IF EXISTS [', pipeline().parameters.az_sql_schema_name,'].[', pipeline().parameters.az_sql_table_name, ']'),\n'' \n)",
+								"type": "Expression"
+							}
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"parameters": {
+					"az_sql_server_name": {
+						"type": "string",
+						"defaultValue": "wahpa-dev-aze-sql.database.windows.net"
+					},
+					"az_sql_database_name": {
+						"type": "string",
+						"defaultValue": "SampleDB"
+					},
+					"az_sql_login_user_name": {
+						"type": "string",
+						"defaultValue": "User51126629"
+					},
+					"az_sql_login_password_kv_URI": {
+						"type": "string",
+						"defaultValue": "https://wahpa-dev-aze-kv.vault.azure.net/"
+					},
+					"az_sql_login_password_kv_secret_name": {
+						"type": "string",
+						"defaultValue": "wahpa-dev-aze-sql-admin-password"
+					},
+					"az_sql_schema_name": {
+						"type": "string",
+						"defaultValue": "dbo"
+					},
+					"az_sql_table_name": {
+						"type": "string",
+						"defaultValue": "airtravel"
+					},
+					"az_sql_write_batch_timeout": {
+						"type": "string",
+						"defaultValue": "00:30:00"
+					},
+					"adls2_endpoint": {
+						"type": "string",
+						"defaultValue": "https://wahpadevazestraw.dfs.core.windows.net/"
+					},
+					"adls2_container_name": {
+						"type": "string",
+						"defaultValue": "test-container"
+					},
+					"adls2_directory_name": {
+						"type": "string",
+						"defaultValue": "test_folder"
+					},
+					"adls2_file_name": {
+						"type": "string",
+						"defaultValue": "airtravel.csv"
+					},
+					"file_compression_type": {
+						"type": "string",
+						"defaultValue": "None"
+					},
+					"file_compression_level": {
+						"type": "string",
+						"defaultValue": "Optimal"
+					},
+					"file_column_delimiter": {
+						"type": "string",
+						"defaultValue": ","
+					},
+					"file_encoding": {
+						"type": "string",
+						"defaultValue": "UTF-8"
+					},
+					"file_escape_character": {
+						"type": "string",
+						"defaultValue": "\\"
+					},
+					"file_quote_character": {
+						"type": "string",
+						"defaultValue": "\""
+					},
+					"file_first_row_as_header": {
+						"type": "bool",
+						"defaultValue": true
+					},
+					"az_sql_table_drop_pre_copy": {
+						"type": "bool",
+						"defaultValue": true
+					}
+				},
+				"variables": {
+					"az_sql_pre_copy_script": {
+						"type": "String"
+					}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/datasets/ds_adsl2_delimited_text')]",
+				"[concat(variables('workspaceId'), '/datasets/ds_az_sql_login')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/adls2_excel_to_sql')]",
+			"type": "Microsoft.Synapse/workspaces/pipelines",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"description": "Pipeline - parameterised data lake (adls2) excel source to parameterised azure sql server table - sql login option sink",
+				"activities": [
+					{
+						"name": "Copy excel from adls2 to sql",
+						"type": "Copy",
+						"dependsOn": [
+							{
+								"activity": "Set az_sql_pre_copy_script",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.00:30:00",
+							"retry": 2,
+							"retryIntervalInSeconds": 60,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "ExcelSource",
+								"additionalColumns": [
+									{
+										"name": "pipeline_name",
+										"value": {
+											"value": "@pipeline().Pipeline",
+											"type": "Expression"
+										}
+									},
+									{
+										"name": "pipieline_run_id",
+										"value": {
+											"value": "@pipeline().RunId",
+											"type": "Expression"
+										}
+									},
+									{
+										"name": "ingest_timestamp",
+										"value": {
+											"value": "@utcnow()",
+											"type": "Expression"
+										}
+									}
+								],
+								"storeSettings": {
+									"type": "AzureBlobFSReadSettings",
+									"recursive": true,
+									"enablePartitionDiscovery": false
+								}
+							},
+							"sink": {
+								"type": "AzureSqlSink",
+								"writeBatchTimeout": {
+									"value": "@{pipeline().parameters.az_sql_write_batch_timeout}",
+									"type": "Expression"
+								},
+								"preCopyScript": {
+									"value": "@{variables('az_sql_pre_copy_script')}",
+									"type": "Expression"
+								},
+								"writeBehavior": "insert",
+								"sqlWriterUseTableLock": false,
+								"tableOption": "autoCreate",
+								"disableMetricsCollection": false
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "ds_adls2_excel",
+								"type": "DatasetReference",
+								"parameters": {
+									"adls2_endpoint": {
+										"value": "@pipeline().parameters.adls2_endpoint",
+										"type": "Expression"
+									},
+									"adls2_container_name": {
+										"value": "@pipeline().parameters.adls2_container_name",
+										"type": "Expression"
+									},
+									"adls2_directory_name": {
+										"value": "@pipeline().parameters.adls2_directory_name",
+										"type": "Expression"
+									},
+									"adls2_file_name": {
+										"value": "@pipeline().parameters.adls2_file_name",
+										"type": "Expression"
+									},
+									"file_compression_type": {
+										"value": "@pipeline().parameters.file_compression_type",
+										"type": "Expression"
+									},
+									"file_compression_level": {
+										"value": "@pipeline().parameters.file_compression_level",
+										"type": "Expression"
+									},
+									"file_sheet_name": {
+										"value": "@pipeline().parameters.file_sheet_name",
+										"type": "Expression"
+									},
+									"file_first_row_as_header": {
+										"value": "@pipeline().parameters.file_first_row_as_header",
+										"type": "Expression"
+									}
+								}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "ds_az_sql_login",
+								"type": "DatasetReference",
+								"parameters": {
+									"az_sql_server_name": {
+										"value": "@pipeline().parameters.az_sql_server_name",
+										"type": "Expression"
+									},
+									"az_sql_database_name": {
+										"value": "@pipeline().parameters.az_sql_database_name",
+										"type": "Expression"
+									},
+									"az_sql_login_user_name": {
+										"value": "@pipeline().parameters.az_sql_login_user_name",
+										"type": "Expression"
+									},
+									"az_sql_login_password_kv_URI": {
+										"value": "@pipeline().parameters.az_sql_login_password_kv_URI",
+										"type": "Expression"
+									},
+									"az_sql_login_password_kv_secret_name": {
+										"value": "@pipeline().parameters.az_sql_login_password_kv_secret_name",
+										"type": "Expression"
+									},
+									"az_sql_schema_name": {
+										"value": "@pipeline().parameters.az_sql_schema_name",
+										"type": "Expression"
+									},
+									"az_sql_table_name": {
+										"value": "@pipeline().parameters.az_sql_table_name",
+										"type": "Expression"
+									}
+								}
+							}
+						]
+					},
+					{
+						"name": "Set az_sql_pre_copy_script",
+						"type": "SetVariable",
+						"dependsOn": [],
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "az_sql_pre_copy_script",
+							"value": {
+								"value": "@if(\nequals(pipeline().parameters.az_sql_table_drop_pre_copy, true),\nconcat('DROP TABLE IF EXISTS [', pipeline().parameters.az_sql_schema_name,'].[', pipeline().parameters.az_sql_table_name, ']'),\n'' \n)",
+								"type": "Expression"
+							}
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"parameters": {
+					"az_sql_server_name": {
+						"type": "string",
+						"defaultValue": "wahpa-dev-aze-sql.database.windows.net"
+					},
+					"az_sql_database_name": {
+						"type": "string",
+						"defaultValue": "SampleDB"
+					},
+					"az_sql_login_user_name": {
+						"type": "string",
+						"defaultValue": "User51126629"
+					},
+					"az_sql_login_password_kv_URI": {
+						"type": "string",
+						"defaultValue": "https://wahpa-dev-aze-kv.vault.azure.net/"
+					},
+					"az_sql_login_password_kv_secret_name": {
+						"type": "string",
+						"defaultValue": "wahpa-dev-aze-sql-admin-password"
+					},
+					"az_sql_schema_name": {
+						"type": "string",
+						"defaultValue": "dbo"
+					},
+					"az_sql_table_name": {
+						"type": "string",
+						"defaultValue": "extractcwa_client"
+					},
+					"az_sql_write_batch_timeout": {
+						"type": "string",
+						"defaultValue": "00:30:00"
+					},
+					"adls2_endpoint": {
+						"type": "string",
+						"defaultValue": "https://wahpadevazestraw.dfs.core.windows.net/"
+					},
+					"adls2_container_name": {
+						"type": "string",
+						"defaultValue": "test-container"
+					},
+					"adls2_directory_name": {
+						"type": "string",
+						"defaultValue": "test_folder"
+					},
+					"adls2_file_name": {
+						"type": "string",
+						"defaultValue": "extractCWA.xlsx"
+					},
+					"file_compression_type": {
+						"type": "string",
+						"defaultValue": "None"
+					},
+					"file_compression_level": {
+						"type": "string",
+						"defaultValue": "Optimal"
+					},
+					"file_sheet_name": {
+						"type": "string",
+						"defaultValue": "Client"
+					},
+					"file_first_row_as_header": {
+						"type": "bool",
+						"defaultValue": true
+					},
+					"az_sql_table_drop_pre_copy": {
+						"type": "bool",
+						"defaultValue": true
+					}
+				},
+				"variables": {
+					"az_sql_pre_copy_script": {
+						"type": "String"
+					}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/datasets/ds_adls2_excel')]",
+				"[concat(variables('workspaceId'), '/datasets/ds_az_sql_login')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/adls_excel_to_sql_multisheet_master')]",
+			"type": "Microsoft.Synapse/workspaces/pipelines",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"description": "Pipeline - Loops through each sheet in a excel spreadsheet and runs adls2_excel_to_sql for each sheet",
+				"activities": [
+					{
+						"name": "For each sheet in excel spreadsheet",
+						"type": "ForEach",
+						"dependsOn": [],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@pipeline().parameters.file_sheet_name_list",
+								"type": "Expression"
+							},
+							"activities": [
+								{
+									"name": "Execute adls2_excel_to_sql",
+									"type": "ExecutePipeline",
+									"dependsOn": [],
+									"userProperties": [],
+									"typeProperties": {
+										"pipeline": {
+											"referenceName": "adls2_excel_to_sql",
+											"type": "PipelineReference"
+										},
+										"waitOnCompletion": true,
+										"parameters": {
+											"az_sql_server_name": {
+												"value": "@pipeline().parameters.az_sql_server_name",
+												"type": "Expression"
+											},
+											"az_sql_database_name": {
+												"value": "@pipeline().parameters.az_sql_database_name",
+												"type": "Expression"
+											},
+											"az_sql_login_user_name": {
+												"value": "@pipeline().parameters.az_sql_login_user_name",
+												"type": "Expression"
+											},
+											"az_sql_login_password_kv_URI": {
+												"value": "@pipeline().parameters.az_sql_login_password_kv_URI",
+												"type": "Expression"
+											},
+											"az_sql_login_password_kv_secret_name": {
+												"value": "@pipeline().parameters.az_sql_login_password_kv_secret_name",
+												"type": "Expression"
+											},
+											"az_sql_schema_name": {
+												"value": "@pipeline().parameters.az_sql_schema_name",
+												"type": "Expression"
+											},
+											"az_sql_table_name": {
+												"value": "@concat(\nsplit(toLower(pipeline().parameters.adls2_file_name), '.')[0]\n,'_'\n,item()  \n)",
+												"type": "Expression"
+											},
+											"az_sql_write_batch_timeout": {
+												"value": "@pipeline().parameters.az_sql_write_batch_timeout",
+												"type": "Expression"
+											},
+											"adls2_endpoint": {
+												"value": "@pipeline().parameters.adls2_endpoint",
+												"type": "Expression"
+											},
+											"adls2_container_name": {
+												"value": "@pipeline().parameters.adls2_container_name",
+												"type": "Expression"
+											},
+											"adls2_directory_name": {
+												"value": "@pipeline().parameters.adls2_directory_name",
+												"type": "Expression"
+											},
+											"adls2_file_name": {
+												"value": "@pipeline().parameters.adls2_file_name",
+												"type": "Expression"
+											},
+											"file_compression_type": {
+												"value": "@pipeline().parameters.file_compression_type",
+												"type": "Expression"
+											},
+											"file_compression_level": {
+												"value": "@pipeline().parameters.file_compression_level",
+												"type": "Expression"
+											},
+											"file_sheet_name": {
+												"value": "@item()",
+												"type": "Expression"
+											},
+											"file_first_row_as_header": {
+												"value": "@pipeline().parameters.file_first_row_as_header",
+												"type": "Expression"
+											},
+											"az_sql_table_drop_pre_copy": {
+												"value": "@pipeline().parameters.az_sql_table_drop_pre_copy",
+												"type": "Expression"
+											}
+										}
+									}
+								}
+							]
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"parameters": {
+					"az_sql_server_name": {
+						"type": "string",
+						"defaultValue": "wahpa-dev-aze-sql.database.windows.net"
+					},
+					"az_sql_database_name": {
+						"type": "string",
+						"defaultValue": "SampleDB"
+					},
+					"az_sql_login_user_name": {
+						"type": "string",
+						"defaultValue": "User51126629"
+					},
+					"az_sql_login_password_kv_URI": {
+						"type": "string",
+						"defaultValue": "https://wahpa-dev-aze-kv.vault.azure.net/"
+					},
+					"az_sql_login_password_kv_secret_name": {
+						"type": "string",
+						"defaultValue": "wahpa-dev-aze-sql-admin-password"
+					},
+					"az_sql_schema_name": {
+						"type": "string",
+						"defaultValue": "dbo"
+					},
+					"az_sql_write_batch_timeout": {
+						"type": "string",
+						"defaultValue": "00:30:00"
+					},
+					"adls2_endpoint": {
+						"type": "string",
+						"defaultValue": "https://wahpadevazestraw.dfs.core.windows.net/"
+					},
+					"adls2_container_name": {
+						"type": "string",
+						"defaultValue": "test-container"
+					},
+					"adls2_directory_name": {
+						"type": "string",
+						"defaultValue": "test_folder"
+					},
+					"adls2_file_name": {
+						"type": "string",
+						"defaultValue": "extractCWA.xlsx"
+					},
+					"file_compression_type": {
+						"type": "string",
+						"defaultValue": "None"
+					},
+					"file_compression_level": {
+						"type": "string",
+						"defaultValue": "Optimal"
+					},
+					"file_sheet_name": {
+						"type": "string",
+						"defaultValue": "Sheet1"
+					},
+					"file_first_row_as_header": {
+						"type": "bool",
+						"defaultValue": true
+					},
+					"az_sql_table_drop_pre_copy": {
+						"type": "bool",
+						"defaultValue": true
+					},
+					"file_sheet_name_list": {
+						"type": "array",
+						"defaultValue": [
+							"Sheet1",
+							"Sheet2",
+							"Sheet3"
+						]
+					}
+				},
+				"variables": {
+					"az_sql_pre_copy_script": {
+						"type": "String"
+					}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/pipelines/adls2_excel_to_sql')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/Dataset')]",
+			"type": "Microsoft.Synapse/workspaces/datasets",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureDataLakeStorage1",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Json",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": "test.json",
+						"fileSystem": "dynamicsdump"
+					}
+				},
+				"schema": {
+					"type": "object",
+					"properties": {
+						"componentstate": {
+							"type": "integer"
+						},
+						"createdby": {
+							"type": "string"
+						},
+						"createdon": {
+							"type": "string"
+						},
+						"createdonbehalfby": {
+							"type": "null"
+						},
+						"createdonbehalfbyname": {
+							"type": "null"
+						},
+						"createdonbehalfbyyominame": {
+							"type": "null"
+						},
+						"entitymapid": {
+							"type": "string"
+						},
+						"entitymapidunique": {
+							"type": "string"
+						},
+						"ismanaged": {
+							"type": "boolean"
+						},
+						"modifiedby": {
+							"type": "string"
+						},
+						"modifiedon": {
+							"type": "string"
+						},
+						"modifiedonbehalfby": {
+							"type": "null"
+						},
+						"modifiedonbehalfbyname": {
+							"type": "null"
+						},
+						"modifiedonbehalfbyyominame": {
+							"type": "null"
+						},
+						"organizationid": {
+							"type": "string"
+						},
+						"overwritetime": {
+							"type": "null"
+						},
+						"solutionid": {
+							"type": "string"
+						},
+						"sourceentityname": {
+							"type": "string"
+						},
+						"supportingsolutionid": {
+							"type": "null"
+						},
+						"targetentityname": {
+							"type": "string"
+						},
+						"versionnumber": {
+							"type": "null"
+						}
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/linkedServices/AzureDataLakeStorage1')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/DataverseEntity_EntityMap')]",
+			"type": "Microsoft.Synapse/workspaces/datasets",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "Dataverse1",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "CommonDataServiceForAppsEntity",
+				"schema": [],
+				"typeProperties": {
+					"entityName": "entitymap"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/linkedServices/Dataverse1')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/DataverseEntity_Solution')]",
+			"type": "Microsoft.Synapse/workspaces/datasets",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "Dataverse1",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "CommonDataServiceForAppsEntity",
+				"schema": [],
+				"typeProperties": {
+					"entityName": "solution"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/linkedServices/Dataverse1')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/DynamicsEntity1')]",
+			"type": "Microsoft.Synapse/workspaces/datasets",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "Dynamics1",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DynamicsEntity",
+				"schema": [],
+				"typeProperties": {
+					"entityName": "cra11_clientsurveyform"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/linkedServices/Dynamics1')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/DynamicsEntity1_copy1')]",
+			"type": "Microsoft.Synapse/workspaces/datasets",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "Dynamics1",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DynamicsEntity",
+				"schema": [],
+				"typeProperties": {
+					"entityName": "adx_webformmetadata"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/linkedServices/Dynamics1')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/DynamicsEntity_EntityLisdting')]",
+			"type": "Microsoft.Synapse/workspaces/datasets",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "Dynamics1",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DynamicsEntity",
+				"schema": [],
+				"typeProperties": {
+					"entityName": "entity"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/linkedServices/Dynamics1')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/Json1')]",
+			"type": "Microsoft.Synapse/workspaces/datasets",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureDataLakeStorage1",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Json",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": "test.json",
+						"fileSystem": "dynamicsdump"
+					}
+				},
+				"schema": {
+					"type": "object",
+					"properties": {
+						"componentstate": {
+							"type": "integer"
+						},
+						"createdby": {
+							"type": "string"
+						},
+						"createdon": {
+							"type": "string"
+						},
+						"createdonbehalfby": {
+							"type": "null"
+						},
+						"createdonbehalfbyname": {
+							"type": "null"
+						},
+						"createdonbehalfbyyominame": {
+							"type": "null"
+						},
+						"entitymapid": {
+							"type": "string"
+						},
+						"entitymapidunique": {
+							"type": "string"
+						},
+						"ismanaged": {
+							"type": "boolean"
+						},
+						"modifiedby": {
+							"type": "string"
+						},
+						"modifiedon": {
+							"type": "string"
+						},
+						"modifiedonbehalfby": {
+							"type": "null"
+						},
+						"modifiedonbehalfbyname": {
+							"type": "null"
+						},
+						"modifiedonbehalfbyyominame": {
+							"type": "null"
+						},
+						"organizationid": {
+							"type": "string"
+						},
+						"overwritetime": {
+							"type": "null"
+						},
+						"solutionid": {
+							"type": "string"
+						},
+						"sourceentityname": {
+							"type": "string"
+						},
+						"supportingsolutionid": {
+							"type": "null"
+						},
+						"targetentityname": {
+							"type": "string"
+						},
+						"versionnumber": {
+							"type": "null"
+						}
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/linkedServices/AzureDataLakeStorage1')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/MetadataDrivenCopyTask_6om_ControlDS')]",
+			"type": "Microsoft.Synapse/workspaces/datasets",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "linkedService1",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "MetadataDrivenCopyTask_6om_20230110"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "MainControlTable_6om"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/linkedServices/linkedService1')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/MetadataDrivenCopyTask_6om_DestinationDS')]",
+			"type": "Microsoft.Synapse/workspaces/datasets",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureDataLakeStorage1",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"cw_fileName": {
+						"type": "String"
+					},
+					"cw_folderPath": {
+						"type": "Object"
+					},
+					"cw_fileSystem": {
+						"type": "String"
+					}
+				},
+				"folder": {
+					"name": "MetadataDrivenCopyTask_6om_20230110"
+				},
+				"annotations": [],
+				"type": "Parquet",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": {
+							"value": "@dataset().cw_fileName",
+							"type": "Expression"
+						},
+						"folderPath": {
+							"value": "@dataset().cw_folderPath",
+							"type": "Expression"
+						},
+						"fileSystem": {
+							"value": "@dataset().cw_fileSystem",
+							"type": "Expression"
+						}
+					},
+					"compressionCodec": "snappy"
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/linkedServices/AzureDataLakeStorage1')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/MetadataDrivenCopyTask_6om_SourceDS')]",
+			"type": "Microsoft.Synapse/workspaces/datasets",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "Dataverse1",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"cw_entityName": {
+						"type": "String"
+					}
+				},
+				"folder": {
+					"name": "MetadataDrivenCopyTask_6om_20230110"
+				},
+				"annotations": [],
+				"type": "CommonDataServiceForAppsEntity",
+				"schema": [],
+				"typeProperties": {
+					"entityName": {
+						"value": "@dataset().cw_entityName",
+						"type": "Expression"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/linkedServices/Dataverse1')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/MetadataDrivenCopyTask_f64_ControlDS')]",
+			"type": "Microsoft.Synapse/workspaces/datasets",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "linkedService1",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "MetadataDrivenCopyTask_f64_20230106"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "MainControlTable_f64"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/linkedServices/linkedService1')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/MetadataDrivenCopyTask_f64_DestinationDS')]",
+			"type": "Microsoft.Synapse/workspaces/datasets",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureDataLakeStorage1",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"cw_compressionCodec": {
+						"type": "String"
+					},
+					"cw_fileName": {
+						"type": "Object"
+					},
+					"cw_folderPath": {
+						"type": "Object"
+					},
+					"cw_fileSystem": {
+						"type": "String"
+					}
+				},
+				"folder": {
+					"name": "MetadataDrivenCopyTask_f64_20230106"
+				},
+				"annotations": [],
+				"type": "Parquet",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": {
+							"value": "@dataset().cw_fileName",
+							"type": "Expression"
+						},
+						"folderPath": {
+							"value": "@dataset().cw_folderPath",
+							"type": "Expression"
+						},
+						"fileSystem": {
+							"value": "@dataset().cw_fileSystem",
+							"type": "Expression"
+						}
+					},
+					"compressionCodec": {
+						"value": "@dataset().cw_compressionCodec",
+						"type": "Expression"
+					}
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/linkedServices/AzureDataLakeStorage1')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/MetadataDrivenCopyTask_f64_SourceDS')]",
+			"type": "Microsoft.Synapse/workspaces/datasets",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "Dynamics1",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"cw_entityName": {
+						"type": "String"
+					}
+				},
+				"folder": {
+					"name": "MetadataDrivenCopyTask_f64_20230106"
+				},
+				"annotations": [],
+				"type": "DynamicsEntity",
+				"schema": [],
+				"typeProperties": {
+					"entityName": {
+						"value": "@dataset().cw_entityName",
+						"type": "Expression"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/linkedServices/Dynamics1')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/ds_adls2_excel')]",
+			"type": "Microsoft.Synapse/workspaces/datasets",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"description": "Dataset - parameterised data lake (adls2) excel",
+				"linkedServiceName": {
+					"referenceName": "ls_adls2",
+					"type": "LinkedServiceReference",
+					"parameters": {
+						"adls2_endpoint": {
+							"value": "@dataset().adls2_endpoint",
+							"type": "Expression"
+						}
+					}
+				},
+				"parameters": {
+					"adls2_endpoint": {
+						"type": "string"
+					},
+					"adls2_container_name": {
+						"type": "string"
+					},
+					"adls2_directory_name": {
+						"type": "string"
+					},
+					"adls2_file_name": {
+						"type": "string"
+					},
+					"file_compression_type": {
+						"type": "string",
+						"defaultValue": "None"
+					},
+					"file_compression_level": {
+						"type": "string",
+						"defaultValue": "Optimal"
+					},
+					"file_sheet_name": {
+						"type": "string",
+						"defaultValue": "Sheet1"
+					},
+					"file_first_row_as_header": {
+						"type": "bool",
+						"defaultValue": true
+					}
+				},
+				"folder": {
+					"name": "adls2"
+				},
+				"annotations": [],
+				"type": "Excel",
+				"typeProperties": {
+					"sheetName": {
+						"value": "@dataset().file_sheet_name",
+						"type": "Expression"
+					},
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": {
+							"value": "@dataset().adls2_file_name",
+							"type": "Expression"
+						},
+						"folderPath": {
+							"value": "@dataset().adls2_directory_name",
+							"type": "Expression"
+						},
+						"fileSystem": {
+							"value": "@dataset().adls2_container_name",
+							"type": "Expression"
+						}
+					},
+					"firstRowAsHeader": {
+						"value": "@dataset().file_first_row_as_header",
+						"type": "Expression"
+					}
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/linkedServices/ls_adls2')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/ds_adsl2_delimited_text')]",
+			"type": "Microsoft.Synapse/workspaces/datasets",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"description": "Dataset - parameterised data lake (adls2) delimited text",
+				"linkedServiceName": {
+					"referenceName": "ls_adls2",
+					"type": "LinkedServiceReference",
+					"parameters": {
+						"adls2_endpoint": {
+							"value": "@dataset().adls2_endpoint",
+							"type": "Expression"
+						}
+					}
+				},
+				"parameters": {
+					"adls2_endpoint": {
+						"type": "string"
+					},
+					"adls2_container_name": {
+						"type": "string"
+					},
+					"adls2_directory_name": {
+						"type": "string"
+					},
+					"adls2_file_name": {
+						"type": "string"
+					},
+					"compression_type": {
+						"type": "string",
+						"defaultValue": "None"
+					},
+					"compression_level": {
+						"type": "string",
+						"defaultValue": "Optimal"
+					},
+					"column_delimiter": {
+						"type": "string",
+						"defaultValue": ","
+					},
+					"encoding": {
+						"type": "string",
+						"defaultValue": "UTF-8"
+					},
+					"escape_character": {
+						"type": "string",
+						"defaultValue": "\\"
+					},
+					"quote_character": {
+						"type": "string",
+						"defaultValue": "\""
+					},
+					"first_row_as_header": {
+						"type": "bool",
+						"defaultValue": true
+					}
+				},
+				"folder": {
+					"name": "adls2"
+				},
+				"annotations": [
+					"ds_adsl2_delimited_text"
+				],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": {
+							"value": "@dataset().adls2_file_name",
+							"type": "Expression"
+						},
+						"folderPath": {
+							"value": "@dataset().adls2_directory_name",
+							"type": "Expression"
+						},
+						"fileSystem": {
+							"value": "@dataset().adls2_container_name",
+							"type": "Expression"
+						}
+					},
+					"columnDelimiter": {
+						"value": "@dataset().column_delimiter",
+						"type": "Expression"
+					},
+					"compressionCodec": {
+						"value": "@dataset().compression_type",
+						"type": "Expression"
+					},
+					"compressionLevel": {
+						"value": "@dataset().compression_level",
+						"type": "Expression"
+					},
+					"encodingName": {
+						"value": "@dataset().encoding",
+						"type": "Expression"
+					},
+					"escapeChar": {
+						"value": "@dataset().escape_character",
+						"type": "Expression"
+					},
+					"firstRowAsHeader": {
+						"value": "@dataset().first_row_as_header",
+						"type": "Expression"
+					},
+					"quoteChar": {
+						"value": "@dataset().quote_character",
+						"type": "Expression"
+					}
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/linkedServices/ls_adls2')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/ds_az_sql_login')]",
+			"type": "Microsoft.Synapse/workspaces/datasets",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"description": "Dataset - parameterised azure sql server table - sql login option",
+				"linkedServiceName": {
+					"referenceName": "ls_az_sql_login",
+					"type": "LinkedServiceReference",
+					"parameters": {
+						"az_sql_server_name": {
+							"value": "@dataset().az_sql_server_name",
+							"type": "Expression"
+						},
+						"az_sql_database_name": {
+							"value": "@dataset().az_sql_database_name",
+							"type": "Expression"
+						},
+						"az_sql_login_user_name": {
+							"value": "@dataset().az_sql_login_user_name",
+							"type": "Expression"
+						},
+						"az_sql_login_password_kv_URI": {
+							"value": "@dataset().az_sql_login_password_kv_URI",
+							"type": "Expression"
+						},
+						"az_sql_login_password_kv_secret_name": {
+							"value": "@dataset().az_sql_login_password_kv_secret_name",
+							"type": "Expression"
+						}
+					}
+				},
+				"parameters": {
+					"az_sql_server_name": {
+						"type": "string"
+					},
+					"az_sql_database_name": {
+						"type": "string"
+					},
+					"az_sql_login_user_name": {
+						"type": "string"
+					},
+					"az_sql_login_password_kv_URI": {
+						"type": "string"
+					},
+					"az_sql_login_password_kv_secret_name": {
+						"type": "string"
+					},
+					"az_sql_schema_name": {
+						"type": "string"
+					},
+					"az_sql_table_name": {
+						"type": "string"
+					}
+				},
+				"folder": {
+					"name": "az_sql"
+				},
+				"annotations": [
+					"ds_az_sql_login"
+				],
+				"type": "AzureSqlTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": {
+						"value": "@dataset().az_sql_schema_name",
+						"type": "Expression"
+					},
+					"table": {
+						"value": "@dataset().az_sql_table_name",
+						"type": "Expression"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/linkedServices/ls_az_sql_login')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/AzureDataLakeStorage1')]",
+			"type": "Microsoft.Synapse/workspaces/linkedServices",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobFS",
+				"typeProperties": {
+					"url": "[parameters('AzureDataLakeStorage1_properties_typeProperties_url')]",
+					"accountKey": {
+						"type": "SecureString",
+						"value": "[parameters('AzureDataLakeStorage1_accountKey')]"
+					}
+				},
+				"connectVia": {
+					"referenceName": "AutoResolveIntegrationRuntime",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/integrationRuntimes/AutoResolveIntegrationRuntime')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/Dataverse1')]",
+			"type": "Microsoft.Synapse/workspaces/linkedServices",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"annotations": [],
+				"type": "CommonDataServiceForApps",
+				"typeProperties": {
+					"deploymentType": "Online",
+					"serviceUri": "https://org8273259e.crm6.dynamics.com",
+					"authenticationType": "AADServicePrincipal",
+					"servicePrincipalCredentialType": "ServicePrincipalKey",
+					"servicePrincipalId": "[parameters('Dataverse1_properties_typeProperties_servicePrincipalId')]",
+					"servicePrincipalCredential": {
+						"type": "SecureString",
+						"value": "[parameters('Dataverse1_servicePrincipalCredential')]"
+					}
+				},
+				"connectVia": {
+					"referenceName": "AutoResolveIntegrationRuntime",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/integrationRuntimes/AutoResolveIntegrationRuntime')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/Dynamics1')]",
+			"type": "Microsoft.Synapse/workspaces/linkedServices",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"annotations": [],
+				"type": "Dynamics",
+				"typeProperties": {
+					"deploymentType": "Online",
+					"serviceUri": "https://org8273259e.crm6.dynamics.com",
+					"authenticationType": "AADServicePrincipal",
+					"servicePrincipalCredentialType": "ServicePrincipalKey",
+					"servicePrincipalId": "[parameters('Dynamics1_properties_typeProperties_servicePrincipalId')]",
+					"servicePrincipalCredential": {
+						"type": "SecureString",
+						"value": "[parameters('Dynamics1_servicePrincipalCredential')]"
+					}
+				},
+				"connectVia": {
+					"referenceName": "AutoResolveIntegrationRuntime",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/integrationRuntimes/AutoResolveIntegrationRuntime')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/ark-nonprod-dataversetest-synw-vt-WorkspaceDefaultSqlServer')]",
+			"type": "Microsoft.Synapse/workspaces/linkedServices",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"parameters": {
+					"DBName": {
+						"type": "String"
+					}
+				},
+				"annotations": [],
+				"type": "AzureSqlDW",
+				"typeProperties": {
+					"connectionString": "[parameters('ark-nonprod-dataversetest-synw-vt-WorkspaceDefaultSqlServer_connectionString')]"
+				},
+				"connectVia": {
+					"referenceName": "AutoResolveIntegrationRuntime",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/integrationRuntimes/AutoResolveIntegrationRuntime')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/ark-nonprod-dataversetest-synw-vt-WorkspaceDefaultStorage')]",
+			"type": "Microsoft.Synapse/workspaces/linkedServices",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobFS",
+				"typeProperties": {
+					"url": "[parameters('ark-nonprod-dataversetest-synw-vt-WorkspaceDefaultStorage_properties_typeProperties_url')]"
+				},
+				"connectVia": {
+					"referenceName": "AutoResolveIntegrationRuntime",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/integrationRuntimes/AutoResolveIntegrationRuntime')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/linkedService1')]",
+			"type": "Microsoft.Synapse/workspaces/linkedServices",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"annotations": [],
+				"type": "AzureSqlDatabase",
+				"typeProperties": {
+					"connectionString": "[parameters('linkedService1_connectionString')]"
+				},
+				"connectVia": {
+					"referenceName": "AutoResolveIntegrationRuntime",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/integrationRuntimes/AutoResolveIntegrationRuntime')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/ls_adls2')]",
+			"type": "Microsoft.Synapse/workspaces/linkedServices",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"description": "Linked service - parameterised data lake (adls2)",
+				"parameters": {
+					"adls2_endpoint": {
+						"type": "string"
+					}
+				},
+				"annotations": [
+					"ls_adls2"
+				],
+				"type": "AzureBlobFS",
+				"typeProperties": {
+					"url": "[parameters('ls_adls2_properties_typeProperties_url')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/ls_az_sql_login')]",
+			"type": "Microsoft.Synapse/workspaces/linkedServices",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"description": "Linked service - parameterised azure sql server - sql login option",
+				"parameters": {
+					"az_sql_server_name": {
+						"type": "string"
+					},
+					"az_sql_database_name": {
+						"type": "string"
+					},
+					"az_sql_login_user_name": {
+						"type": "string"
+					},
+					"az_sql_login_password_kv_URI": {
+						"type": "string"
+					},
+					"az_sql_login_password_kv_secret_name": {
+						"type": "string"
+					}
+				},
+				"annotations": [
+					"ls_az_sql_login"
+				],
+				"type": "AzureSqlDatabase",
+				"typeProperties": {
+					"connectionString": "[parameters('ls_az_sql_login_connectionString')]",
+					"password": {
+						"type": "AzureKeyVaultSecret",
+						"store": {
+							"referenceName": "ls_kv",
+							"type": "LinkedServiceReference",
+							"parameters": {
+								"kv_URI": {
+									"value": "@linkedService().az_sql_login_password_kv_URI",
+									"type": "Expression"
+								}
+							}
+						},
+						"secretName": {
+							"value": "@linkedService().az_sql_login_password_kv_secret_name",
+							"type": "Expression"
+						}
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/linkedServices/ls_kv')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/ls_kv')]",
+			"type": "Microsoft.Synapse/workspaces/linkedServices",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"description": "Linked service - parameterised key vault",
+				"parameters": {
+					"kv_URI": {
+						"type": "string"
+					}
+				},
+				"annotations": [
+					"ls_kv"
+				],
+				"type": "AzureKeyVault",
+				"typeProperties": {
+					"baseUrl": "[parameters('ls_kv_properties_typeProperties_baseUrl')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/test-trigger')]",
+			"type": "Microsoft.Synapse/workspaces/triggers",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"annotations": [],
+				"runtimeState": "Started",
+				"pipelines": [
+					{
+						"pipelineReference": {
+							"referenceName": "adls2_delimited_text_to_sql",
+							"type": "PipelineReference"
+						},
+						"parameters": {
+							"az_sql_server_name": "[parameters('test-trigger_properties_adls2_delimited_text_to_sql_parameters_az_sql_server_name')]",
+							"az_sql_database_name": "[parameters('test-trigger_properties_adls2_delimited_text_to_sql_parameters_az_sql_database_name')]",
+							"az_sql_login_user_name": "[parameters('test-trigger_properties_adls2_delimited_text_to_sql_parameters_az_sql_login_user_name')]",
+							"az_sql_login_password_kv_URI": "[parameters('test-trigger_properties_adls2_delimited_text_to_sql_parameters_az_sql_login_password_kv_URI')]",
+							"az_sql_login_password_kv_secret_name": "[parameters('test-trigger_properties_adls2_delimited_text_to_sql_parameters_az_sql_login_password_kv_secret_name')]",
+							"az_sql_schema_name": "[parameters('test-trigger_properties_adls2_delimited_text_to_sql_parameters_az_sql_schema_name')]",
+							"az_sql_table_name": "[parameters('test-trigger_properties_adls2_delimited_text_to_sql_parameters_az_sql_table_name')]",
+							"adls2_endpoint": "[parameters('test-trigger_properties_adls2_delimited_text_to_sql_parameters_adls2_endpoint')]",
+							"adls2_container_name": "[parameters('test-trigger_properties_adls2_delimited_text_to_sql_parameters_adls2_container_name')]",
+							"adls2_directory_name": "[parameters('test-trigger_properties_adls2_delimited_text_to_sql_parameters_adls2_directory_name')]",
+							"adls2_file_name": "[parameters('test-trigger_properties_adls2_delimited_text_to_sql_parameters_adls2_file_name')]"
+						}
+					}
+				],
+				"type": "BlobEventsTrigger",
+				"typeProperties": {
+					"blobPathBeginsWith": "/test-trigger/blobs/test-files/",
+					"blobPathEndsWith": ".csv",
+					"ignoreEmptyBlobs": true,
+					"scope": "[parameters('test-trigger_properties_typeProperties_scope')]",
+					"events": [
+						"Microsoft.Storage.BlobCreated"
+					]
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/pipelines/adls2_delimited_text_to_sql')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/tr_event_based_extract_cwa')]",
+			"type": "Microsoft.Synapse/workspaces/triggers",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"annotations": [
+					"tr_event_based_extract_cwa"
+				],
+				"runtimeState": "Started",
+				"pipelines": [
+					{
+						"pipelineReference": {
+							"referenceName": "adls_excel_to_sql_multisheet_master",
+							"type": "PipelineReference"
+						},
+						"parameters": {
+							"az_sql_server_name": "[parameters('tr_event_based_extract_cwa_properties_adls_excel_to_sql_multisheet_master_parameters_az_sql_server_name')]",
+							"az_sql_database_name": "[parameters('tr_event_based_extract_cwa_properties_adls_excel_to_sql_multisheet_master_parameters_az_sql_database_name')]",
+							"az_sql_login_user_name": "[parameters('tr_event_based_extract_cwa_properties_adls_excel_to_sql_multisheet_master_parameters_az_sql_login_user_name')]",
+							"az_sql_login_password_kv_URI": "[parameters('tr_event_based_extract_cwa_properties_adls_excel_to_sql_multisheet_master_parameters_az_sql_login_password_kv_URI')]",
+							"az_sql_login_password_kv_secret_name": "[parameters('tr_event_based_extract_cwa_properties_adls_excel_to_sql_multisheet_master_parameters_az_sql_login_password_kv_secret_name')]",
+							"az_sql_schema_name": "[parameters('tr_event_based_extract_cwa_properties_adls_excel_to_sql_multisheet_master_parameters_az_sql_schema_name')]",
+							"adls2_endpoint": "[parameters('tr_event_based_extract_cwa_properties_adls_excel_to_sql_multisheet_master_parameters_adls2_endpoint')]",
+							"adls2_container_name": "[parameters('tr_event_based_extract_cwa_properties_adls_excel_to_sql_multisheet_master_parameters_adls2_container_name')]",
+							"adls2_directory_name": "[parameters('tr_event_based_extract_cwa_properties_adls_excel_to_sql_multisheet_master_parameters_adls2_directory_name')]",
+							"adls2_file_name": "[parameters('tr_event_based_extract_cwa_properties_adls_excel_to_sql_multisheet_master_parameters_adls2_file_name')]",
+							"file_sheet_name_list": "[parameters('tr_event_based_extract_cwa_properties_adls_excel_to_sql_multisheet_master_parameters_file_sheet_name_list')]"
+						}
+					}
+				],
+				"type": "BlobEventsTrigger",
+				"typeProperties": {
+					"blobPathBeginsWith": "/landing/blobs/Data & Analytics/Commissioned Services Analytics/7. Datasets & PowerBI/1. Datasets/Raw data/1. PMHC-MDS/",
+					"blobPathEndsWith": "extractCWA.xlsx",
+					"ignoreEmptyBlobs": true,
+					"scope": "[parameters('tr_event_based_extract_cwa_properties_typeProperties_scope')]",
+					"events": [
+						"Microsoft.Storage.BlobCreated"
+					]
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/pipelines/adls_excel_to_sql_multisheet_master')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/AutoResolveIntegrationRuntime')]",
+			"type": "Microsoft.Synapse/workspaces/integrationRuntimes",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"type": "Managed",
+				"typeProperties": {
+					"computeProperties": {
+						"location": "AutoResolve",
+						"dataFlowProperties": {
+							"computeType": "General",
+							"coreCount": 8,
+							"timeToLive": 0
+						}
+					}
+				},
+				"managedVirtualNetwork": {
+					"type": "ManagedVirtualNetworkReference",
+					"referenceName": "default"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/managedVirtualNetworks/default')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/Dataflow1')]",
+			"type": "Microsoft.Synapse/workspaces/dataflows",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"linkedService": {
+								"referenceName": "Dataverse1",
+								"type": "LinkedServiceReference"
+							},
+							"name": "source1"
+						}
+					],
+					"sinks": [
+						{
+							"linkedService": {
+								"referenceName": "AzureDataLakeStorage1",
+								"type": "LinkedServiceReference"
+							},
+							"name": "sink1"
+						}
+					],
+					"transformations": [],
+					"scriptLines": [
+						"source(output(",
+						"          componentstate as integer,",
+						"          reportviewname as string,",
+						"          objecttypecode as integer,",
+						"          externalname as string,",
+						"          entitysetname as string,",
+						"          logicalcollectionname as string,",
+						"          originallocalizedname as string,",
+						"          addresstablename as string,",
+						"          versionnumber as long,",
+						"          logicalname as string,",
+						"          name as string,",
+						"          entityid as string,",
+						"          extensiontablename as string,",
+						"          physicalname as string,",
+						"          parentcontrollingattributename as string,",
+						"          originallocalizedcollectionname as string,",
+						"          isactivityname as string,",
+						"          solutionid as string,",
+						"          overwritetime as timestamp,",
+						"          basetablename as string,",
+						"          externalcollectionname as string,",
+						"          collectionname as string,",
+						"          isactivity as boolean",
+						"     ),",
+						"     allowSchemaDrift: false,",
+						"     validateSchema: false,",
+						"     store: 'dynamics',",
+						"     format: 'dynamicsformat',",
+						"     entity: 'entity',",
+						"     timeout: 30) ~> source1",
+						"source1 sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     format: 'delta',",
+						"     fileSystem: 'dynamicsdump',",
+						"     folderPath: 'New folder',",
+						"     mergeSchema: false,",
+						"     autoCompact: false,",
+						"     optimizedWrite: false,",
+						"     vacuum: 0,",
+						"     deletable:false,",
+						"     insertable:true,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     umask: 0022,",
+						"     preCommands: [],",
+						"     postCommands: [],",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     saveOrder: 1) ~> sink1"
+					]
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/linkedServices/Dataverse1')]",
+				"[concat(variables('workspaceId'), '/linkedServices/AzureDataLakeStorage1')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/WorkspaceSystemIdentity')]",
+			"type": "Microsoft.Synapse/workspaces/credentials",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"type": "ManagedIdentity",
+				"typeProperties": {}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/Widget Basics')]",
+			"type": "Microsoft.Synapse/workspaces/notebooks",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"nbformat": 4,
+				"nbformat_minor": 2,
+				"bigDataPool": {
+					"referenceName": "SampleSpark",
+					"type": "BigDataPoolReference"
+				},
+				"sessionProperties": {
+					"driverMemory": "28g",
+					"driverCores": 4,
+					"executorMemory": "28g",
+					"executorCores": 4,
+					"numExecutors": 2,
+					"runAsWorkspaceSystemIdentity": false,
+					"conf": {
+						"spark.dynamicAllocation.enabled": "false",
+						"spark.dynamicAllocation.minExecutors": "2",
+						"spark.dynamicAllocation.maxExecutors": "2",
+						"spark.autotune.trackingId": "1789cdbb-d35c-4250-8cc6-f147ac552194"
+					}
+				},
+				"metadata": {
+					"saveOutput": true,
+					"synapse_widget": {
+						"version": "0.1"
+					},
+					"enableDebugMode": true,
+					"kernelspec": {
+						"name": "synapse_pyspark",
+						"display_name": "Synapse PySpark"
+					},
+					"language_info": {
+						"name": "python"
+					},
+					"a365ComputeOptions": {
+						"id": "/subscriptions/687fe1ae-a520-4f86-b921-a80664c40f9b/resourceGroups/ark-nonprod-dataversetest-rg-vt/providers/Microsoft.Synapse/workspaces/ark-nonprod-dataversetest-synw-vt/bigDataPools/SampleSpark",
+						"name": "SampleSpark",
+						"type": "Spark",
+						"endpoint": "https://ark-nonprod-dataversetest-synw-vt.dev.azuresynapse.net/livyApi/versions/2019-11-01-preview/sparkPools/SampleSpark",
+						"auth": {
+							"type": "AAD",
+							"authResource": "https://dev.azuresynapse.net",
+							"authHeader": null
+						},
+						"sparkVersion": "3.3",
+						"nodeCount": 3,
+						"cores": 8,
+						"memory": 56,
+						"extraHeader": null
+					},
+					"sessionKeepAliveTimeout": 30
+				},
+				"cells": [
+					{
+						"cell_type": "markdown",
+						"metadata": {
+							"nbsphinx": "hidden"
+						},
+						"source": [
+							"**This notebook sample is based on the official [Jupyter Widgets sample notebook `Widget Basics.ipynb`](https://github.com/jupyter-widgets/ipywidgets/blob/7.x/docs/source/examples/Widget%20Basics.ipynb)\r\n",
+							".** Edit this cell to see the full license content.\r\n",
+							"\r\n",
+							"<!--\r\n",
+							"Copyright (c) 2015 Project Jupyter Contributors\r\n",
+							"All rights reserved.\r\n",
+							"\r\n",
+							"Redistribution and use in source and binary forms, with or without\r\n",
+							"modification, are permitted provided that the following conditions are met:\r\n",
+							"\r\n",
+							"1. Redistributions of source code must retain the above copyright notice, this\r\n",
+							"   list of conditions and the following disclaimer.\r\n",
+							"\r\n",
+							"2. Redistributions in binary form must reproduce the above copyright notice,\r\n",
+							"   this list of conditions and the following disclaimer in the documentation\r\n",
+							"   and/or other materials provided with the distribution.\r\n",
+							"\r\n",
+							"3. Neither the name of the copyright holder nor the names of its\r\n",
+							"   contributors may be used to endorse or promote products derived from\r\n",
+							"   this software without specific prior written permission.\r\n",
+							"\r\n",
+							"THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\"\r\n",
+							"AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE\r\n",
+							"IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE\r\n",
+							"DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE\r\n",
+							"FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL\r\n",
+							"DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR\r\n",
+							"SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER\r\n",
+							"CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,\r\n",
+							"OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE\r\n",
+							"OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.\r\n",
+							"-->"
+						]
+					},
+					{
+						"cell_type": "markdown",
+						"metadata": {
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							}
+						},
+						"source": [
+							"**Synapse Studio users**: Now you can consume Jupyter Widgets in Synapse Studio (with \"Preview Features\" turned on). Since it's a Python library, you will need to consume it in PySpark environment.\r\n",
+							"To go through this sample, please create a new notebook from the sample, then execute the code cells one by one with \"Run\" button or `Shift+Enter` shortcut keys.\r\n",
+							"\r\n",
+							"See https://go.microsoft.com/fwlink/?linkid=2170793 for general introduction as well as known limitations on the Jupyter Widgets support in Synapse Studio."
+						]
+					},
+					{
+						"cell_type": "markdown",
+						"source": [
+							"# Simple Widget Introduction"
+						]
+					},
+					{
+						"cell_type": "markdown",
+						"source": [
+							"## What are widgets?"
+						]
+					},
+					{
+						"cell_type": "markdown",
+						"metadata": {
+							"slideshow": {
+								"slide_type": "slide"
+							}
+						},
+						"source": [
+							"Widgets are eventful python objects that have a representation in the browser, often as a control like a slider, textbox, etc."
+						]
+					},
+					{
+						"cell_type": "markdown",
+						"source": [
+							"## What can they be used for?"
+						]
+					},
+					{
+						"cell_type": "markdown",
+						"metadata": {
+							"slideshow": {
+								"slide_type": "slide"
+							}
+						},
+						"source": [
+							"You can use widgets to build **interactive GUIs** for your notebooks.  \n",
+							"You can also use widgets to **synchronize stateful and stateless information** between Python and JavaScript."
+						]
+					},
+					{
+						"cell_type": "markdown",
+						"source": [
+							"## Using widgets  "
+						]
+					},
+					{
+						"cell_type": "markdown",
+						"metadata": {
+							"slideshow": {
+								"slide_type": "slide"
+							}
+						},
+						"source": [
+							"To use the widget framework, you need to import `ipywidgets`."
+						]
+					},
+					{
+						"cell_type": "code",
+						"source": [
+							"import ipywidgets as widgets\r\n",
+							"widgets.__version__"
+						],
+						"outputs": [],
+						"execution_count": 13
+					},
+					{
+						"cell_type": "markdown",
+						"metadata": {
+							"slideshow": {
+								"slide_type": "slide"
+							}
+						},
+						"source": [
+							"### repr"
+						]
+					},
+					{
+						"cell_type": "markdown",
+						"source": [
+							"Widgets have their own display `repr` which allows them to be displayed using IPython's display framework.  Constructing and returning an `IntSlider` automatically displays the widget (as seen below).  Widgets are displayed inside the output area below the code cell. Clearing cell output will also remove the widget."
+						]
+					},
+					{
+						"cell_type": "code",
+						"source": [
+							"widgets.IntSlider()"
+						],
+						"outputs": [],
+						"execution_count": 14
+					},
+					{
+						"cell_type": "markdown",
+						"metadata": {
+							"slideshow": {
+								"slide_type": "slide"
+							}
+						},
+						"source": [
+							"### display()"
+						]
+					},
+					{
+						"cell_type": "markdown",
+						"source": [
+							"You can also explicitly display the widget using `display(...)`.\r\n",
+							"\r\n",
+							"**Synapse Studio users**:\r\n",
+							"* Usually you do not need to import `display` function manually from `IPython.display` package. The pre-imported global `display(d)` function now also accepts `Widget` instance as first parameter (`d`). Just note that it does not support more than 1 arguments. If you want to display 2 Widgets respectively, call `display` twice.\r\n",
+							"* In case you have already imported `display` function from IPython, you can always use the following statement to restore the global `display` function provided by Synapse Studio, if necessary (e.g. when you want to display Spark `DataFrame`).\r\n",
+							"```python\r\n",
+							"from notebookutils import display\r\n",
+							"```"
+						]
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"jupyter": {
+								"source_hidden": false,
+								"outputs_hidden": false
+							},
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							}
+						},
+						"source": [
+							"from notebookutils import display"
+						],
+						"outputs": []
+					},
+					{
+						"cell_type": "markdown",
+						"metadata": {
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							}
+						},
+						"source": [
+							""
+						]
+					},
+					{
+						"cell_type": "code",
+						"source": [
+							"# pre-imported `display` already supports Widget. No need to import from IPyton.\n",
+							"# from IPython.display import display\n",
+							"w = widgets.IntSlider()\n",
+							"display(w)"
+						],
+						"outputs": [],
+						"execution_count": 15
+					},
+					{
+						"cell_type": "markdown",
+						"metadata": {
+							"slideshow": {
+								"slide_type": "slide"
+							}
+						},
+						"source": [
+							"### Multiple display() calls"
+						]
+					},
+					{
+						"cell_type": "markdown",
+						"source": [
+							"If you display the same widget twice, the displayed instances in the front-end will remain in sync with each other.  Try dragging the slider below and watch the slider above."
+						]
+					},
+					{
+						"cell_type": "code",
+						"source": [
+							"display(w)"
+						],
+						"outputs": [],
+						"execution_count": 16
+					},
+					{
+						"cell_type": "markdown",
+						"source": [
+							"## Why does displaying the same widget twice work?"
+						]
+					},
+					{
+						"cell_type": "markdown",
+						"metadata": {
+							"slideshow": {
+								"slide_type": "slide"
+							}
+						},
+						"source": [
+							"Widgets are represented in the back-end by a single object.  Each time a widget is displayed, a new representation of that same object is created in the front-end.  These representations are called views.\n",
+							"\n",
+							"![Kernel & front-end diagram](https://ipywidgets.readthedocs.io/en/7.x/_images/WidgetModelView.png)"
+						]
+					},
+					{
+						"cell_type": "markdown",
+						"metadata": {
+							"slideshow": {
+								"slide_type": "slide"
+							}
+						},
+						"source": [
+							"### Closing widgets"
+						]
+					},
+					{
+						"cell_type": "markdown",
+						"source": [
+							"You can close a widget by calling its `close()` method."
+						]
+					},
+					{
+						"cell_type": "code",
+						"source": [
+							"display(w)"
+						],
+						"outputs": [],
+						"execution_count": 17
+					},
+					{
+						"cell_type": "code",
+						"source": [
+							"w.close()"
+						],
+						"outputs": [],
+						"execution_count": 18
+					},
+					{
+						"cell_type": "markdown",
+						"source": [
+							"## Widget properties"
+						]
+					},
+					{
+						"cell_type": "markdown",
+						"metadata": {
+							"slideshow": {
+								"slide_type": "slide"
+							}
+						},
+						"source": [
+							"All of the IPython widgets share a similar naming scheme.  To read the value of a widget, you can query its `value` property."
+						]
+					},
+					{
+						"cell_type": "code",
+						"source": [
+							"w = widgets.IntSlider()\n",
+							"display(w)"
+						],
+						"outputs": [],
+						"execution_count": 19
+					},
+					{
+						"cell_type": "code",
+						"source": [
+							"w.value"
+						],
+						"outputs": [],
+						"execution_count": 20
+					},
+					{
+						"cell_type": "markdown",
+						"source": [
+							"Similarly, to set a widget's value, you can set its `value` property."
+						]
+					},
+					{
+						"cell_type": "code",
+						"source": [
+							"w.value = 100"
+						],
+						"outputs": [],
+						"execution_count": 21
+					},
+					{
+						"cell_type": "markdown",
+						"metadata": {
+							"slideshow": {
+								"slide_type": "slide"
+							}
+						},
+						"source": [
+							"### Keys"
+						]
+					},
+					{
+						"cell_type": "markdown",
+						"source": [
+							"In addition to `value`, most widgets share `keys`, `description`, and `disabled`.  To see the entire list of synchronized, stateful properties of any specific widget, you can query the `keys` property."
+						]
+					},
+					{
+						"cell_type": "code",
+						"source": [
+							"w.keys"
+						],
+						"outputs": [],
+						"execution_count": 22
+					},
+					{
+						"cell_type": "markdown",
+						"source": [
+							"### Shorthand for setting the initial values of widget properties"
+						]
+					},
+					{
+						"cell_type": "markdown",
+						"metadata": {
+							"slideshow": {
+								"slide_type": "slide"
+							}
+						},
+						"source": [
+							"While creating a widget, you can set some or all of the initial values of that widget by defining them as keyword arguments in the widget's constructor (as seen below)."
+						]
+					},
+					{
+						"cell_type": "code",
+						"source": [
+							"widgets.Text(value='Hello World!', disabled=True)"
+						],
+						"outputs": [],
+						"execution_count": 23
+					},
+					{
+						"cell_type": "markdown",
+						"source": [
+							"## Linking two similar widgets"
+						]
+					},
+					{
+						"cell_type": "markdown",
+						"metadata": {
+							"slideshow": {
+								"slide_type": "slide"
+							}
+						},
+						"source": [
+							"If you need to display the same value two different ways, you'll have to use two different widgets. Instead of attempting to manually synchronize the values of the two widgets, you can use the `link`  or `jslink` function to link two properties together (the difference between these is discussed in [Widget Events](https://ipywidgets.readthedocs.io/en/7.x/examples/Widget%20Events.html)).  Below, the values of two widgets are linked together.\r\n",
+							"\r\n",
+							"**Synapse Studio users**: `jslink` is not supported yet. As a workaround, use `link`."
+						]
+					},
+					{
+						"cell_type": "code",
+						"source": [
+							"a = widgets.FloatText()\n",
+							"b = widgets.FloatSlider()\n",
+							"display(a)\n",
+							"display(b)\n",
+							"\n",
+							"# `jslink` is not supported in Synapse Studio yet. Ue `link` instead.\n",
+							"# mylink = widgets.jslink((a, 'value'), (b, 'value'))\n",
+							"mylink = widgets.link((a, 'value'), (b, 'value'))"
+						],
+						"outputs": [],
+						"execution_count": 24
+					},
+					{
+						"cell_type": "markdown",
+						"source": [
+							"### Unlinking widgets"
+						]
+					},
+					{
+						"cell_type": "markdown",
+						"metadata": {
+							"slideshow": {
+								"slide_type": "slide"
+							}
+						},
+						"source": [
+							"Unlinking the widgets is simple.  All you have to do is call `.unlink` on the link object.  Try changing one of the widgets above after unlinking to see that they can be independently changed."
+						]
+					},
+					{
+						"cell_type": "code",
+						"source": [
+							"mylink.unlink()"
+						],
+						"outputs": [],
+						"execution_count": 25
+					},
+					{
+						"cell_type": "markdown",
+						"metadata": {
+							"nbsphinx": "hidden"
+						},
+						"source": [
+							"## Next steps\r\n",
+							"\r\n",
+							"You can find more examples from the official [Jupyter Widgets documentation](https://ipywidgets.readthedocs.io/en/7.x/index.html), including\r\n",
+							"* [Widget List](https://ipywidgets.readthedocs.io/en/latest/examples/Widget%20List.html)\r\n",
+							"* [Widget Events](https://ipywidgets.readthedocs.io/en/latest/examples/Widget%20Events.html)\r\n",
+							"* [Widget Styling](https://ipywidgets.readthedocs.io/en/latest/examples/Widget%20Styling.html)\r\n",
+							"* and more!"
+						]
+					}
+				]
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/SampleSpark')]",
+			"type": "Microsoft.Synapse/workspaces/bigDataPools",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"autoPause": {
+					"enabled": true,
+					"delayInMinutes": 15
+				},
+				"autoScale": {
+					"enabled": false,
+					"maxNodeCount": 10,
+					"minNodeCount": 3
+				},
+				"nodeCount": 3,
+				"nodeSize": "Medium",
+				"nodeSizeFamily": "MemoryOptimized",
+				"sparkVersion": "3.3",
+				"isComputeIsolationEnabled": false,
+				"sessionLevelPackagesEnabled": false,
+				"annotations": []
+			},
+			"dependsOn": [],
+			"location": "australiaeast"
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/default')]",
+			"type": "Microsoft.Synapse/workspaces/managedVirtualNetworks",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/default/AzureDataLakeStorage888')]",
+			"type": "Microsoft.Synapse/workspaces/managedVirtualNetworks/managedPrivateEndpoints",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"privateLinkResourceId": "/subscriptions/687fe1ae-a520-4f86-b921-a80664c40f9b/resourceGroups/ark-nonprod-dataversetest-rg-vt/providers/Microsoft.Storage/storageAccounts/arkdvtestsynwci",
+				"groupId": "dfs",
+				"fqdns": [
+					"arkdvtestsynwci.dfs.core.windows.net"
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/managedVirtualNetworks/default')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/default/AzureSqlDatabase480')]",
+			"type": "Microsoft.Synapse/workspaces/managedVirtualNetworks/managedPrivateEndpoints",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"privateLinkResourceId": "/subscriptions/687fe1ae-a520-4f86-b921-a80664c40f9b/resourceGroups/ark-nonprod-dataversetest-rg-vt/providers/Microsoft.Sql/servers/ark-nonprod-dataversetest-sql-vt",
+				"groupId": "sqlServer",
+				"fqdns": [
+					"ark-nonprod-dataversetest-sql-vt.database.windows.net"
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/managedVirtualNetworks/default')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/default/synapse-ws-sql--ark-nonprod-dataversetest-synw-vt')]",
+			"type": "Microsoft.Synapse/workspaces/managedVirtualNetworks/managedPrivateEndpoints",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"privateLinkResourceId": "/subscriptions/687fe1ae-a520-4f86-b921-a80664c40f9b/resourceGroups/ark-nonprod-dataversetest-rg-vt/providers/Microsoft.Synapse/workspaces/ark-nonprod-dataversetest-synw-vt",
+				"groupId": "sql",
+				"fqdns": [
+					"ark-nonprod-dataversetest-synw-vt.7a66462b-1af1-441a-a8d1-af758616eb45.sql.azuresynapse.net"
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/managedVirtualNetworks/default')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/default/synapse-ws-sqlOnDemand--ark-nonprod-dataversetest-synw-vt')]",
+			"type": "Microsoft.Synapse/workspaces/managedVirtualNetworks/managedPrivateEndpoints",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"privateLinkResourceId": "/subscriptions/687fe1ae-a520-4f86-b921-a80664c40f9b/resourceGroups/ark-nonprod-dataversetest-rg-vt/providers/Microsoft.Synapse/workspaces/ark-nonprod-dataversetest-synw-vt",
+				"groupId": "sqlOnDemand",
+				"fqdns": [
+					"ark-nonprod-dataversetest-synw-vt-ondemand.7a66462b-1af1-441a-a8d1-af758616eb45.sql.azuresynapse.net"
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/managedVirtualNetworks/default')]"
+			]
+		}
+	]
+}

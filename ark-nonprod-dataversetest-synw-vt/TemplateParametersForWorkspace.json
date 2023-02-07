@@ -1,0 +1,120 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"workspaceName": {
+			"value": "ark-nonprod-dataversetest-synw-vt"
+		},
+		"AzureDataLakeStorage1_accountKey": {
+			"value": ""
+		},
+		"Dataverse1_servicePrincipalCredential": {
+			"value": ""
+		},
+		"Dynamics1_servicePrincipalCredential": {
+			"value": ""
+		},
+		"ark-nonprod-dataversetest-synw-vt-WorkspaceDefaultSqlServer_connectionString": {
+			"value": "Integrated Security=False;Encrypt=True;Connection Timeout=30;Data Source=tcp:ark-nonprod-dataversetest-synw-vt.sql.azuresynapse.net,1433;Initial Catalog=@{linkedService().DBName}"
+		},
+		"linkedService1_connectionString": {
+			"value": ""
+		},
+		"ls_az_sql_login_connectionString": {
+			"value": "Integrated Security=False;Encrypt=True;Connection Timeout=30;Data Source=@{linkedService().az_sql_server_name};Initial Catalog=@{linkedService().az_sql_database_name};User ID=@{linkedService().az_sql_login_user_name}"
+		},
+		"AzureDataLakeStorage1_properties_typeProperties_url": {
+			"value": "https://arkdvtestsynwci.dfs.core.windows.net/"
+		},
+		"Dataverse1_properties_typeProperties_servicePrincipalId": {
+			"value": "f331a6ab-3b11-421b-9487-13a22e149bba"
+		},
+		"Dynamics1_properties_typeProperties_servicePrincipalId": {
+			"value": "f331a6ab-3b11-421b-9487-13a22e149bba"
+		},
+		"ark-nonprod-dataversetest-synw-vt-WorkspaceDefaultStorage_properties_typeProperties_url": {
+			"value": "https://arkdvtestsynwci.dfs.core.windows.net"
+		},
+		"ls_adls2_properties_typeProperties_url": {
+			"value": "@{linkedService().adls2_endpoint}"
+		},
+		"ls_kv_properties_typeProperties_baseUrl": {
+			"value": "@{linkedService().kv_URI}"
+		},
+		"test-trigger_properties_adls2_delimited_text_to_sql_parameters_az_sql_server_name": {
+			"value": "wahpa-dev-aze-sql.database.windows.net"
+		},
+		"test-trigger_properties_adls2_delimited_text_to_sql_parameters_az_sql_database_name": {
+			"value": "SampleDB"
+		},
+		"test-trigger_properties_adls2_delimited_text_to_sql_parameters_az_sql_login_user_name": {
+			"value": "User51126629"
+		},
+		"test-trigger_properties_adls2_delimited_text_to_sql_parameters_az_sql_login_password_kv_URI": {
+			"value": "https://wahpa-dev-aze-kv.vault.azure.net/"
+		},
+		"test-trigger_properties_adls2_delimited_text_to_sql_parameters_az_sql_login_password_kv_secret_name": {
+			"value": "wahpa-dev-aze-sql-admin-password"
+		},
+		"test-trigger_properties_adls2_delimited_text_to_sql_parameters_az_sql_schema_name": {
+			"value": "staging"
+		},
+		"test-trigger_properties_adls2_delimited_text_to_sql_parameters_az_sql_table_name": {
+			"value": "@concat(\nlast(split(toLower(triggerbody().folderPath), '/'))\n,'_'\n,split(toLower(triggerbody().fileName), '.')[0]\n)"
+		},
+		"test-trigger_properties_adls2_delimited_text_to_sql_parameters_adls2_endpoint": {
+			"value": "https://wahpadevazestraw.dfs.core.windows.net/"
+		},
+		"test-trigger_properties_adls2_delimited_text_to_sql_parameters_adls2_container_name": {
+			"value": "@split(triggerbody().folderPath, '/')[0]"
+		},
+		"test-trigger_properties_adls2_delimited_text_to_sql_parameters_adls2_directory_name": {
+			"value": "@split(triggerbody().folderPath, '/')[1]"
+		},
+		"test-trigger_properties_adls2_delimited_text_to_sql_parameters_adls2_file_name": {
+			"value": "@triggerbody().fileName"
+		},
+		"test-trigger_properties_typeProperties_scope": {
+			"value": "/subscriptions/687fe1ae-a520-4f86-b921-a80664c40f9b/resourceGroups/wahpa-dev-aze-rg-services/providers/Microsoft.Storage/storageAccounts/wahpadevazestraw"
+		},
+		"tr_event_based_extract_cwa_properties_adls_excel_to_sql_multisheet_master_parameters_az_sql_server_name": {
+			"value": "wahpa-dev-aze-sql.database.windows.net"
+		},
+		"tr_event_based_extract_cwa_properties_adls_excel_to_sql_multisheet_master_parameters_az_sql_database_name": {
+			"value": "SampleDB"
+		},
+		"tr_event_based_extract_cwa_properties_adls_excel_to_sql_multisheet_master_parameters_az_sql_login_user_name": {
+			"value": "User51126629"
+		},
+		"tr_event_based_extract_cwa_properties_adls_excel_to_sql_multisheet_master_parameters_az_sql_login_password_kv_URI": {
+			"value": "https://wahpa-dev-aze-kv.vault.azure.net/"
+		},
+		"tr_event_based_extract_cwa_properties_adls_excel_to_sql_multisheet_master_parameters_az_sql_login_password_kv_secret_name": {
+			"value": "wahpa-dev-aze-sql-admin-password"
+		},
+		"tr_event_based_extract_cwa_properties_adls_excel_to_sql_multisheet_master_parameters_az_sql_schema_name": {
+			"value": "staging"
+		},
+		"tr_event_based_extract_cwa_properties_adls_excel_to_sql_multisheet_master_parameters_adls2_endpoint": {
+			"value": "https://wahpadevazestraw.dfs.core.windows.net/"
+		},
+		"tr_event_based_extract_cwa_properties_adls_excel_to_sql_multisheet_master_parameters_adls2_container_name": {
+			"value": "@split(triggerbody().folderPath, '/')[0]"
+		},
+		"tr_event_based_extract_cwa_properties_adls_excel_to_sql_multisheet_master_parameters_adls2_directory_name": {
+			"value": "Data & Analytics/Commissioned Services Analytics/7. Datasets & PowerBI/1. Datasets/Raw data/1. PMHC-MDS/"
+		},
+		"tr_event_based_extract_cwa_properties_adls_excel_to_sql_multisheet_master_parameters_adls2_file_name": {
+			"value": "@triggerbody().fileName"
+		},
+		"tr_event_based_extract_cwa_properties_adls_excel_to_sql_multisheet_master_parameters_file_sheet_name_list": {
+			"value": [
+				"Clients",
+				"Organisations"
+			]
+		},
+		"tr_event_based_extract_cwa_properties_typeProperties_scope": {
+			"value": "/subscriptions/687fe1ae-a520-4f86-b921-a80664c40f9b/resourceGroups/wahpa-dev-aze-rg-services/providers/Microsoft.Storage/storageAccounts/wahpadevazestraw"
+		}
+	}
+}
