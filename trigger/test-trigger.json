@@ -6,7 +6,7 @@
 		"pipelines": [
 			{
 				"pipelineReference": {
-					"referenceName": "adls2_delimited_text_to_sql",
+					"referenceName": "adls2_delimited_text_to_delta",
 					"type": "PipelineReference"
 				},
 				"parameters": {

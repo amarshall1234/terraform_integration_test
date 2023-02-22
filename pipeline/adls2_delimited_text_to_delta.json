@@ -1,5 +1,5 @@
 {
-	"name": "adls2_delimited_text_to_sql",
+	"name": "adls2_delimited_text_to_delta",
 	"properties": {
 		"description": "Pipeline - parameterised data lake (adls2) delimited text source to parameterised azure sql server table - sql login option sink",
 		"activities": [
@@ -271,6 +271,9 @@
 			"az_sql_pre_copy_script": {
 				"type": "String"
 			}
+		},
+		"folder": {
+			"name": "common"
 		},
 		"annotations": []
 	}

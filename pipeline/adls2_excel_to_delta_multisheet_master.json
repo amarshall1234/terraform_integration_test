@@ -1,5 +1,5 @@
 {
-	"name": "adls_excel_to_sql_multisheet_master",
+	"name": "adls2_excel_to_delta_multisheet_master",
 	"properties": {
 		"description": "Pipeline - Loops through each sheet in a excel spreadsheet and runs adls2_excel_to_sql for each sheet",
 		"activities": [
@@ -21,7 +21,7 @@
 							"userProperties": [],
 							"typeProperties": {
 								"pipeline": {
-									"referenceName": "adls2_excel_to_sql",
+									"referenceName": "adls2_excel_to_delta",
 									"type": "PipelineReference"
 								},
 								"waitOnCompletion": true,
@@ -179,6 +179,9 @@
 			"az_sql_pre_copy_script": {
 				"type": "String"
 			}
+		},
+		"folder": {
+			"name": "common"
 		},
 		"annotations": []
 	}

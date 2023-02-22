@@ -1,5 +1,5 @@
 {
-	"name": "adls2_excel_to_sql",
+	"name": "adls2_excel_to_delta",
 	"properties": {
 		"description": "Pipeline - parameterised data lake (adls2) excel source to parameterised azure sql server table - sql login option sink",
 		"activities": [
@@ -244,6 +244,9 @@
 			"az_sql_pre_copy_script": {
 				"type": "String"
 			}
+		},
+		"folder": {
+			"name": "common"
 		},
 		"annotations": []
 	}

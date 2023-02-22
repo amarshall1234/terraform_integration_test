@@ -8,7 +8,7 @@
 		"pipelines": [
 			{
 				"pipelineReference": {
-					"referenceName": "adls_excel_to_sql_multisheet_master",
+					"referenceName": "adls2_excel_to_delta_multisheet_master",
 					"type": "PipelineReference"
 				},
 				"parameters": {
